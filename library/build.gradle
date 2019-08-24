@@ -45,17 +45,27 @@ dependencies {
     // androidx
     api rootProject.ext.dependencies["androidx"]
 
+    // design
+    api rootProject.ext.dependencies["design"]
+
     // ktx
     api rootProject.ext.dependencies["ktx"]
 
     // coroutine
-    api rootProject.ext.dependencies["coroutines"]
+    api rootProject.ext.dependencies["coroutines-core"]
+    api rootProject.ext.dependencies["coroutines-android"]
 
     // constraintlayout
     api rootProject.ext.dependencies["constraintlayout"]
 
     // multidex
     api rootProject.ext.dependencies["multidex"]
+
+    // retrofit
+    api rootProject.ext.dependencies["retrofit"]
+
+    // fastjson
+    api rootProject.ext.dependencies["fastjson"]
 
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
