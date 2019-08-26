@@ -31,7 +31,7 @@ class FastJsonResponseBodyConverter<T>(
 
         if (!temp.isSuccess()) throw APIException(temp.code, temp.msg)
 
-        if (temp.isSuccess() && temp.obj == null) throw APIException(
+        if (temp.isNoResponseBody()) throw APIException(
             NetConfig.CODE_NO_RESPONSE_BODY,
             temp.msg
         )

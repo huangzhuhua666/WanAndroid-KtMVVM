@@ -9,4 +9,6 @@ data class Response<T>(
     var obj: T?
 ) {
     fun isSuccess(): Boolean = code == NetConfig.CODE_SUCCESS
+
+    fun isNoResponseBody(): Boolean = isSuccess() && obj == null
 }
