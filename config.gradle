@@ -38,6 +38,9 @@ ext {
             // fastjson
             "fastjson"          : "com.alibaba:fastjson:1.1.71.android",
 
+            // lifecycle
+            "lifecycle"         : "androidx.lifecycle:lifecycle-extensions:2.1.0-rc01",
+
             // junit
             "junit"             : "junit:junit:4.12",
 

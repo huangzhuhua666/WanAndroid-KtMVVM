@@ -67,6 +67,9 @@ dependencies {
     // fastjson
     api rootProject.ext.dependencies["fastjson"]
 
+    // lifecycle
+    api rootProject.ext.dependencies["lifecycle"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 
