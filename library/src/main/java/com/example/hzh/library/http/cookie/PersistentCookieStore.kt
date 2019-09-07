@@ -48,6 +48,7 @@ class PersistentCookieStore(context: Context) {
 
     private fun getCookieToken(cookie: Cookie): String = "${cookie.name()}@${cookie.domain()}"
 
+    @Synchronized
     fun add(cookie: Cookie) {
         val name = getCookieToken(cookie)
 
@@ -63,6 +64,7 @@ class PersistentCookieStore(context: Context) {
         }
     }
 
+    @Synchronized
     fun add(url: HttpUrl, cookie: Cookie) {
         val name = getCookieToken(cookie)
 
@@ -75,24 +77,28 @@ class PersistentCookieStore(context: Context) {
         }
     }
 
+    @Synchronized
     fun get(url: HttpUrl): MutableList<Cookie> {
         val ret = mutableListOf<Cookie>()
         if (cookies.containsKey(url.host())) ret.addAll(cookies[url.host()]!!.values)
         return ret
     }
 
+    @Synchronized
     fun get(): MutableList<Cookie> {
         val ret = mutableListOf<Cookie>()
         if (cookies.containsKey(NetConfig.DOMAIN)) ret.addAll(cookies[NetConfig.DOMAIN]!!.values)
         return ret
     }
 
+    @Synchronized
     fun removeAll(): Boolean {
         cookiesPrefs.edit { clear() }
         cookies.clear()
         return true
     }
 
+    @Synchronized
     fun remove(): Boolean {
         return if (cookies.containsKey(NetConfig.DOMAIN)) {
             cookiesPrefs.edit {
@@ -108,6 +114,7 @@ class PersistentCookieStore(context: Context) {
         } else false
     }
 
+    @Synchronized
     fun remove(url: HttpUrl, cookie: Cookie): Boolean {
         val name = getCookieToken(cookie)
 
@@ -138,7 +145,7 @@ class PersistentCookieStore(context: Context) {
         val bais = ByteArrayInputStream(bytes)
         return try {
             val ois = ObjectInputStream(bais)
-            (ois.readObject() as SerializableOkHttpCookies).cookie
+            (ois.readObject() as SerializableOkHttpCookies).getBestCookie()
         } catch (ioe: IOException) {
             return null
         } catch (nfe: ClassNotFoundException) {

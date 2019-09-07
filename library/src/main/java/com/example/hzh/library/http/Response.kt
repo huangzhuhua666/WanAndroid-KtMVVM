@@ -7,12 +7,13 @@ import com.alibaba.fastjson.annotation.JSONField
  */
 class Response<T> {
 
+    @JSONField(name = "errorCode")
     var code: Int = 0
 
-    @JSONField(name = "message")
+    @JSONField(name = "errorMsg")
     var msg: String = ""
 
-    @JSONField(name = "object")
+    @JSONField(name = "data")
     var obj: T? = null
 
     fun isSuccess(): Boolean = code == NetConfig.CODE_SUCCESS
