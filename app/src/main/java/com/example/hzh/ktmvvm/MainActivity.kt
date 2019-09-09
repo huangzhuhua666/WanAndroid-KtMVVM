@@ -1,12 +1,33 @@
 package com.example.hzh.ktmvvm
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.example.hzh.ktmvvm.app.App
+import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.http.APIException
+import kotlinx.coroutines.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override val layoutId: Int
+        get() = R.layout.activity_main
+
+    override fun initView() {
+
+    }
+
+    override fun initListener() {
+
+    }
+
+    override fun initData() {
+        launch(Dispatchers.IO) {
+            val test = App.httpClient.getService(Test::class.java)
+            try {
+                test.login("sdhzh666", "39547android666")
+                delay(3000L)
+                test.logout()
+            } catch (e: APIException) {
+                e.printStackTrace()
+            }
+        }
     }
 }

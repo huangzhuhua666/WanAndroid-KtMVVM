@@ -70,6 +70,10 @@ dependencies {
     // lifecycle
     api rootProject.ext.dependencies["lifecycle"]
 
+    // immersionbar
+    api rootProject.ext.dependencies["immersionbar"]
+    api rootProject.ext.dependencies["immersionbar-ktx"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 

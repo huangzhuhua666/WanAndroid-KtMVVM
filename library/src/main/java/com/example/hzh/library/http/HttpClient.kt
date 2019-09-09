@@ -19,7 +19,9 @@ class HttpClient private constructor(context: Context) {
         @Volatile
         private var instance: HttpClient? = null
 
-        fun init(context: Context) =
+        var customClient: OkHttpClient? = null
+
+        fun getInstance(context: Context) =
             instance ?: synchronized(HttpClient::class.java) {
                 instance ?: HttpClient(context).apply { instance = this }
             }
@@ -32,7 +34,7 @@ class HttpClient private constructor(context: Context) {
             readTimeout(NetConfig.READ_TIMEOUT, TimeUnit.SECONDS)
             writeTimeout(NetConfig.WRITE_TIMEOUT, TimeUnit.SECONDS)
             cookieJar(MyCookie(context))
-//        cache()
+//            cache()
             addInterceptor(VerifyInterceptor())
             HttpsUtils.getSSLSocketFactory()
                 ?.run { sslSocketFactory(sslSocketFactory, trustManager) }
@@ -45,7 +47,7 @@ class HttpClient private constructor(context: Context) {
         retrofit = Retrofit.Builder().run {
             baseUrl(NetConfig.BASE_URL)
             addConverterFactory(FastJsonConverterFactory.create())
-            client(okHttpClient)
+            client(customClient ?: okHttpClient)
             build()
         }
     }

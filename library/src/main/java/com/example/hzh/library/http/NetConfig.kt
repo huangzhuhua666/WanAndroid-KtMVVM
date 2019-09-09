@@ -24,4 +24,8 @@ object NetConfig {
 
     var BASE_URL by DelegateExt.notNullSingleValue<String>()
 
+    var CACHE_SIZE = 10 * 1024 * 1024L
+
+    var CACHE_PATH = ""
+
 }

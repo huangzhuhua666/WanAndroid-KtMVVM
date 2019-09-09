@@ -87,7 +87,7 @@ object HttpsUtils {
         }
 
         override fun getAcceptedIssuers(): Array<X509Certificate> =
-            arrayOf(X509Certificate::class.java.newInstance())
+            arrayOf()
     }
 
     private fun prepareKeyManager(bksFile: InputStream?, password: String?): Array<KeyManager>? {

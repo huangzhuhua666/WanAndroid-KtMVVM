@@ -41,6 +41,10 @@ ext {
             // lifecycle
             "lifecycle"         : "androidx.lifecycle:lifecycle-extensions:2.1.0-rc01",
 
+            // immersionbar
+            "immersionbar"      : "com.gyf.immersionbar:immersionbar:3.0.0",
+            "immersionbar-ktx"  : "com.gyf.immersionbar:immersionbar-ktx:3.0.0",
+
             // junit
             "junit"             : "junit:junit:4.12",
 
