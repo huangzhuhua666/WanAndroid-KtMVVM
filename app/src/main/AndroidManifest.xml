@@ -16,7 +16,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
 
-        <activity android:name=".MainActivity">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+
+        <activity android:name=".view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
