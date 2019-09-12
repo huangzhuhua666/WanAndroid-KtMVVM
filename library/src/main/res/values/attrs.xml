@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RTextView">
+        <!--圆角-->
+        <attr name="radii" format="dimension"/>
+        <attr name="lefTopRadius" format="dimension"/>
+        <attr name="leftBottomRadius" format="dimension"/>
+        <attr name="rightTopRadius" format="dimension"/>
+        <attr name="rightBottomRadius" format="dimension"/>
+        <!--正常的字体颜色-->
+        <attr name="normalTextColor" format="color"/>
+        <!--按下的字体颜色-->
+        <attr name="pressTextColor" format="color"/>
+        <!--正常的边框-->
+        <attr name="normalStrokeColor" format="color"/>
+        <attr name="normalStrokeWidth" format="dimension"/>
+        <!--按下的边框-->
+        <attr name="pressStrokeColor" format="color"/>
+        <attr name="pressStrokeWidth" format="dimension"/>
+        <!--是否使用渐变色填充-->
+        <attr name="isGradientSolid" format="boolean"/>
+        <!--正常的渐变开始色-->
+        <attr name="normalGradientStart" format="color"/>
+        <!--正常的渐变结束色-->
+        <attr name="normalGradientEnd" format="color"/>
+        <!--按下的渐变开始色-->
+        <attr name="pressGradientStart" format="color"/>
+        <!--按下的渐变结束色-->
+        <attr name="pressGradientEnd" format="color"/>
+        <!--渐变色的类型-->
+        <attr name="gradientType" format="enum">
+            <enum name="line" value="0"/>
+            <enum name="radial" value="1"/>
+            <enum name="sweep" value="2"/>
+        </attr>
+        <attr name="gradientOrientation" format="enum">
+            <enum name="top_bottom" value="0"/>
+            <enum name="rt_lb" value="1"/>
+            <enum name="right_left" value="2"/>
+            <enum name="rb_lt" value="3"/>
+            <enum name="bottom_top" value="4"/>
+            <enum name="lb_rt" value="5"/>
+            <enum name="left_right" value="6"/>
+            <enum name="lt_rb" value="7"/>
+        </attr>
+        <attr name="useLevel" format="boolean"/>
+        <!--正常的填充色-->
+        <attr name="normalSolid" format="color"/>
+        <!--按下的填充色-->
+        <attr name="pressSolid" format="color"/>
+    </declare-styleable>
+
+</resources>

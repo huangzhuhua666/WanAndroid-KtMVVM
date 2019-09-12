@@ -28,13 +28,24 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':library')
+
     // alphatabs
     implementation rootProject.ext.dependencies["alphatabs"]
+
+    // banner
+    implementation rootProject.ext.dependencies["banner"]
+
+    // Glide
+    implementation rootProject.ext.dependencies["Glide"]
 }
 
 repositories {

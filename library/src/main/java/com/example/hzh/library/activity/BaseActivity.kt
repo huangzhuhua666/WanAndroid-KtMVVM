@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import com.example.hzh.library.extension.DelegateExt
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -19,7 +22,9 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
         private const val TAG = "Current Activity"
     }
 
-    protected val context by lazy { this }
+    protected val mContext by lazy { this }
+
+    protected var mBinding by DelegateExt.notNullSingleValue<ViewDataBinding>()
 
     protected abstract val layoutId: Int
 
@@ -40,7 +45,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId)
+        mBinding = DataBindingUtil.setContentView(this, layoutId)
+        mBinding.lifecycleOwner = this
 
         if (isUseImmersionBar) immersionBar {
             title?.let { titleBar(it) }
@@ -48,12 +54,16 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
 
-        Log.d(TAG, javaClass.name)
+        Log.d(TAG, javaClass.simpleName)
 
         intent?.extras?.let { onGetBundle(it) }
 
         initView()
         initListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         initData()
     }
 

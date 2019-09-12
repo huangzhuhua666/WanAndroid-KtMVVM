@@ -1,13 +1,16 @@
 package com.example.hzh.ktmvvm.view.fragment
 
-import android.content.Context
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.adapter.ArticleAdapter
+import com.example.hzh.ktmvvm.databinding.FragmentHomeBinding
+import com.example.hzh.ktmvvm.viewmodel.HomeVM
+import com.example.hzh.library.extension.setListener
+import com.example.hzh.library.extension.toast
 import com.example.hzh.library.fragment.BaseFragment
+import com.youth.banner.BannerConfig
+import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
  * Create by hzh on 2019/09/10.
@@ -16,62 +19,56 @@ class HomeFragment : BaseFragment() {
 
     companion object {
 
-        private const val TAG = "HomeFragment"
-
         fun newInstance(): HomeFragment = HomeFragment()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d(TAG, "onCreateView")
-        return inflater.inflate(R.layout.fragment_home, null, true)
+    private val mHomeVM by lazy { ViewModelProviders.of(this)[HomeVM::class.java] }
+
+    private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
+
+    override val layoutId: Int
+        get() = R.layout.fragment_home
+
+    override fun initView() {
+        (mBinding as FragmentHomeBinding).homeVM = mHomeVM
+        banner?.let {
+            lifecycle.addObserver(it)
+            it.isPlayOnStart = false
+            it.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+            it.setIndicatorGravity(BannerConfig.RIGHT)
+        }
+
+        rvArticle.adapter = mAdapter
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d(TAG, "onAttach")
+    override fun initListener() {
+        banner.setOnBannerListener {
+            mHomeVM.bannerList.value?.get(it)?.url?.run { mContext.toast(this) }
+        }
+
+        refreshLayout.setListener {
+            onRefresh {
+                mHomeVM.getBanners()
+                mHomeVM.getArticles()
+            }
+            onLoadMore { mHomeVM.loadArticles() }
+        }
+
+        mHomeVM.let {
+            it.articleList.observe(this, Observer { articleList ->
+                if (!it.isLoadMore) {
+                    mAdapter.setNewData(articleList)
+                    refreshLayout.finishRefresh()
+                } else {
+                    mAdapter.addData(articleList)
+                    refreshLayout.finishLoadMore()
+                }
+            })
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d(TAG, "onDestroyView")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d(TAG, "onDetach")
+    override fun initData() {
+        mHomeVM.getBanners()
+        mHomeVM.getArticles()
     }
 }

@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.activity.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.example.hzh.library.widget.MyViewPager
-        android:id="@+id/vpContent"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/indicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"
+        tools:context=".view.activity.MainActivity">
 
-    <com.yinglan.alphatabs.AlphaTabsIndicator
-        android:id="@+id/indicator"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/color_f5f5f5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/vpContent">
+        <com.example.hzh.library.widget.MyViewPager
+            android:id="@+id/vpContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/color_f2f2f2"
+            app:layout_constraintBottom_toTopOf="@+id/indicator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.yinglan.alphatabs.AlphaTabView
-            style="@style/TabStyle"
-            app:tabText="@string/home"/>
+        <com.yinglan.alphatabs.AlphaTabsIndicator
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/color_f5f5f5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vpContent">
 
-        <com.yinglan.alphatabs.AlphaTabView
-            style="@style/TabStyle"
-            app:tabText="@string/system"/>
+            <com.yinglan.alphatabs.AlphaTabView
+                style="@style/TabStyle"
+                app:tabText="@string/home"/>
 
-        <com.yinglan.alphatabs.AlphaTabView
-            style="@style/TabStyle"
-            app:tabText="@string/public_author"/>
+            <com.yinglan.alphatabs.AlphaTabView
+                style="@style/TabStyle"
+                app:tabText="@string/system"/>
 
-        <com.yinglan.alphatabs.AlphaTabView
-            style="@style/TabStyle"
-            app:tabText="@string/project"/>
+            <com.yinglan.alphatabs.AlphaTabView
+                style="@style/TabStyle"
+                app:tabText="@string/public_author"/>
 
-    </com.yinglan.alphatabs.AlphaTabsIndicator>
+            <com.yinglan.alphatabs.AlphaTabView
+                style="@style/TabStyle"
+                app:tabText="@string/project"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </com.yinglan.alphatabs.AlphaTabsIndicator>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

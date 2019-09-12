@@ -41,6 +41,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // kotlin
     api rootProject.ext.dependencies["kotlin"]
+    api rootProject.ext.dependencies["kotlin-reflect"]
 
     // androidx
     api rootProject.ext.dependencies["androidx"]
@@ -73,6 +74,13 @@ dependencies {
     // immersionbar
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["immersionbar-ktx"]
+
+    // SmartRefresh
+    api rootProject.ext.dependencies["SmartRefresh"]
+    api rootProject.ext.dependencies["SmartRefresh-header"]
+
+    // BRVAH
+    api rootProject.ext.dependencies["BRVAH"]
 
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
