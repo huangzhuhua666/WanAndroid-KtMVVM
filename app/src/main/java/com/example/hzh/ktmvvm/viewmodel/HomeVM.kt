@@ -23,23 +23,15 @@ class HomeVM : BaseVM() {
 
     var articleList = MutableLiveData<List<ArticleBean>>()
 
-    fun getBanners() {
+    fun getInitData() {
         isLoadMore = false
-        launch(Dispatchers.IO) {
-            try {
-                bannerList.postValue(service.getBanners())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun getArticles() {
         pageNo = 0
-        isLoadMore = false
         launch(Dispatchers.IO) {
             try {
-                articleList.postValue(service.getTopArticles().plus(service.getArticles(pageNo).datas))
+                service.let {
+                    bannerList.postValue(it.getBanners())
+                    articleList.postValue(it.getTopArticles().plus(it.getArticles(pageNo).datas))
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

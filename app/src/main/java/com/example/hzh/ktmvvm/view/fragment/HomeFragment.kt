@@ -48,8 +48,7 @@ class HomeFragment : BaseFragment() {
 
         refreshLayout.setListener {
             onRefresh {
-                mHomeVM.getBanners()
-                mHomeVM.getArticles()
+                mHomeVM.getInitData()
             }
             onLoadMore { mHomeVM.loadArticles() }
         }
@@ -68,7 +67,6 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initData() {
-        mHomeVM.getBanners()
-        mHomeVM.getArticles()
+        mHomeVM.getInitData()
     }
 }

@@ -1,9 +1,9 @@
 package com.example.hzh.ktmvvm.util
 
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.BaseViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.hzh.ktmvvm.data.model.BannerBean
 import com.youth.banner.Banner
 
@@ -20,14 +20,17 @@ fun Banner.setBannerImages(bannerList: List<BannerBean>?) {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-@BindingAdapter("bind:firstData")
-fun RecyclerView.setFirstData(data: List<Any>?) {
-    data?.let { (adapter as BaseQuickAdapter<Any, BaseViewHolder>).setNewData(it) }
-}
-
-@Suppress("UNCHECKED_CAST")
-@BindingAdapter("bind:loadData")
-fun RecyclerView.setLoadData(data: List<Any>?) {
-//    data?.let { (adapter as BaseQuickAdapter<Any, BaseViewHolder>).addData(it.) }
+@BindingAdapter("bind:loadImage")
+fun ImageView.loadImage(image: String) {
+    if (image == "") return
+    Glide.with(context)
+        .load(image)
+        .thumbnail(.5f)
+        .apply {
+            diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            skipMemoryCache(false)
+            dontAnimate()
+            fitCenter()
+        }
+        .into(this)
 }
