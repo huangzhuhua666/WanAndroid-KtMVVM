@@ -28,9 +28,7 @@ class MainActivity : BaseActivity() {
                 SystemFragment.newInstance(),
                 PublicAuthorFragment.newInstance(),
                 ProjectFragment.newInstance()
-            ).also {
-                adapter = PageAdapter(it, supportFragmentManager)
-            }
+            ).also { adapter = PageAdapter(it, supportFragmentManager) }
             indicator.setViewPager(this)
             isScroll = false
         }

@@ -30,7 +30,7 @@ abstract class BaseFragment : Fragment() {
 
     protected abstract val layoutId: Int
 
-    protected open val title: View?
+    protected open val titleView: View?
         get() = null
 
     /**
@@ -48,7 +48,7 @@ abstract class BaseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (isUseImmersionBar) immersionBar {
-            title?.let { titleBar(it) }
+            titleView?.let { titleBar(it) }
 
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }

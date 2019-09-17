@@ -7,4 +7,5 @@
     <string name="set_to_top">置顶</string>
     <string name="QA">问答</string>
     <string name="article_category">%1$s/%2$s</string>
+    <string name="loading">加载中&#8230;</string>
 </resources>

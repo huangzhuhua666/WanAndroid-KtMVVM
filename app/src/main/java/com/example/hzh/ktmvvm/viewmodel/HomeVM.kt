@@ -13,19 +13,14 @@ import kotlinx.coroutines.*
  */
 class HomeVM : BaseVM() {
 
-    private var pageNo = 0
-
     private val service by lazy { App.httpClient.getService(HomeApi::class.java) }
-
-    var isLoadMore = false
 
     var bannerList = MutableLiveData<List<BannerBean>>()
 
     var articleList = MutableLiveData<List<ArticleBean>>()
 
-    fun getInitData() {
-        isLoadMore = false
-        pageNo = 0
+    override fun getInitData() {
+        super.getInitData()
         launch(Dispatchers.IO) {
             try {
                 service.let {
@@ -38,11 +33,11 @@ class HomeVM : BaseVM() {
         }
     }
 
-    fun loadArticles() {
-        isLoadMore = true
+    override fun loadData() {
+        super.loadData()
         launch(Dispatchers.IO) {
             try {
-                articleList.postValue(service.getArticles(++pageNo).datas)
+                articleList.postValue(service.getArticles(pageNo).datas)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

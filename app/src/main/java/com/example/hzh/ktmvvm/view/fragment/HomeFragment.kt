@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentHomeBinding
+import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.HomeVM
-import com.example.hzh.library.extension.setListener
-import com.example.hzh.library.extension.toast
 import com.example.hzh.library.fragment.BaseFragment
 import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -22,15 +21,16 @@ class HomeFragment : BaseFragment() {
         fun newInstance(): HomeFragment = HomeFragment()
     }
 
+    override val layoutId: Int
+        get() = R.layout.fragment_home
+
     private val mHomeVM by lazy { ViewModelProviders.of(this)[HomeVM::class.java] }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
-    override val layoutId: Int
-        get() = R.layout.fragment_home
-
     override fun initView() {
         (mBinding as FragmentHomeBinding).homeVM = mHomeVM
+
         banner?.let {
             lifecycle.addObserver(it)
             it.isPlayOnStart = false
@@ -43,14 +43,9 @@ class HomeFragment : BaseFragment() {
 
     override fun initListener() {
         banner.setOnBannerListener {
-            mHomeVM.bannerList.value?.get(it)?.url?.run { mContext.toast(this) }
-        }
-
-        refreshLayout.setListener {
-            onRefresh {
-                mHomeVM.getInitData()
+            mHomeVM.bannerList.value?.get(it)?.run {
+                WebActivity.open(mContext, url, title)
             }
-            onLoadMore { mHomeVM.loadArticles() }
         }
 
         mHomeVM.let {

@@ -1,10 +1,14 @@
 package com.example.hzh.ktmvvm.util
 
+import android.webkit.WebView
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.hzh.ktmvvm.data.model.BannerBean
+import com.example.hzh.library.extension.setListener
+import com.example.hzh.library.viewmodel.BaseVM
+import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.youth.banner.Banner
 
 /**
@@ -33,4 +37,20 @@ fun ImageView.loadImage(image: String) {
             fitCenter()
         }
         .into(this)
+}
+
+@BindingAdapter("bind:refreshOrLoadMore")
+fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
+    setListener {
+        onRefresh { vm.getInitData() }
+        onLoadMore { vm.loadData() }
+    }
+}
+
+@BindingAdapter("bind:loadWeb")
+fun WebView.loadWeb(url: String?) {
+    url?.let {
+        if (it == "") return
+        loadUrl(url)
+    }
 }

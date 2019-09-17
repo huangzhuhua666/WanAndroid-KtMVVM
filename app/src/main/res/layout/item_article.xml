@@ -16,14 +16,20 @@
         <variable
             name="article"
             type="com.example.hzh.ktmvvm.data.model.ArticleBean"/>
+
+        <variable
+            name="presenter"
+            type="com.example.hzh.ktmvvm.adapter.ArticlePresenter"/>
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
+        android:onClick="@{view -> presenter.onClick(view, article)}"
         android:layout_marginBottom="5dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
@@ -56,22 +62,22 @@
                     style="@style/TagStyle"
                     android:text="@string/QA"
                     android:visibility="@{article.superChapterId == 440 ? View.VISIBLE : View.GONE}"
-                    app:normalStrokeColor="@color/color_00a6ff"
-                    app:normalTextColor="@color/color_00a6ff"/>
+                    app:normalStrokeColor="@color/appColor"
+                    app:normalTextColor="@color/appColor"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/public_author"
                     android:visibility="@{article.superChapterId == 408 ? View.VISIBLE : View.GONE}"
-                    app:normalStrokeColor="@color/color_00a6ff"
-                    app:normalTextColor="@color/color_00a6ff"/>
+                    app:normalStrokeColor="@color/appColor"
+                    app:normalTextColor="@color/appColor"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/project"
                     android:visibility="@{article.superChapterId == 294 ? View.VISIBLE : View.GONE}"
-                    app:normalStrokeColor="@color/color_00a6ff"
-                    app:normalTextColor="@color/color_00a6ff"/>
+                    app:normalStrokeColor="@color/appColor"
+                    app:normalTextColor="@color/appColor"/>
 
                 <TextView
                     android:layout_width="0dp"

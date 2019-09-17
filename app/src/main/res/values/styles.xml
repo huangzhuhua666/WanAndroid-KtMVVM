@@ -15,7 +15,7 @@
         <item name="android:padding">5dp</item>
         <item name="tabTextSize">12sp</item>
         <item name="textColorNormal">@color/color_3c3c3c</item>
-        <item name="textColorSelected">@color/color_00a6ff</item>
+        <item name="textColorSelected">@color/appColor</item>
     </style>
 
     <style name="TagStyle">

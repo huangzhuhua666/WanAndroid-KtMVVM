@@ -10,8 +10,22 @@ import kotlinx.coroutines.cancel
  */
 abstract class BaseVM : ViewModel(), CoroutineScope by MainScope() {
 
+    protected var pageNo = 0
+
+    var isLoadMore = false
+
     override fun onCleared() {
         cancel()
         super.onCleared()
+    }
+
+    open fun getInitData() {
+        isLoadMore = false
+        pageNo = 0
+    }
+
+    open fun loadData() {
+        isLoadMore = true
+        ++pageNo
     }
 }

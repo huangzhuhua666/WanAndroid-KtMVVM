@@ -4,12 +4,15 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="appColor">#00a6ff</color>
+
     <color name="color_f5f5f5">#f5f5f5</color>
     <color name="color_f2f2f2">#f2f2f2</color>
     <color name="color_999999">#999999</color>
     <color name="color_666666">#666666</color>
     <color name="color_333333">#333333</color>
     <color name="color_3c3c3c">#3c3c3c</color>
-    <color name="color_00a6ff">#00a6ff</color>
     <color name="color_ff3b30">#ff3b30</color>
+    <color name="color_ffebcd">#ffebcd</color>
+    <color name="color_ffe4b5">#ffe4b5</color>
 </resources>

@@ -28,7 +28,7 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
 
     protected abstract val layoutId: Int
 
-    protected open val title: View?
+    protected open val titleView: View?
         get() = null
 
     /**
@@ -49,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
         mBinding.lifecycleOwner = this
 
         if (isUseImmersionBar) immersionBar {
-            title?.let { titleBar(it) }
+            titleView?.let { titleBar(it) }
 
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
@@ -60,10 +60,6 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
 
         initView()
         initListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
         initData()
     }
 
