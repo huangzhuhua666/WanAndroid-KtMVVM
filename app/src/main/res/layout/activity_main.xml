@@ -35,7 +35,7 @@
 
             <com.yinglan.alphatabs.AlphaTabView
                 style="@style/TabStyle"
-                app:tabText="@string/system"/>
+                app:tabText="@string/knowledge"/>
 
             <com.yinglan.alphatabs.AlphaTabView
                 style="@style/TabStyle"

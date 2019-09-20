@@ -1,11 +1,11 @@
 package com.example.hzh.ktmvvm.view.activity
 
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.PageAdapter
+import com.example.hzh.ktmvvm.adapter.BottomNavigationPageAdapter
 import com.example.hzh.ktmvvm.view.fragment.HomeFragment
 import com.example.hzh.ktmvvm.view.fragment.ProjectFragment
 import com.example.hzh.ktmvvm.view.fragment.PublicAuthorFragment
-import com.example.hzh.ktmvvm.view.fragment.SystemFragment
+import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.setFitsSystemWindows
@@ -25,10 +25,10 @@ class MainActivity : BaseActivity() {
         vpContent?.run {
             listOf(
                 HomeFragment.newInstance(),
-                SystemFragment.newInstance(),
+                KnowledgeFragment.newInstance(),
                 PublicAuthorFragment.newInstance(),
                 ProjectFragment.newInstance()
-            ).also { adapter = PageAdapter(it, supportFragmentManager) }
+            ).also { adapter = BottomNavigationPageAdapter(it, supportFragmentManager) }
             indicator.setViewPager(this)
             isScroll = false
         }

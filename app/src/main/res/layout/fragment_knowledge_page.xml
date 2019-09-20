@@ -7,19 +7,15 @@
     <data>
 
         <variable
-            name="homeVM"
-            type="com.example.hzh.ktmvvm.viewmodel.HomeVM"/>
-
-        <variable
-            name="adapter"
-            type="com.example.hzh.ktmvvm.adapter.ArticleAdapter"/>
+            name="knowledgeVM"
+            type="com.example.hzh.ktmvvm.viewmodel.KnowledgeVM"/>
     </data>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        bind:refreshOrLoadMore="@{homeVM}">
+        bind:refreshOrLoadMore="@{knowledgeVM}">
 
         <com.scwang.smartrefresh.header.MaterialHeader
             android:layout_width="match_parent"
@@ -29,7 +25,10 @@
             android:id="@+id/rvArticle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <com.scwang.smartrefresh.layout.footer.ClassicsFooter

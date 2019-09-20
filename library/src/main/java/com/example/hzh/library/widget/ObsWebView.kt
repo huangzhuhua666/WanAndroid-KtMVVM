@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.widget
+package com.example.hzh.library.widget
 
 import android.content.Context
 import android.util.AttributeSet

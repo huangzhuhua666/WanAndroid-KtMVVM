@@ -9,8 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.hzh.library.activity.BaseActivity
-import com.example.hzh.library.extension.DelegateExt
 import com.gyf.immersionbar.ktx.immersionBar
+import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/09/10.
@@ -26,7 +26,10 @@ abstract class BaseFragment : Fragment() {
 
     private var mRootView: View? = null
 
-    protected var mBinding by DelegateExt.notNullSingleValue<ViewDataBinding>()
+    protected var mBinding by Delegates.notNull<ViewDataBinding>()
+        private set
+
+    private var isFirstIn = true
 
     protected abstract val layoutId: Int
 
@@ -59,6 +62,7 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        isFirstIn = true
         return setContentView(inflater, container, layoutId)
     }
 
@@ -69,12 +73,17 @@ abstract class BaseFragment : Fragment() {
 
         initView()
         initListener()
-        initData()
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, javaClass.simpleName)
+
+        if (isFirstIn) {
+            initData()
+            isFirstIn = false
+        }
+
         lazyLoad()
     }
 

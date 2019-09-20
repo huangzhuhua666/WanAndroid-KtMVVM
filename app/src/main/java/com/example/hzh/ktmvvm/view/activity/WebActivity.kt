@@ -24,8 +24,10 @@ class WebActivity : BaseActivity() {
 
         fun open(ctx: Context, url: String, title: String) {
             ctx.startActivity(Intent(ctx, WebActivity::class.java).apply {
-                putExtra("url", url)
-                putExtra("title", title)
+                putExtras(Bundle().apply {
+                    putString("url", url)
+                    putString("title", title)
+                })
             })
         }
     }

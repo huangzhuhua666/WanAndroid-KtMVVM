@@ -73,7 +73,7 @@
             android:progressDrawable="@drawable/bg_progress_bar"
             android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"/>
 
-        <com.example.hzh.ktmvvm.widget.ObsWebView
+        <com.example.hzh.library.widget.ObsWebView
             android:id="@+id/web"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

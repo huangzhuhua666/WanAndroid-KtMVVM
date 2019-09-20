@@ -6,11 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.example.hzh.library.extension.DelegateExt
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/09/09.
@@ -24,7 +24,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope()
 
     protected val mContext by lazy { this }
 
-    protected var mBinding by DelegateExt.notNullSingleValue<ViewDataBinding>()
+    protected var mBinding by Delegates.notNull<ViewDataBinding>()
+    private set
 
     protected abstract val layoutId: Int
 

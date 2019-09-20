@@ -35,6 +35,10 @@
         </activity>
 
         <activity
+            android:name=".view.activity.KnowledgeActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".view.activity.WebActivity"
             android:screenOrientation="portrait"/>
     </application>

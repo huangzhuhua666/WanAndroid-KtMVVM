@@ -29,4 +29,10 @@
         <item name="radii">6dp</item>
     </style>
 
+    <style name="TabTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/selector_tab_text_color</item>
+    </style>
+
 </resources>

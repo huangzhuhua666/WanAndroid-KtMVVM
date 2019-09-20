@@ -6,29 +6,29 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hzh.ktmvvm.BR
-import com.example.hzh.ktmvvm.data.model.ArticleBean
-import com.example.hzh.ktmvvm.databinding.ItemArticleBinding
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.view.activity.WebActivity
+import com.example.hzh.ktmvvm.data.model.KnowledgeBean
+import com.example.hzh.ktmvvm.databinding.ItemKnowledgeBinding
+import com.example.hzh.ktmvvm.view.activity.KnowledgeActivity
 import com.example.hzh.library.util.DBViewHolder
 
 /**
- * Create by hzh on 2019/09/12.
+ * Create by hzh on 2019/09/18.
  */
-class ArticleAdapter(layoutResId: Int) : BaseQuickAdapter<ArticleBean, DBViewHolder>(layoutResId) {
+class SystemAdapter(layoutResId: Int) : BaseQuickAdapter<KnowledgeBean, DBViewHolder>(layoutResId) {
 
-    private val mPresenter by lazy { ArticlePresenter(mContext) }
+    private val mPresenter by lazy { KnowledgePresenter(mContext) }
 
-    override fun convert(helper: DBViewHolder, item: ArticleBean) {
+    override fun convert(helper: DBViewHolder, item: KnowledgeBean) {
         helper.getBinding().run {
-            setVariable(BR.article, item)
+            setVariable(BR.knowledge, item)
             setVariable(BR.presenter, mPresenter)
             executePendingBindings()
         }
     }
 
     override fun getItemView(layoutResId: Int, parent: ViewGroup?): View =
-        DataBindingUtil.inflate<ItemArticleBinding>(
+        DataBindingUtil.inflate<ItemKnowledgeBinding>(
             mLayoutInflater,
             layoutResId,
             parent,
@@ -40,12 +40,12 @@ class ArticleAdapter(layoutResId: Int) : BaseQuickAdapter<ArticleBean, DBViewHol
         }
 }
 
-class ArticlePresenter(private val ctx: Context) {
+class KnowledgePresenter(private val ctx: Context) {
 
-    fun onClick(view: View, article: ArticleBean) {
-        article.run {
+    fun onClick(view: View, knowledge: KnowledgeBean) {
+        knowledge.run {
             when (view.id) {
-                R.id.cvRoot -> WebActivity.open(ctx, link, title)
+                R.id.cvRoot -> KnowledgeActivity.open(ctx, name, children as ArrayList)
             }
         }
     }

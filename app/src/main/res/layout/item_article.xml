@@ -29,8 +29,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:onClick="@{view -> presenter.onClick(view, article)}"
         android:layout_marginBottom="5dp"
+        android:onClick="@{view -> presenter.onClick(view, article)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">
@@ -55,6 +55,13 @@
                     style="@style/TagStyle"
                     android:text="@string/set_to_top"
                     android:visibility="@{article.type == 1 ? View.VISIBLE : View.GONE}"
+                    app:normalStrokeColor="@color/color_ff3b30"
+                    app:normalTextColor="@color/color_ff3b30"/>
+
+                <com.example.hzh.library.widget.RTextView
+                    style="@style/TagStyle"
+                    android:text="@string/fresh"
+                    android:visibility="@{article.fresh ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/color_ff3b30"
                     app:normalTextColor="@color/color_ff3b30"/>
 

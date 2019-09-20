@@ -1,12 +1,16 @@
 package com.example.hzh.ktmvvm.view.fragment
 
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentHomeBinding
+import com.example.hzh.ktmvvm.databinding.LayoutBannerBinding
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.HomeVM
+import com.example.hzh.ktmvvm.widget.ObsBanner
+import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.fragment.BaseFragment
 import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -28,21 +32,41 @@ class HomeFragment : BaseFragment() {
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
+    private val mBannerBinding by lazy {
+        DataBindingUtil.inflate<LayoutBannerBinding>(
+            layoutInflater,
+            R.layout.layout_banner,
+            rvArticle,
+            false
+        )
+    }
+
+    private var mBanner by DelegateExt.notNullSingleValue<ObsBanner>()
+
     override fun initView() {
         (mBinding as FragmentHomeBinding).homeVM = mHomeVM
 
-        banner?.let {
+        mBannerBinding?.let {
+            it.homeVM = mHomeVM
+            it.lifecycleOwner = this
+            mBanner = mBannerBinding.root as ObsBanner
+        }
+
+        mBanner.let {
             lifecycle.addObserver(it)
             it.isPlayOnStart = false
             it.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
             it.setIndicatorGravity(BannerConfig.RIGHT)
         }
 
-        rvArticle.adapter = mAdapter
+        mAdapter.let {
+            rvArticle.adapter = it
+            it.addHeaderView(mBanner)
+        }
     }
 
     override fun initListener() {
-        banner.setOnBannerListener {
+        mBanner.setOnBannerListener {
             mHomeVM.bannerList.value?.get(it)?.run {
                 WebActivity.open(mContext, url, title)
             }

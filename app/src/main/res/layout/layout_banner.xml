@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="homeVM"
+            type="com.example.hzh.ktmvvm.viewmodel.HomeVM"/>
+    </data>
+
+    <com.example.hzh.ktmvvm.widget.ObsBanner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginBottom="5dp"
+        bind:setImages="@{homeVM.bannerList}"/>
+
+</layout>
