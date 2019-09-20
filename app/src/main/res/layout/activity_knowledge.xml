@@ -58,7 +58,9 @@
         <com.example.hzh.library.widget.MyViewPager
             android:id="@+id/vpContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
 
     </LinearLayout>
 
