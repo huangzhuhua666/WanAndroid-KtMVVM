@@ -11,7 +11,7 @@
 
         <import type="android.text.TextUtils"/>
 
-        <import type="android.text.Html"/>
+        <import type="androidx.core.text.HtmlCompat"/>
 
         <variable
             name="article"
@@ -120,6 +120,7 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginEnd="8dp"
+                    android:scaleType="centerCrop"
                     android:visibility="@{TextUtils.isEmpty(article.envelopePic) ? View.GONE : View.VISIBLE}"
                     bind:loadImage="@{article.envelopePic}"
                     tools:ignore="ContentDescription"
@@ -132,7 +133,7 @@
                     android:layout_toEndOf="@id/ivPic"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{Html.fromHtml(article.title)}"
+                    android:text="@{HtmlCompat.fromHtml(article.title, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     tools:text="标题"/>
@@ -147,7 +148,7 @@
                     android:layout_toEndOf="@id/ivPic"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{Html.fromHtml(article.desc)}"
+                    android:text="@{HtmlCompat.fromHtml(article.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
                     android:textColor="@color/color_666666"
                     android:textSize="15sp"
                     android:visibility="@{TextUtils.isEmpty(article.desc) ? View.GONE : View.VISIBLE}"

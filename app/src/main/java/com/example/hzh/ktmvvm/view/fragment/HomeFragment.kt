@@ -2,7 +2,6 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentHomeBinding
@@ -11,6 +10,7 @@ import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.HomeVM
 import com.example.hzh.ktmvvm.widget.ObsBanner
 import com.example.hzh.library.extension.DelegateExt
+import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -28,7 +28,7 @@ class HomeFragment : BaseFragment() {
     override val layoutId: Int
         get() = R.layout.fragment_home
 
-    private val mHomeVM by lazy { ViewModelProviders.of(this)[HomeVM::class.java] }
+    private val mHomeVM by lazy { obtainVM(HomeVM::class.java) }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
@@ -74,12 +74,15 @@ class HomeFragment : BaseFragment() {
 
         mHomeVM.let {
             it.articleList.observe(this, Observer { articleList ->
-                if (!it.isLoadMore) {
-                    mAdapter.setNewData(articleList)
-                    refreshLayout.finishRefresh()
-                } else {
-                    mAdapter.addData(articleList)
-                    refreshLayout.finishLoadMore()
+                when (it.isLoadMore) {
+                    false -> {
+                        mAdapter.setNewData(articleList)
+                        refreshLayout.finishRefresh()
+                    }
+                    true -> {
+                        mAdapter.addData(articleList)
+                        refreshLayout.finishLoadMore()
+                    }
                 }
             })
         }

@@ -4,29 +4,29 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
-import com.example.hzh.ktmvvm.databinding.FragmentKnowledgePageBinding
-import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
+import com.example.hzh.ktmvvm.databinding.FragmentProjectPageBinding
+import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_knowledge_page.*
+import kotlinx.android.synthetic.main.fragment_project_page.*
 import kotlin.properties.Delegates
 
 /**
- * Create by hzh on 2019/09/19.
+ * Create by hzh on 2019/9/21.
  */
-class KnowledgePageFragment : BaseFragment() {
+class ProjectPageFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(id: Int): KnowledgePageFragment = KnowledgePageFragment().also {
-            it.arguments = Bundle().apply { putInt("id", id) }
+        fun newInstance(cid: Int): ProjectPageFragment = ProjectPageFragment().also {
+            it.arguments = Bundle().apply { putInt("id", cid) }
         }
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_knowledge_page
+        get() = R.layout.fragment_project_page
 
-    private val mKnowledgeVM by lazy { obtainVM(KnowledgeVM::class.java) }
+    private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
@@ -37,15 +37,15 @@ class KnowledgePageFragment : BaseFragment() {
     }
 
     override fun initView() {
-        (mBinding as FragmentKnowledgePageBinding).knowledgeVM = mKnowledgeVM
+        (mBinding as FragmentProjectPageBinding).projectVM = mProjectVM
 
-        mKnowledgeVM.cid = cid
+        mProjectVM.cid = cid
 
         rvArticle.adapter = mAdapter
     }
 
     override fun initListener() {
-        mKnowledgeVM.let {
+        mProjectVM.let {
             it.articleList.observe(this, Observer { articleList ->
                 when (it.isLoadMore) {
                     false -> {
@@ -62,6 +62,6 @@ class KnowledgePageFragment : BaseFragment() {
     }
 
     override fun initData() {
-        mKnowledgeVM.getInitData()
+        mProjectVM.getInitData()
     }
 }

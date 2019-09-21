@@ -53,7 +53,7 @@ class KnowledgeActivity : BaseActivity() {
     override fun initView() {
         binding.title = title
 
-        tabLayout.let {
+        tabLayout?.let {
             it.setupWithViewPager(vpContent)
             it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(p0: TabLayout.Tab?) {

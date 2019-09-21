@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.hzh.ktmvvm.data.model.CategoryBean
-import com.example.hzh.ktmvvm.view.fragment.KnowledgePageFragment
+import com.example.hzh.ktmvvm.view.fragment.ProjectPageFragment
 
 /**
- * Create by hzh on 2019/09/19.
+ * Create by hzh on 2019/9/21.
  */
-class KnowledgePageAdapter(
+class ProjectPageAdapter(
     private val data: List<CategoryBean>,
     fm: FragmentManager
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -18,7 +18,7 @@ class KnowledgePageAdapter(
     private val fragmentList by lazy { mutableListOf<Fragment>() }
 
     init {
-        data.forEach { fragmentList.add(KnowledgePageFragment.newInstance(it.id)) }
+        data.forEach { fragmentList.add(ProjectPageFragment.newInstance(it.id)) }
     }
 
     override fun getItem(position: Int): Fragment = fragmentList[position]
