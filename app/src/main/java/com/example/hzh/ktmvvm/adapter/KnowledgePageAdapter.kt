@@ -3,14 +3,14 @@ package com.example.hzh.ktmvvm.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.hzh.ktmvvm.data.model.KnowledgeBean
+import com.example.hzh.ktmvvm.data.model.CategoryBean
 import com.example.hzh.ktmvvm.view.fragment.KnowledgePageFragment
 
 /**
  * Create by hzh on 2019/09/19.
  */
 class KnowledgePageAdapter(
-    private val data: List<KnowledgeBean>,
+    private val data: List<CategoryBean>,
     fm: FragmentManager
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

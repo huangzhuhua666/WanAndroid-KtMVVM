@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="knowledge"
-            type="com.example.hzh.ktmvvm.data.model.KnowledgeBean"/>
+            name="category"
+            type="com.example.hzh.ktmvvm.data.model.CategoryBean"/>
 
         <variable
             name="presenter"
@@ -24,7 +24,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{view -> presenter.onClick(view, knowledge)}"
+        android:onClick="@{view -> presenter.onClick(view, category)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{knowledge.name}"
+                android:text="@{category.name}"
                 android:textColor="@color/color_333333"
                 android:textSize="18sp"
                 tools:text="开发环境"/>
@@ -52,7 +52,7 @@
                 android:maxLines="3"
                 android:textColor="@color/color_666666"
                 android:textSize="12sp"
-                bind:setKnowledgeCategory="@{knowledge.children}"
+                bind:setKnowledgeCategory="@{category.children}"
                 tools:text="分类"/>
 
         </LinearLayout>

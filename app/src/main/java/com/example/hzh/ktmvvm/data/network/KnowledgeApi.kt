@@ -2,7 +2,7 @@ package com.example.hzh.ktmvvm.data.network
 
 import com.example.hzh.ktmvvm.data.model.ArticleBean
 import com.example.hzh.ktmvvm.data.model.PageBean
-import com.example.hzh.ktmvvm.data.model.KnowledgeBean
+import com.example.hzh.ktmvvm.data.model.CategoryBean
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -16,7 +16,7 @@ interface KnowledgeApi {
      * 知识体系数据
      */
     @GET("/tree/json")
-    suspend fun getKnowledgeTree(): List<KnowledgeBean>
+    suspend fun getKnowledgeTree(): List<CategoryBean>
 
     /**
      * 知识体系下的文章

@@ -3,7 +3,7 @@ package com.example.hzh.ktmvvm.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.model.ArticleBean
-import com.example.hzh.ktmvvm.data.model.KnowledgeBean
+import com.example.hzh.ktmvvm.data.model.CategoryBean
 import com.example.hzh.ktmvvm.data.network.KnowledgeApi
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +19,7 @@ class KnowledgeVM : BaseVM() {
 
     var cid by Delegates.notNull<Int>()
 
-    var treeList = MutableLiveData<List<KnowledgeBean>>()
+    var treeList = MutableLiveData<List<CategoryBean>>()
 
     var articleList = MutableLiveData<List<ArticleBean>>()
 
