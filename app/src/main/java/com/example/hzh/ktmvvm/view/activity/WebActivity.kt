@@ -9,6 +9,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
 import com.example.hzh.library.activity.BaseActivity
@@ -24,10 +25,7 @@ class WebActivity : BaseActivity() {
 
         fun open(ctx: Context, url: String, title: String) {
             ctx.startActivity(Intent(ctx, WebActivity::class.java).apply {
-                putExtras(Bundle().apply {
-                    putString("url", url)
-                    putString("title", title)
-                })
+                putExtras(bundleOf("url" to url, "title" to title))
             })
         }
     }

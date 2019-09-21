@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
@@ -19,7 +20,7 @@ class KnowledgePageFragment : BaseFragment() {
     companion object {
 
         fun newInstance(id: Int): KnowledgePageFragment = KnowledgePageFragment().also {
-            it.arguments = Bundle().apply { putInt("id", id) }
+            it.arguments = bundleOf("id" to id)
         }
     }
 

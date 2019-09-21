@@ -39,7 +39,7 @@
 
             <com.yinglan.alphatabs.AlphaTabView
                 style="@style/TabStyle"
-                app:tabText="@string/public_author"/>
+                app:tabText="@string/wechat_author"/>
 
             <com.yinglan.alphatabs.AlphaTabView
                 style="@style/TabStyle"

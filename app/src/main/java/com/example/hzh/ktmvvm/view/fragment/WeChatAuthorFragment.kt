@@ -2,31 +2,29 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.ProjectPageAdapter
-import com.example.hzh.ktmvvm.viewmodel.ProjectVM
+import com.example.hzh.ktmvvm.adapter.WeChatAuthorPageAdapter
+import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_project.*
+import kotlinx.android.synthetic.main.fragment_wechat_author.*
 
 /**
  * Create by hzh on 2019/09/10.
  */
-class ProjectFragment : BaseFragment() {
+class WeChatAuthorFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): ProjectFragment = ProjectFragment()
+        fun newInstance(): WeChatAuthorFragment = WeChatAuthorFragment()
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_project
+        get() = R.layout.fragment_wechat_author
 
-    private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
+    private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
 
     override fun initView() {
-        mProjectVM.context = mContext
-
         tabLayout?.let {
             it.setupWithViewPager(vpContent)
             it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -46,12 +44,12 @@ class ProjectFragment : BaseFragment() {
     }
 
     override fun initListener() {
-        mProjectVM.treeList.observe(this, Observer { tree ->
-            vpContent?.adapter = ProjectPageAdapter(tree, childFragmentManager)
+        mWeChatVM.authorList.observe(this, Observer { authorList ->
+            vpContent?.adapter = WeChatAuthorPageAdapter(authorList, childFragmentManager)
         })
     }
 
     override fun initData() {
-        mProjectVM.getProjectTree()
+        mWeChatVM.getWeChatAuthors()
     }
 }

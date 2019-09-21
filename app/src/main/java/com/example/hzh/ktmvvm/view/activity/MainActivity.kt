@@ -4,7 +4,7 @@ import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.BottomNavigationPageAdapter
 import com.example.hzh.ktmvvm.view.fragment.HomeFragment
 import com.example.hzh.ktmvvm.view.fragment.ProjectFragment
-import com.example.hzh.ktmvvm.view.fragment.PublicAuthorFragment
+import com.example.hzh.ktmvvm.view.fragment.WeChatAuthorFragment
 import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.gyf.immersionbar.ktx.immersionBar
@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
             listOf(
                 HomeFragment.newInstance(),
                 KnowledgeFragment.newInstance(),
-                PublicAuthorFragment.newInstance(),
+                WeChatAuthorFragment.newInstance(),
                 ProjectFragment.newInstance()
             ).also { adapter = BottomNavigationPageAdapter(it, supportFragmentManager) }
             indicator.setViewPager(this)

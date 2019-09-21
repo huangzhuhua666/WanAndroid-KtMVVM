@@ -5,29 +5,29 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
-import com.example.hzh.ktmvvm.databinding.FragmentProjectPageBinding
-import com.example.hzh.ktmvvm.viewmodel.ProjectVM
+import com.example.hzh.ktmvvm.databinding.FragmentWechatAuthorPageBinding
+import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_project_page.*
+import kotlinx.android.synthetic.main.fragment_wechat_author_page.*
 import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/9/21.
  */
-class ProjectPageFragment : BaseFragment() {
+class WeChatAuthorPageFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(id: Int): ProjectPageFragment = ProjectPageFragment().also {
+        fun newInstance(id: Int): WeChatAuthorPageFragment = WeChatAuthorPageFragment().also {
             it.arguments = bundleOf("id" to id)
         }
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_project_page
+        get() = R.layout.fragment_wechat_author_page
 
-    private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
+    private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
@@ -38,15 +38,15 @@ class ProjectPageFragment : BaseFragment() {
     }
 
     override fun initView() {
-        (mBinding as FragmentProjectPageBinding).projectVM = mProjectVM
+        (mBinding as FragmentWechatAuthorPageBinding).wechatVM = mWeChatVM
 
-        mProjectVM.cid = cid
+        mWeChatVM.id = cid
 
         rvArticle.adapter = mAdapter
     }
 
     override fun initListener() {
-        mProjectVM.let {
+        mWeChatVM.let {
             it.articleList.observe(this, Observer { articleList ->
                 when (it.isLoadMore) {
                     false -> {
@@ -63,6 +63,6 @@ class ProjectPageFragment : BaseFragment() {
     }
 
     override fun initData() {
-        mProjectVM.getInitData()
+        mWeChatVM.getInitData()
     }
 }

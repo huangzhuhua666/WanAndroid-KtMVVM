@@ -74,7 +74,7 @@
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
-                    android:text="@string/public_author"
+                    android:text="@string/wechat_author"
                     android:visibility="@{article.superChapterId == 408 ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/appColor"
                     app:normalTextColor="@color/appColor"/>

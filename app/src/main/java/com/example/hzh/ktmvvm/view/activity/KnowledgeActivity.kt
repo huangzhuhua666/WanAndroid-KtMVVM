@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.KnowledgePageAdapter
 import com.example.hzh.ktmvvm.data.model.CategoryBean
@@ -23,10 +24,7 @@ class KnowledgeActivity : BaseActivity() {
 
         fun open(ctx: Context, title: String, category: ArrayList<CategoryBean>) {
             ctx.startActivity(Intent(ctx, KnowledgeActivity::class.java).apply {
-                putExtras(Bundle().apply {
-                    putString("title", title)
-                    putSerializable("category", category)
-                })
+                putExtras(bundleOf("title" to title, "category" to category))
             })
         }
     }
@@ -70,7 +68,7 @@ class KnowledgeActivity : BaseActivity() {
             })
         }
 
-        vpContent?.let { it.adapter = KnowledgePageAdapter(category, supportFragmentManager) }
+        vpContent?.adapter = KnowledgePageAdapter(category, supportFragmentManager)
     }
 
     override fun initListener() {
