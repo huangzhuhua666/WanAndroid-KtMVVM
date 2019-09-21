@@ -5,11 +5,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
-import com.example.hzh.ktmvvm.databinding.FragmentProjectPageBinding
+import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_project_page.*
+import kotlinx.android.synthetic.main.base_refresh_list.*
 import kotlin.properties.Delegates
 
 /**
@@ -25,7 +25,7 @@ class ProjectPageFragment : BaseFragment() {
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_project_page
+        get() = R.layout.base_refresh_list
 
     private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
 
@@ -38,7 +38,7 @@ class ProjectPageFragment : BaseFragment() {
     }
 
     override fun initView() {
-        (mBinding as FragmentProjectPageBinding).projectVM = mProjectVM
+        (mBinding as BaseRefreshListBinding).baseVM = mProjectVM
 
         mProjectVM.cid = cid
 

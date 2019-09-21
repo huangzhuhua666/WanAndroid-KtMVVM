@@ -5,11 +5,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
-import com.example.hzh.ktmvvm.databinding.FragmentWechatAuthorPageBinding
+import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_wechat_author_page.*
+import kotlinx.android.synthetic.main.base_refresh_list.*
 import kotlin.properties.Delegates
 
 /**
@@ -25,7 +25,7 @@ class WeChatAuthorPageFragment : BaseFragment() {
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_wechat_author_page
+        get() = R.layout.base_refresh_list
 
     private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
 
@@ -38,7 +38,7 @@ class WeChatAuthorPageFragment : BaseFragment() {
     }
 
     override fun initView() {
-        (mBinding as FragmentWechatAuthorPageBinding).wechatVM = mWeChatVM
+        (mBinding as BaseRefreshListBinding).baseVM = mWeChatVM
 
         mWeChatVM.id = cid
 

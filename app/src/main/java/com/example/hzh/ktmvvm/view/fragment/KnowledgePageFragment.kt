@@ -5,11 +5,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ArticleAdapter
-import com.example.hzh.ktmvvm.databinding.FragmentKnowledgePageBinding
+import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_knowledge_page.*
+import kotlinx.android.synthetic.main.base_refresh_list.*
 import kotlin.properties.Delegates
 
 /**
@@ -25,7 +25,7 @@ class KnowledgePageFragment : BaseFragment() {
     }
 
     override val layoutId: Int
-        get() = R.layout.fragment_knowledge_page
+        get() = R.layout.base_refresh_list
 
     private val mKnowledgeVM by lazy { obtainVM(KnowledgeVM::class.java) }
 
@@ -38,7 +38,7 @@ class KnowledgePageFragment : BaseFragment() {
     }
 
     override fun initView() {
-        (mBinding as FragmentKnowledgePageBinding).knowledgeVM = mKnowledgeVM
+        (mBinding as BaseRefreshListBinding).baseVM = mKnowledgeVM
 
         mKnowledgeVM.cid = cid
 

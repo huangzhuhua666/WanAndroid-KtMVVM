@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="wechatVM"
-            type="com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM"/>
+            name="baseVM"
+            type="com.example.hzh.library.viewmodel.BaseVM"/>
     </data>
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:refreshOrLoadMore="@{wechatVM}">
+            bind:refreshOrLoadMore="@{baseVM}">
 
             <com.scwang.smartrefresh.header.MaterialHeader
                 android:layout_width="match_parent"
