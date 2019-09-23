@@ -22,7 +22,7 @@ abstract class BaseFragment : Fragment() {
         private const val TAG = "Current Fragment"
     }
 
-    protected val mContext by lazy { activity as BaseActivity }
+    protected val mContext by lazy { requireActivity() as BaseActivity }
 
     private var mRootView: View? = null
 
@@ -68,9 +68,6 @@ abstract class BaseFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        arguments?.let { onGetBundle(it) }
-
         initView()
         initListener()
     }
@@ -78,6 +75,8 @@ abstract class BaseFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, javaClass.simpleName)
+
+        arguments?.let { onGetBundle(it) }
 
         if (isFirstIn) {
             initData()

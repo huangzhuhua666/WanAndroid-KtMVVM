@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="android.text.TextUtils"/>
+
+        <variable
+            name="wechatVM"
+            type="com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +33,49 @@
             app:tabIndicatorHeight="3dp"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabTextStyle"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="@{wechatVM.id == -1 ? View.GONE : View.VISIBLE}">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_et_search"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="@string/search_keyword"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="60dp"
+                android:singleLine="true"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_666666"
+                android:textSize="14sp"
+                bind:setOnSearchListener="@{wechatVM}"
+                tools:ignore="Autofill"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_close_black"
+                android:visibility="@{TextUtils.isEmpty(wechatVM.keyword) ? View.GONE : View.VISIBLE}"/>
+
+        </FrameLayout>
 
         <com.example.hzh.library.widget.MyViewPager
             android:id="@+id/vpContent"

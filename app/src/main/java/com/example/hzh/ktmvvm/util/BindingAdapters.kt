@@ -1,6 +1,8 @@
 package com.example.hzh.ktmvvm.util
 
+import android.view.inputmethod.EditorInfo
 import android.webkit.WebView
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -60,4 +62,12 @@ fun WebView.loadWeb(url: String?) {
 @BindingAdapter("bind:setKnowledgeCategory")
 fun TextView.setKnowledgeCategory(childList: List<CategoryBean>) {
     text = childList.joinToString("     ", transform = { child -> child.name })
+}
+
+@BindingAdapter("bind:setOnSearchListener")
+fun EditText.setOnSearchListener(vm: BaseVM) {
+    setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) vm.getInitData()
+        false
+    }
 }

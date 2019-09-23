@@ -33,14 +33,8 @@ class KnowledgePageFragment : BaseFragment() {
 
     private var cid by Delegates.notNull<Int>()
 
-    override fun onGetBundle(bundle: Bundle) {
-        bundle.let { cid = it.getInt("id") }
-    }
-
     override fun initView() {
         (mBinding as BaseRefreshListBinding).baseVM = mKnowledgeVM
-
-        mKnowledgeVM.cid = cid
 
         rvArticle.adapter = mAdapter
     }
@@ -62,7 +56,13 @@ class KnowledgePageFragment : BaseFragment() {
         }
     }
 
+    override fun onGetBundle(bundle: Bundle) {
+        bundle.let { cid = it.getInt("id") }
+    }
+
     override fun initData() {
+        mKnowledgeVM.cid = cid
+
         mKnowledgeVM.getInitData()
     }
 }

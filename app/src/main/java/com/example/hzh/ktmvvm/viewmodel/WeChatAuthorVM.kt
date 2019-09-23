@@ -8,7 +8,6 @@ import com.example.hzh.ktmvvm.data.network.WeChatAuthorApi
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/9/21.
@@ -17,7 +16,9 @@ class WeChatAuthorVM : BaseVM() {
 
     private val service by lazy { App.httpClient.getService(WeChatAuthorApi::class.java) }
 
-    var id by Delegates.notNull<Int>()
+    var id = MutableLiveData(-1)
+
+    var keyword = MutableLiveData("")
 
     var authorList = MutableLiveData<List<CategoryBean>>()
 
@@ -38,7 +39,16 @@ class WeChatAuthorVM : BaseVM() {
         pageNo = 1
         launch(Dispatchers.IO) {
             try {
-                articleList.postValue(service.getWeChatArticle(id, pageNo).datas)
+                articleList.postValue(
+                    when (keyword.value) {
+                        "" -> service.getWeChatArticle(id.value!!, pageNo).datas
+                        else -> service.searchWeChatArticle(
+                            id.value!!,
+                            pageNo,
+                            keyword.value!!
+                        ).datas
+                    }
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -49,7 +59,16 @@ class WeChatAuthorVM : BaseVM() {
         super.loadData()
         launch(Dispatchers.IO) {
             try {
-                articleList.postValue(service.getWeChatArticle(id, pageNo).datas)
+                articleList.postValue(
+                    when (keyword.value) {
+                        "" -> service.getWeChatArticle(id.value!!, pageNo).datas
+                        else -> service.searchWeChatArticle(
+                            id.value!!,
+                            pageNo,
+                            keyword.value!!
+                        ).datas
+                    }
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
             }

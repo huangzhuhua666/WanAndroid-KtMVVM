@@ -33,14 +33,8 @@ class ProjectPageFragment : BaseFragment() {
 
     private var cid by Delegates.notNull<Int>()
 
-    override fun onGetBundle(bundle: Bundle) {
-        bundle.let { cid = it.getInt("id") }
-    }
-
     override fun initView() {
         (mBinding as BaseRefreshListBinding).baseVM = mProjectVM
-
-        mProjectVM.cid = cid
 
         rvArticle.adapter = mAdapter
     }
@@ -62,7 +56,13 @@ class ProjectPageFragment : BaseFragment() {
         }
     }
 
+    override fun onGetBundle(bundle: Bundle) {
+        bundle.let { cid = it.getInt("id") }
+    }
+
     override fun initData() {
+        mProjectVM.cid = cid
+
         mProjectVM.getInitData()
     }
 }

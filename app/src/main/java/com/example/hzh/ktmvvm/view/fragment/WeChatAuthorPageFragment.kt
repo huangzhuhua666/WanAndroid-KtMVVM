@@ -27,20 +27,14 @@ class WeChatAuthorPageFragment : BaseFragment() {
     override val layoutId: Int
         get() = R.layout.base_refresh_list
 
-    private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
+    private val mWeChatVM by lazy { mContext.obtainVM(WeChatAuthorVM::class.java) }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
     private var cid by Delegates.notNull<Int>()
 
-    override fun onGetBundle(bundle: Bundle) {
-        bundle.let { cid = it.getInt("id") }
-    }
-
     override fun initView() {
         (mBinding as BaseRefreshListBinding).baseVM = mWeChatVM
-
-        mWeChatVM.id = cid
 
         rvArticle.adapter = mAdapter
     }
@@ -62,7 +56,13 @@ class WeChatAuthorPageFragment : BaseFragment() {
         }
     }
 
+    override fun onGetBundle(bundle: Bundle) {
+        bundle.let { cid = it.getInt("id") }
+    }
+
     override fun initData() {
+        mWeChatVM.id.value = cid
+
         mWeChatVM.getInitData()
     }
 }
