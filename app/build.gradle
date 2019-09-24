@@ -38,9 +38,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':library')
 
-    // alphatabs
-    implementation rootProject.ext.dependencies["alphatabs"]
-
     // banner
     implementation rootProject.ext.dependencies["banner"]
 

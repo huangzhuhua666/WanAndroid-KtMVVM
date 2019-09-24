@@ -4,49 +4,106 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="title"
+            type="String"/>
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.activity.MainActivity">
+        android:layout_height="match_parent">
 
-        <com.example.hzh.library.widget.MyViewPager
-            android:id="@+id/vpContent"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/color_f2f2f2"
-            app:layout_constraintBottom_toTopOf="@+id/indicator"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent"
+            tools:context=".view.activity.MainActivity">
 
-        <com.yinglan.alphatabs.AlphaTabsIndicator
-            android:id="@+id/indicator"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/color_f5f5f5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vpContent">
+            <LinearLayout
+                android:id="@+id/llTitle"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:background="@color/appColor"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/vpContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.yinglan.alphatabs.AlphaTabView
-                style="@style/TabStyle"
-                app:tabText="@string/home"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnDrawer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_drawer"/>
 
-            <com.yinglan.alphatabs.AlphaTabView
-                style="@style/TabStyle"
-                app:tabText="@string/category"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@{title}"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"/>
 
-            <com.yinglan.alphatabs.AlphaTabView
-                style="@style/TabStyle"
-                app:tabText="@string/wechat_author"/>
+            </LinearLayout>
 
-            <com.yinglan.alphatabs.AlphaTabView
-                style="@style/TabStyle"
-                app:tabText="@string/project"/>
+            <com.example.hzh.library.widget.MyViewPager
+                android:id="@+id/vpContent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/color_f2f2f2"
+                app:layout_constraintBottom_toTopOf="@+id/indicator"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llTitle"/>
 
-        </com.yinglan.alphatabs.AlphaTabsIndicator>
+            <com.example.hzh.library.widget.TabIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@color/color_f5f5f5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vpContent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.example.hzh.library.widget.TabView
+                    style="@style/TabStyle"
+                    app:tabIconNormal="@drawable/ic_home_normal"
+                    app:tabIconSelect="@drawable/ic_home_select"
+                    app:tabText="@string/home"/>
+
+                <com.example.hzh.library.widget.TabView
+                    style="@style/TabStyle"
+                    app:tabIconNormal="@drawable/ic_knowledge_normal"
+                    app:tabIconSelect="@drawable/ic_knowledge_select"
+                    app:tabText="@string/category"/>
+
+                <com.example.hzh.library.widget.TabView
+                    style="@style/TabStyle"
+                    app:tabIconNormal="@drawable/ic_wechat_normal"
+                    app:tabIconSelect="@drawable/ic_wechat_select"
+                    app:tabText="@string/wechat_author"/>
+
+                <com.example.hzh.library.widget.TabView
+                    style="@style/TabStyle"
+                    app:tabIconNormal="@drawable/ic_project_normal"
+                    app:tabIconSelect="@drawable/ic_project_select"
+                    app:tabText="@string/project"/>
+
+            </com.example.hzh.library.widget.TabIndicator>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:insetForeground="@android:color/transparent"/>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

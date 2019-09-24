@@ -51,4 +51,15 @@
         <attr name="pressSolid" format="color"/>
     </declare-styleable>
 
+    <declare-styleable name="TabView">
+        <attr name="tabText" format="string"/>
+        <attr name="tabTextSize" format="dimension"/>
+        <attr name="tabTextColorNormal" format="color"/>
+        <attr name="tabTextColorSelect" format="color"/>
+        <attr name="tabIconNormal" format="reference"/>
+        <attr name="tabIconSelect" format="reference"/>
+        <attr name="badgeBackgroundColor" format="color"/>
+        <attr name="paddingTextWithIcon" format="dimension"/>
+    </declare-styleable>
+
 </resources>

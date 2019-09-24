@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_title">
+        <item>WanAndroid</item>
+        <item>知识体系</item>
+        <item>公众号</item>
+        <item>项目</item>
+    </string-array>
+</resources>

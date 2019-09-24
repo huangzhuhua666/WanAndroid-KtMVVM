@@ -46,9 +46,6 @@ ext {
             "immersionbar"       : "com.gyf.immersionbar:immersionbar:3.0.0",
             "immersionbar-ktx"   : "com.gyf.immersionbar:immersionbar-ktx:3.0.0",
 
-            // alphatabs
-            "alphatabs"          : "com.yinglan.alphatabs:library:1.0.8",
-
             // banner
             "banner"             : "com.youth.banner:banner:1.4.10",
 
