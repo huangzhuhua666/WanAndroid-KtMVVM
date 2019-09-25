@@ -99,10 +99,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
+            style="@style/Widget.MaterialComponents.NavigationView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            app:insetForeground="@android:color/transparent"/>
+            app:headerLayout="@layout/drawer_head"
+            app:insetForeground="@android:color/transparent"
+            app:menu="@menu/menu_drawer"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
