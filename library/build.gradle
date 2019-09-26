@@ -82,6 +82,10 @@ dependencies {
     // BRVAH
     api rootProject.ext.dependencies["BRVAH"]
 
+    // navigation
+    api rootProject.ext.dependencies["navigation-fragment"]
+    api rootProject.ext.dependencies["navigation-ui"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 

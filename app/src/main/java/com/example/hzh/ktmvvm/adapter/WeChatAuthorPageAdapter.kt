@@ -4,7 +4,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.hzh.ktmvvm.data.model.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.CategoryBean
 import com.example.hzh.ktmvvm.view.fragment.WeChatAuthorPageFragment
 
 /**

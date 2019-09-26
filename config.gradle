@@ -59,6 +59,10 @@ ext {
             // BRVAH
             "BRVAH"              : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49-androidx",
 
+            // navigation
+            "navigation-fragment": "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
+            "navigation-ui"      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
+
             // junit
             "junit"              : "junit:junit:4.12",
 

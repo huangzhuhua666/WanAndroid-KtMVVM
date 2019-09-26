@@ -15,7 +15,7 @@
 
         <variable
             name="article"
-            type="com.example.hzh.ktmvvm.data.model.ArticleBean"/>
+            type="com.example.hzh.ktmvvm.data.bean.ArticleBean"/>
 
         <variable
             name="presenter"

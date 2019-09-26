@@ -7,7 +7,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.KnowledgePageAdapter
-import com.example.hzh.ktmvvm.data.model.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.CategoryBean
 import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt

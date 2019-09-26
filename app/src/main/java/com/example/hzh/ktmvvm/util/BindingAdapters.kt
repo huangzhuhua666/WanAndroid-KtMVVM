@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.hzh.ktmvvm.data.model.BannerBean
-import com.example.hzh.ktmvvm.data.model.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.BannerBean
+import com.example.hzh.ktmvvm.data.bean.CategoryBean
 import com.example.hzh.library.extension.setListener
 import com.example.hzh.library.viewmodel.BaseVM
 import com.scwang.smartrefresh.layout.SmartRefreshLayout

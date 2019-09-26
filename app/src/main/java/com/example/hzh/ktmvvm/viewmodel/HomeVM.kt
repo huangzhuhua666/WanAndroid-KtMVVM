@@ -2,8 +2,8 @@ package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.app.App
-import com.example.hzh.ktmvvm.data.model.ArticleBean
-import com.example.hzh.ktmvvm.data.model.BannerBean
+import com.example.hzh.ktmvvm.data.bean.ArticleBean
+import com.example.hzh.ktmvvm.data.bean.BannerBean
 import com.example.hzh.ktmvvm.data.network.HomeApi
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.coroutines.*

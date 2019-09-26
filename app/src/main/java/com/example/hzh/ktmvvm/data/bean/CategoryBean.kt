@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.data.model
+package com.example.hzh.ktmvvm.data.bean
 
 import java.io.Serializable
 

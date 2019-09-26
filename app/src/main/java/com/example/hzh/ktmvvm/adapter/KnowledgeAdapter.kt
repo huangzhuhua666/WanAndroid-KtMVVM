@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hzh.ktmvvm.BR
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.data.model.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.CategoryBean
 import com.example.hzh.ktmvvm.databinding.ItemKnowledgeBinding
 import com.example.hzh.ktmvvm.view.activity.KnowledgeActivity
 import com.example.hzh.library.util.DBViewHolder

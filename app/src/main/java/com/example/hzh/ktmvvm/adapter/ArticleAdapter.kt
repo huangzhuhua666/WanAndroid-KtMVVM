@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hzh.ktmvvm.BR
-import com.example.hzh.ktmvvm.data.model.ArticleBean
+import com.example.hzh.ktmvvm.data.bean.ArticleBean
 import com.example.hzh.ktmvvm.databinding.ItemArticleBinding
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.view.activity.WebActivity

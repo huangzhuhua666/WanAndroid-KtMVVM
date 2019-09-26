@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.data.model
+package com.example.hzh.ktmvvm.data.bean
 
 /**
  * Create by hzh on 2019/09/12.

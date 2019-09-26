@@ -1,8 +1,8 @@
 package com.example.hzh.ktmvvm.data.network
 
-import com.example.hzh.ktmvvm.data.model.ArticleBean
-import com.example.hzh.ktmvvm.data.model.CategoryBean
-import com.example.hzh.ktmvvm.data.model.PageBean
+import com.example.hzh.ktmvvm.data.bean.ArticleBean
+import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.PageBean
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
