@@ -15,9 +15,9 @@ class HomeVM : BaseVM() {
 
     private val service by lazy { App.httpClient.getService(HomeApi::class.java) }
 
-    var bannerList = MutableLiveData<List<BannerBean>>()
+    val bannerList = MutableLiveData<List<BannerBean>>()
 
-    var articleList = MutableLiveData<List<ArticleBean>>()
+    val articleList = MutableLiveData<List<ArticleBean>>()
 
     override fun getInitData() {
         super.getInitData()

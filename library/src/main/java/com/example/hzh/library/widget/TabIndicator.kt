@@ -23,7 +23,11 @@ class TabIndicator @JvmOverloads constructor(
         private const val STATE_ITEM = "state_item"
     }
 
-    private var mViewpager: ViewPager? = null
+    var viewpager: ViewPager? = null
+        set(value) {
+            field = value
+            init()
+        }
 
     private var isInit = false
     private var mCurrentIndex = 0
@@ -43,7 +47,7 @@ class TabIndicator @JvmOverloads constructor(
 
         val count = childCount
 
-        mViewpager?.run {
+        viewpager?.run {
             adapter.let {
                 if (it == null) throw NullPointerException("viewpager的adapter为null")
 
@@ -58,8 +62,8 @@ class TabIndicator @JvmOverloads constructor(
                 ) {
                     // 滑动时的透明度动画
                     if (positionOffset > 0) {
-                        mTabList[position].setIconAlpha(1 - positionOffset)
-                        mTabList[position + 1].setIconAlpha(positionOffset)
+                        mTabList[position].mAlpha = 1 - positionOffset
+                        mTabList[position + 1].mAlpha = positionOffset
                     }
                     // 滑动时保存当前按钮索引
                     mCurrentIndex = position
@@ -67,7 +71,7 @@ class TabIndicator @JvmOverloads constructor(
 
                 override fun onPageSelected(position: Int) {
                     resetState()
-                    mTabList[position].setIconAlpha(1.0f)
+                    mTabList[position].mAlpha = 1.0f
                     mCurrentIndex = position
                 }
             })
@@ -80,12 +84,12 @@ class TabIndicator @JvmOverloads constructor(
                     it.setOnClickListener {
                         //点击前先重置所有按钮的状态
                         resetState()
-                        mTabList[i].setIconAlpha(1.0f)
+                        mTabList[i].mAlpha = 1.0f
 
                         mListener?.invoke(i)
 
                         // 不能使用平滑滚动，否者颜色改变会乱
-                        mViewpager?.setCurrentItem(i, false)
+                        viewpager?.setCurrentItem(i, false)
 
                         // 点击是保存当前按钮索引
                         mCurrentIndex = i
@@ -94,12 +98,7 @@ class TabIndicator @JvmOverloads constructor(
             }
         }
 
-        mTabList[mCurrentIndex].setIconAlpha(1.0f)
-    }
-
-    fun setViewPager(viewpager: ViewPager) {
-        this.mViewpager = viewpager
-        init()
+        mTabList[mCurrentIndex].mAlpha = 1.0f
     }
 
     fun setOnTabChangedListener(listener: (Int) -> Unit) {
@@ -130,7 +129,7 @@ class TabIndicator @JvmOverloads constructor(
      * 重置所有按钮的状态
      */
     private fun resetState() {
-        mTabList.forEach { it.setIconAlpha(0.0f) }
+        mTabList.forEach { it.mAlpha = 0.0f }
     }
 
     override fun onSaveInstanceState(): Parcelable? = bundleOf(
@@ -151,7 +150,7 @@ class TabIndicator @JvmOverloads constructor(
             resetState()
 
             //恢复点击的条目颜色
-            mTabList[mCurrentIndex].setIconAlpha(1.0f)
+            mTabList[mCurrentIndex].mAlpha = 1.0f
             super.onRestoreInstanceState(state.getParcelable(STATE_INSTANCE))
         } else super.onRestoreInstanceState(state)
     }

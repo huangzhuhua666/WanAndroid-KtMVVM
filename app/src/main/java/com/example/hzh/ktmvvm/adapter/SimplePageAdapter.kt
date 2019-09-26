@@ -8,11 +8,12 @@ import androidx.fragment.app.FragmentPagerAdapter
 /**
  * Create by hzh on 2019/09/10.
  */
-class BottomNavigationPageAdapter(
+class SimplePageAdapter(
     private val fragment: List<Fragment>,
     private val fm: FragmentManager
-) :
-    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+    var titles: List<String>? = null
 
     override fun getItem(position: Int): Fragment = fragment[position]
 
@@ -33,4 +34,6 @@ class BottomNavigationPageAdapter(
             commitAllowingStateLoss()
         }
     }
+
+    override fun getPageTitle(position: Int): CharSequence? = titles?.get(position)
 }

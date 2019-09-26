@@ -11,7 +11,7 @@ import com.example.hzh.ktmvvm.data.model.CategoryBean
 import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
-import com.google.android.material.tabs.TabLayout
+import com.example.hzh.library.extension.addOnTabSelectedListener
 import kotlinx.android.synthetic.main.activity_knowledge.*
 
 /**
@@ -51,21 +51,11 @@ class KnowledgeActivity : BaseActivity() {
     override fun initView() {
         binding.title = title
 
-        tabLayout?.let {
-            it.setupWithViewPager(vpContent)
-            it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(p0: TabLayout.Tab?) {
-                    p0?.run { vpContent.currentItem = position }
-                }
-
-                override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-                }
-
-                override fun onTabReselected(p0: TabLayout.Tab?) {
-
-                }
-            })
+        tabLayout?.run {
+            setupWithViewPager(vpContent)
+            addOnTabSelectedListener {
+                onTabSelected { it?.run { vpContent?.currentItem = position } }
+            }
         }
 
         vpContent?.adapter = KnowledgePageAdapter(category, supportFragmentManager)

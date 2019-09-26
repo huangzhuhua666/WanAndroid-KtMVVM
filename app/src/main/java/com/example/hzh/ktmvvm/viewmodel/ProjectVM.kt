@@ -23,9 +23,9 @@ class ProjectVM : BaseVM() {
 
     var cid by Delegates.notNull<Int>()
 
-    var treeList = MutableLiveData<List<CategoryBean>>()
+    val treeList = MutableLiveData<List<CategoryBean>>()
 
-    var articleList = MutableLiveData<List<ArticleBean>>()
+    val articleList = MutableLiveData<List<ArticleBean>>()
 
     fun getProjectTree() {
         launch(Dispatchers.IO) {

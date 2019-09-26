@@ -4,9 +4,9 @@ import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ProjectPageAdapter
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
+import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_project.*
 
 /**
@@ -27,21 +27,11 @@ class ProjectFragment : BaseFragment() {
     override fun initView() {
         mProjectVM.context = mContext
 
-        tabLayout?.let {
-            it.setupWithViewPager(vpContent)
-            it.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(p0: TabLayout.Tab?) {
-                    p0?.run { vpContent.currentItem = position }
-                }
-
-                override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-                }
-
-                override fun onTabReselected(p0: TabLayout.Tab?) {
-
-                }
-            })
+        tabLayout?.run {
+            setupWithViewPager(vpContent)
+            addOnTabSelectedListener {
+                onTabSelected { it?.run { vpContent?.currentItem = position } }
+            }
         }
     }
 

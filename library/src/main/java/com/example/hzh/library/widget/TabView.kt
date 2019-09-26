@@ -25,7 +25,14 @@ class TabView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var mAlpha = 0.0f // 当前的透明度
+    var mAlpha = 0.0f // 当前的透明度
+        set(value) {
+            if (value in 0.0f..1.0f) {
+                field = value
+                invalidateView()
+            } else throw IllegalArgumentException("透明度必须是 0.0 - 1.0")
+        }
+
     private var mPadding = 5 //文字和图片之间的距离5dp
 
     private var mText: String? = null // 描述文本
@@ -45,8 +52,22 @@ class TabView @JvmOverloads constructor(
     private var mFmi: FontMetricsInt? = null // 用于获取字体的各种属性
 
     private var isShowRemove = false // 是否移除当前角标
-    private var isShowPoint = false // 是否显示圆点
-    private var mBadgeNumber = 0 // 角标数
+
+    var isShowDot = false // 是否显示圆点
+        private set
+
+    var badgeNum = 0 // 角标数
+        set(value) {
+            field = value
+            isShowRemove = false
+            isShowDot = false
+            if (field > 0) invalidate()
+            else {
+                isShowRemove = true
+                invalidate()
+            }
+        }
+
     private var mBadgeBackgroundColor = 0xff0000 //默认红颜色
 
     init {
@@ -99,46 +120,20 @@ class TabView @JvmOverloads constructor(
         }
     }
 
-    fun showPoint() {
+    fun showDot() {
         isShowRemove = false
-        mBadgeNumber = -1
-        isShowPoint = true
+        badgeNum = -1
+        isShowDot = true
 
         invalidate()
-    }
-
-    fun showNumber(badgeNum: Int) {
-        isShowRemove = false
-        isShowPoint = false
-        mBadgeNumber = badgeNum
-
-        if (badgeNum > 0) invalidate()
-        else {
-            isShowRemove = true
-            invalidate()
-        }
     }
 
     fun removeShow() {
-        mBadgeNumber = 0
-        isShowPoint = false
+        badgeNum = 0
+        isShowDot = false
         isShowRemove = true
 
         invalidate()
-    }
-
-    fun getBadgeNumber(): Int = mBadgeNumber
-
-    fun isShowPoint(): Boolean = isShowPoint
-
-    /**
-     * @param alpha 对外提供的设置透明度的方法，取值 0.0 ~ 1.0
-     */
-    fun setIconAlpha(alpha: Float) {
-        if (alpha in 0.0f..1.0f) {
-            mAlpha = alpha
-            invalidateView()
-        } else throw IllegalArgumentException("透明度必须是 0.0 - 1.0")
     }
 
     /**
@@ -270,9 +265,9 @@ class TabView @JvmOverloads constructor(
     private fun drawBadge(c: Canvas) {
         var i = min(measuredWidth / 14, measuredHeight / 9)
 
-        if (mBadgeNumber > 0) {
+        if (badgeNum > 0) {
             val bgPaint = Paint(ANTI_ALIAS_FLAG).apply { color = mBadgeBackgroundColor }
-            val number = if (mBadgeNumber > 99) "99+" else mBadgeNumber.toString()
+            val number = if (badgeNum > 99) "99+" else badgeNum.toString()
             val textSize = if (i / 1.5f == 0f) 5.0f else i / 1.5f
 
             val width: Int
@@ -314,7 +309,7 @@ class TabView @JvmOverloads constructor(
             c.drawBitmap(bitmap, left, top, null)
             bitmap.recycle()
         } else {
-            if (isShowPoint) {
+            if (isShowDot) {
                 val paint = Paint(ANTI_ALIAS_FLAG).apply { color = mBadgeBackgroundColor }
                 val left = measuredWidth / 10 * 6.0f
                 val top = 5.0f.dp2px(context).toFloat()

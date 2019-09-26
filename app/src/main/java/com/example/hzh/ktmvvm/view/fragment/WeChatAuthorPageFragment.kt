@@ -27,7 +27,7 @@ class WeChatAuthorPageFragment : BaseFragment() {
     override val layoutId: Int
         get() = R.layout.base_refresh_list
 
-    private val mWeChatVM by lazy { mContext.obtainVM(WeChatAuthorVM::class.java) }
+    private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
