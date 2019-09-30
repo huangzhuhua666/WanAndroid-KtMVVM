@@ -5,8 +5,8 @@ import java.io.Serializable
 /**
  * Create by hzh on 2019/09/17.
  */
-data class CategoryBean(
-    var children: List<CategoryBean> = listOf(),
+data class Category(
+    var children: List<Category> = listOf(),
     var courseId: Int = -1,
     var id: Int = -1,
     var name: String = "",

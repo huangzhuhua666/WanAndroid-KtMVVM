@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.hzh.ktmvvm.BR
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.databinding.ItemKnowledgeBinding
 import com.example.hzh.ktmvvm.view.activity.KnowledgeActivity
 import com.example.hzh.library.util.DBViewHolder
@@ -15,11 +15,11 @@ import com.example.hzh.library.util.DBViewHolder
 /**
  * Create by hzh on 2019/09/18.
  */
-class SystemAdapter(layoutResId: Int) : BaseQuickAdapter<CategoryBean, DBViewHolder>(layoutResId) {
+class SystemAdapter(layoutResId: Int) : BaseQuickAdapter<Category, DBViewHolder>(layoutResId) {
 
     private val mPresenter by lazy { KnowledgePresenter(mContext) }
 
-    override fun convert(helper: DBViewHolder, item: CategoryBean) {
+    override fun convert(helper: DBViewHolder, item: Category) {
         helper.getBinding().run {
             setVariable(BR.category, item)
             setVariable(BR.presenter, mPresenter)
@@ -42,7 +42,7 @@ class SystemAdapter(layoutResId: Int) : BaseQuickAdapter<CategoryBean, DBViewHol
 
 class KnowledgePresenter(private val ctx: Context) {
 
-    fun onClick(view: View, category: CategoryBean) {
+    fun onClick(view: View, category: Category) {
         category.run {
             when (view.id) {
                 R.id.cvRoot -> KnowledgeActivity.open(ctx, name, children as ArrayList)

@@ -3,7 +3,7 @@ package com.example.hzh.ktmvvm.data.bean
 /**
  * Create by hzh on 2019/09/11.
  */
-data class BannerBean(
+data class Banner(
     val desc: String,
     val id: Int,
     val imagePath: String,

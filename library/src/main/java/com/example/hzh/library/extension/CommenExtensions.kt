@@ -10,11 +10,13 @@ fun Char.digit(radix: Int): Int = Character.digit(this, radix)
 
 fun Float.dp2px(context: Context) = (this * context.resources.displayMetrics.density + .5f).toInt()
 
-fun Float.sp2px(context: Context) = (this * context.resources.displayMetrics.scaledDensity + .5f).toInt()
+fun Float.sp2px(context: Context) =
+    (this * context.resources.displayMetrics.scaledDensity + .5f).toInt()
 
 fun Float.px2dp(context: Context) = (this / context.resources.displayMetrics.density + .5f).toInt()
 
-fun Float.px2sp(context: Context) = (this / context.resources.displayMetrics.scaledDensity + .5f).toInt()
+fun Float.px2sp(context: Context) =
+    (this / context.resources.displayMetrics.scaledDensity + .5f).toInt()
 
 fun String.hexStringToByteArray(): ByteArray {
     val len = length

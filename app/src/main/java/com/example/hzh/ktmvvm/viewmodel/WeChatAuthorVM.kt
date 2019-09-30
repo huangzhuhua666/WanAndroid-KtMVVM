@@ -2,12 +2,10 @@ package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.app.App
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.data.network.WeChatAuthorApi
 import com.example.hzh.library.viewmodel.BaseVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * Create by hzh on 2019/9/21.
@@ -20,25 +18,22 @@ class WeChatAuthorVM : BaseVM() {
 
     var keyword = MutableLiveData("")
 
-    var authorList = MutableLiveData<List<CategoryBean>>()
+    var authorList = MutableLiveData<List<Category>>()
 
-    var articleList = MutableLiveData<List<ArticleBean>>()
+    var articleList = MutableLiveData<List<Article>>()
 
     fun getWeChatAuthors() {
-        launch(Dispatchers.IO) {
-            try {
-                authorList.postValue(service.getWeChatAuthors())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        doOnIO(
+            tryBlock = { authorList.postValue(service.getWeChatAuthors()) },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun getInitData() {
         isLoadMore = false
         pageNo = 1
-        launch(Dispatchers.IO) {
-            try {
+        doOnIO(
+            tryBlock = {
                 articleList.postValue(
                     when (keyword.value) {
                         "" -> service.getWeChatArticle(id.value!!, pageNo).datas
@@ -49,16 +44,15 @@ class WeChatAuthorVM : BaseVM() {
                         ).datas
                     }
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+            },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun loadData() {
         super.loadData()
-        launch(Dispatchers.IO) {
-            try {
+        doOnIO(
+            tryBlock = {
                 articleList.postValue(
                     when (keyword.value) {
                         "" -> service.getWeChatArticle(id.value!!, pageNo).datas
@@ -69,9 +63,8 @@ class WeChatAuthorVM : BaseVM() {
                         ).datas
                     }
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+            },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 }

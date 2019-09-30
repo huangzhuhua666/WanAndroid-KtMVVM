@@ -3,7 +3,7 @@ package com.example.hzh.ktmvvm.data.bean
 /**
  * Create by hzh on 2019/09/12.
  */
-data class PageBean<T>(
+data class Page<T>(
     val curPage: Int,
     val datas: List<T>,
     val offset: Int,

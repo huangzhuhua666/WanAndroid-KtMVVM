@@ -3,7 +3,7 @@ package com.example.hzh.ktmvvm.data.bean
 /**
  * Create by hzh on 2019/09/12.
  */
-data class ArticleBean(
+data class Article(
     val apkLink: String,
     val author: String,
     val chapterId: Int,
@@ -22,7 +22,7 @@ data class ArticleBean(
     val publishTime: Long,
     val superChapterId: Int,
     val superChapterName: String,
-    val tags: List<TagBean>,
+    val tags: List<Tag>,
     val title: String,
     val type: Int,
     val userId: Int,
@@ -30,7 +30,7 @@ data class ArticleBean(
     val zan: Int
 )
 
-data class TagBean(
+data class Tag(
     val name: String,
     val url: String
 )

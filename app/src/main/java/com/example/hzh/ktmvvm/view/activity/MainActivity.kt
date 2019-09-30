@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
+import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
 import com.example.hzh.ktmvvm.view.fragment.HomeFragment
 import com.example.hzh.ktmvvm.view.fragment.ProjectFragment
@@ -43,7 +44,10 @@ class MainActivity : BaseActivity() {
 
         nav.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.collect -> CollectionActivity.open(mContext)
+                R.id.collect -> {
+                    if (App.isLogin) CollectionActivity.open(mContext)
+                    else AuthActivity.open(mContext)
+                }
                 R.id.todo -> toast(R.string.todo)
                 R.id.about -> toast(R.string.about)
                 R.id.logout -> toast(R.string.logout)

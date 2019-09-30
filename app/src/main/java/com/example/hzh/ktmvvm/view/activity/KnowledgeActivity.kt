@@ -7,7 +7,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.KnowledgePageAdapter
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
@@ -22,7 +22,7 @@ class KnowledgeActivity : BaseActivity() {
 
     companion object {
 
-        fun open(ctx: Context, title: String, category: ArrayList<CategoryBean>) {
+        fun open(ctx: Context, title: String, category: ArrayList<Category>) {
             ctx.startActivity(Intent(ctx, KnowledgeActivity::class.java).apply {
                 putExtras(bundleOf("title" to title, "category" to category))
             })
@@ -37,14 +37,14 @@ class KnowledgeActivity : BaseActivity() {
 
     private var title by DelegateExt.notNullSingleValue<String>()
 
-    private var category by DelegateExt.notNullSingleValue<List<CategoryBean>>()
+    private var category by DelegateExt.notNullSingleValue<List<Category>>()
 
     private val binding by lazy { mBinding as ActivityKnowledgeBinding }
 
     override fun onGetBundle(bundle: Bundle) {
         bundle.let {
             title = it.getString("title", "")
-            category = it.getSerializable("category") as List<CategoryBean>
+            category = it.getSerializable("category") as List<Category>
         }
     }
 

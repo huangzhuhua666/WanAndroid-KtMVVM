@@ -1,7 +1,7 @@
 package com.example.hzh.ktmvvm.data.network
 
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.PageBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Page
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -15,7 +15,7 @@ interface CollectApi {
      * 收藏文章列表
      */
     @GET("/lg/collect/list/{pageNo}/json")
-    suspend fun getCollections(@Path("pageNo") pageNo: Int): PageBean<ArticleBean>
+    suspend fun getCollections(@Path("pageNo") pageNo: Int): Page<Article>
 
     /**
      * 收藏站内文章
@@ -27,5 +27,5 @@ interface CollectApi {
      * 收藏站外文章
      */
     @POST("/lg/collect/add/json")
-    suspend fun collectOuter(): ArticleBean
+    suspend fun collectOuter(): Article
 }

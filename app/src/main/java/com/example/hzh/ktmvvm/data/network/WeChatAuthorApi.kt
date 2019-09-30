@@ -1,8 +1,8 @@
 package com.example.hzh.ktmvvm.data.network
 
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
-import com.example.hzh.ktmvvm.data.bean.PageBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Category
+import com.example.hzh.ktmvvm.data.bean.Page
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -16,7 +16,7 @@ interface WeChatAuthorApi {
      * 微信公众号列表
      */
     @GET("/wxarticle/chapters/json")
-    suspend fun getWeChatAuthors(): List<CategoryBean>
+    suspend fun getWeChatAuthors(): List<Category>
 
     /**
      * 微信公众号历史文章
@@ -25,7 +25,7 @@ interface WeChatAuthorApi {
     suspend fun getWeChatArticle(
         @Path("id") id: Int,
         @Path("pageNo") pageNo: Int
-    ): PageBean<ArticleBean>
+    ): Page<Article>
 
     /**
      * 微信公众号搜索文章
@@ -35,5 +35,5 @@ interface WeChatAuthorApi {
         @Path("id") id: Int,
         @Path("pageNo") pageNo: Int,
         @Query("k") keyword: String
-    ): PageBean<ArticleBean>
+    ): Page<Article>
 }

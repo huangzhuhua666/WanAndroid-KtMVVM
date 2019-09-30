@@ -1,8 +1,8 @@
 package com.example.hzh.ktmvvm.data.network
 
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
-import com.example.hzh.ktmvvm.data.bean.PageBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Category
+import com.example.hzh.ktmvvm.data.bean.Page
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -16,13 +16,13 @@ interface ProjectApi {
      * 项目分类
      */
     @GET("/project/tree/json")
-    suspend fun getProjectTree(): List<CategoryBean>
+    suspend fun getProjectTree(): List<Category>
 
     /**
      * 最新项目文章
      */
     @GET("/article/listproject/{pageNo}/json")
-    suspend fun getNewProject(@Path("pageNo") pageNo: Int): PageBean<ArticleBean>
+    suspend fun getNewProject(@Path("pageNo") pageNo: Int): Page<Article>
 
     /**
      * 项目文章，从1开始
@@ -31,5 +31,5 @@ interface ProjectApi {
     suspend fun getProject(
         @Path("pageNo") pageNo: Int,
         @Query("cid") cid: Int
-    ): PageBean<ArticleBean>
+    ): Page<Article>
 }

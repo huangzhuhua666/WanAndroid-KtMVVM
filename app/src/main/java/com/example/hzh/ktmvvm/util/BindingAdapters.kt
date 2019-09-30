@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.hzh.ktmvvm.data.bean.BannerBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.library.extension.setListener
 import com.example.hzh.library.viewmodel.BaseVM
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -19,7 +18,7 @@ import com.youth.banner.Banner
  * Create by hzh on 2019/09/11.
  */
 @BindingAdapter("bind:setImages")
-fun Banner.setBannerImages(bannerList: List<BannerBean>?) {
+fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Banner>?) {
     bannerList?.map { it.title }?.let { setBannerTitles(it) }
     bannerList?.map { it.imagePath }?.let {
         setImageLoader(GlideLoader())
@@ -60,7 +59,7 @@ fun WebView.loadWeb(url: String?) {
 }
 
 @BindingAdapter("bind:setKnowledgeCategory")
-fun TextView.setKnowledgeCategory(childList: List<CategoryBean>) {
+fun TextView.setKnowledgeCategory(childList: List<Category>) {
     text = childList.joinToString("     ", transform = { child -> child.name })
 }
 

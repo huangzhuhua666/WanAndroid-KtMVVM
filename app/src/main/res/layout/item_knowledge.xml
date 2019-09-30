@@ -9,7 +9,7 @@
 
         <variable
             name="category"
-            type="com.example.hzh.ktmvvm.data.bean.CategoryBean"/>
+            type="com.example.hzh.ktmvvm.data.bean.Category"/>
 
         <variable
             name="presenter"

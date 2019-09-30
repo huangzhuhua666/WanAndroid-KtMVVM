@@ -2,12 +2,10 @@ package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.app.App
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.data.network.KnowledgeApi
 import com.example.hzh.library.viewmodel.BaseVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 /**
@@ -19,39 +17,30 @@ class KnowledgeVM : BaseVM() {
 
     var cid by Delegates.notNull<Int>()
 
-    val treeList = MutableLiveData<List<CategoryBean>>()
+    val treeList = MutableLiveData<List<Category>>()
 
-    val articleList = MutableLiveData<List<ArticleBean>>()
+    val articleList = MutableLiveData<List<Article>>()
 
     fun getSystemTree() {
-        launch(Dispatchers.IO) {
-            try {
-                treeList.postValue(service.getKnowledgeTree())
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        doOnIO(
+            tryBlock = { treeList.postValue(service.getKnowledgeTree()) },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun getInitData() {
         super.getInitData()
-        launch(Dispatchers.IO) {
-            try {
-                articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        doOnIO(
+            tryBlock = { articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas) },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun loadData() {
         super.loadData()
-        launch(Dispatchers.IO) {
-            try {
-                articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        doOnIO(
+            tryBlock = { articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas) },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 }

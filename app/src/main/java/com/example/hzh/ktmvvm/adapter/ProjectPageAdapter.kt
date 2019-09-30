@@ -4,14 +4,14 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.view.fragment.ProjectPageFragment
 
 /**
  * Create by hzh on 2019/9/21.
  */
 class ProjectPageAdapter(
-    private val data: List<CategoryBean>,
+    private val data: List<Category>,
     fm: FragmentManager
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

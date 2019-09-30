@@ -4,12 +4,10 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
-import com.example.hzh.ktmvvm.data.bean.ArticleBean
-import com.example.hzh.ktmvvm.data.bean.CategoryBean
+import com.example.hzh.ktmvvm.data.bean.Article
+import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.data.network.ProjectApi
 import com.example.hzh.library.viewmodel.BaseVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 /**
@@ -23,27 +21,27 @@ class ProjectVM : BaseVM() {
 
     var cid by Delegates.notNull<Int>()
 
-    val treeList = MutableLiveData<List<CategoryBean>>()
+    val treeList = MutableLiveData<List<Category>>()
 
-    val articleList = MutableLiveData<List<ArticleBean>>()
+    val articleList = MutableLiveData<List<Article>>()
 
     fun getProjectTree() {
-        launch(Dispatchers.IO) {
-            try {
+        doOnIO(
+            tryBlock = {
                 treeList.postValue(
-                    listOf(CategoryBean(name = context.getString(R.string.fresh_project)))
-                        .plus(service.getProjectTree())
+                    listOf(Category(name = context.getString(R.string.fresh_project))).plus(
+                        service.getProjectTree()
+                    )
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+            },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun getInitData() {
         isLoadMore = false
-        launch(Dispatchers.IO) {
-            try {
+        doOnIO(
+            tryBlock = {
                 articleList.postValue(
                     when (cid) {
                         -1 -> {
@@ -56,25 +54,23 @@ class ProjectVM : BaseVM() {
                         }
                     }
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+            },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 
     override fun loadData() {
         super.loadData()
-        launch(Dispatchers.IO) {
-            try {
+        doOnIO(
+            tryBlock = {
                 articleList.postValue(
                     when (cid) {
                         -1 -> service.getNewProject(pageNo).datas
                         else -> service.getProject(pageNo, cid).datas
                     }
                 )
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+            },
+            catchBlock = { e -> e.printStackTrace() }
+        )
     }
 }
