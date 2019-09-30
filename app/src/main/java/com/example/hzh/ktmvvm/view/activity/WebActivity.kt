@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_web.*
 /**
  * Create by hzh on 2019/09/16.
  */
-class WebActivity : BaseActivity() {
+class WebActivity : BaseActivity<ActivityWebBinding>() {
 
     companion object {
 
@@ -41,8 +41,6 @@ class WebActivity : BaseActivity() {
     private var url by DelegateExt.notNullSingleValue<String>()
 
     private var title by DelegateExt.notNullSingleValue<String>()
-
-    private val binding by lazy { mBinding as ActivityWebBinding }
 
     override fun onGetBundle(bundle: Bundle) {
         bundle.let {
@@ -66,7 +64,7 @@ class WebActivity : BaseActivity() {
             it.webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
-                    binding.run {
+                    mBinding.run {
                         isLoading = true
                         title = getString(R.string.loading)
                     }
@@ -74,7 +72,7 @@ class WebActivity : BaseActivity() {
 
                 override fun onPageFinished(view: WebView, url: String) {
                     super.onPageFinished(view, url)
-                    binding.run {
+                    mBinding.run {
                         isLoading = false
                         title = if (view.title != "") view.title else this@WebActivity.title
                     }
@@ -91,14 +89,14 @@ class WebActivity : BaseActivity() {
 
             it.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
-                    binding.progress = newProgress
+                    mBinding.progress = newProgress
                 }
             }
         }
     }
 
     override fun initData() {
-        binding.url = url
+        mBinding.url = url
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

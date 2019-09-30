@@ -3,6 +3,7 @@ package com.example.hzh.ktmvvm.view.fragment
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.ProjectPageAdapter
+import com.example.hzh.ktmvvm.databinding.FragmentProjectBinding
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.extension.obtainVM
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_project.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class ProjectFragment : BaseFragment() {
+class ProjectFragment : BaseFragment<FragmentProjectBinding>() {
 
     companion object {
 

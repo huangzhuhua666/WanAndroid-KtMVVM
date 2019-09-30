@@ -15,18 +15,18 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/09/10.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<B: ViewDataBinding> : Fragment() {
 
     companion object {
 
         private const val TAG = "Current Fragment"
     }
 
-    protected val mContext by lazy { requireActivity() as BaseActivity }
+    protected val mContext by lazy { requireActivity() as BaseActivity<*> }
 
     private var mRootView: View? = null
 
-    protected var mBinding by Delegates.notNull<ViewDataBinding>()
+    protected var mBinding by Delegates.notNull<B>()
         private set
 
     private var isFirstIn = true

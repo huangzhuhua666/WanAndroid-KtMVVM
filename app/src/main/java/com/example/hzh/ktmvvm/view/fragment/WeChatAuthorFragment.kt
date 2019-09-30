@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_wechat_author.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class WeChatAuthorFragment : BaseFragment() {
+class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding>() {
 
     companion object {
 
@@ -27,7 +27,7 @@ class WeChatAuthorFragment : BaseFragment() {
     private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
 
     override fun initView() {
-        (mBinding as FragmentWechatAuthorBinding).wechatVM = mWeChatVM
+        mBinding.wechatVM = mWeChatVM
 
         tabLayout?.run {
             setupWithViewPager(vpContent)

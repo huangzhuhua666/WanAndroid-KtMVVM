@@ -1,12 +1,13 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.databinding.FragmentLoginBinding
 import com.example.hzh.library.fragment.BaseFragment
 
 /**
  * Create by hzh on 2019/9/26.
  */
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_login

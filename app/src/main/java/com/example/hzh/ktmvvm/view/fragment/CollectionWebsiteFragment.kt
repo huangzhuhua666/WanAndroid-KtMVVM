@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.base_refresh_list.*
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionWebsiteFragment : BaseFragment() {
+class CollectionWebsiteFragment : BaseFragment<BaseRefreshListBinding>() {
 
     companion object {
 
@@ -23,7 +23,7 @@ class CollectionWebsiteFragment : BaseFragment() {
     private val mCollectionVM by lazy { obtainVM(HomeVM::class.java) }
 
     override fun initView() {
-        (mBinding as BaseRefreshListBinding).baseVM = mCollectionVM
+        mBinding.baseVM = mCollectionVM
 
         refreshLayout.setEnableLoadMore(false)
     }

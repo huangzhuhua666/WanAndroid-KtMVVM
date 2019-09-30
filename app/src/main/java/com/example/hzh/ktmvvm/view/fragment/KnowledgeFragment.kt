@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_knowledge.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class KnowledgeFragment : BaseFragment() {
+class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding>() {
 
     companion object {
 
@@ -27,7 +27,7 @@ class KnowledgeFragment : BaseFragment() {
     private val mAdapter by lazy { SystemAdapter(R.layout.item_knowledge) }
 
     override fun initView() {
-        (mBinding as FragmentKnowledgeBinding).knowledgeVM = mKnowledgeVM
+        mBinding.knowledgeVM = mKnowledgeVM
 
         rvSystem.adapter = mAdapter
     }

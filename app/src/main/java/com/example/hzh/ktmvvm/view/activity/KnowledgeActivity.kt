@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_knowledge.*
  * Create by hzh on 2019/09/18.
  */
 @Suppress("UNCHECKED_CAST")
-class KnowledgeActivity : BaseActivity() {
+class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding>() {
 
     companion object {
 
@@ -39,8 +39,6 @@ class KnowledgeActivity : BaseActivity() {
 
     private var category by DelegateExt.notNullSingleValue<List<Category>>()
 
-    private val binding by lazy { mBinding as ActivityKnowledgeBinding }
-
     override fun onGetBundle(bundle: Bundle) {
         bundle.let {
             title = it.getString("title", "")
@@ -49,7 +47,7 @@ class KnowledgeActivity : BaseActivity() {
     }
 
     override fun initView() {
-        binding.title = title
+        mBinding.title = title
 
         tabLayout?.run {
             setupWithViewPager(vpContent)

@@ -15,7 +15,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/9/21.
  */
-class ProjectPageFragment : BaseFragment() {
+class ProjectPageFragment : BaseFragment<BaseRefreshListBinding>() {
 
     companion object {
 
@@ -34,7 +34,7 @@ class ProjectPageFragment : BaseFragment() {
     private var cid by Delegates.notNull<Int>()
 
     override fun initView() {
-        (mBinding as BaseRefreshListBinding).baseVM = mProjectVM
+        mBinding.baseVM = mProjectVM
 
         rvArticle.adapter = mAdapter
     }

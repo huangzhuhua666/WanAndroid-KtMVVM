@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     companion object {
 
@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment() {
     private var mBanner by DelegateExt.notNullSingleValue<ObsBanner>()
 
     override fun initView() {
-        (mBinding as FragmentHomeBinding).homeVM = mHomeVM
+        mBinding.homeVM = mHomeVM
 
         mBannerBinding?.let {
             it.homeVM = mHomeVM

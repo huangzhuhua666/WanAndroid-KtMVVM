@@ -14,7 +14,7 @@ import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override val layoutId: Int
         get() = R.layout.activity_main
@@ -23,8 +23,6 @@ class MainActivity : BaseActivity() {
         get() = llTitle
 
     private val titles by lazy { resources.getStringArray(R.array.main_title) }
-
-    private val binding by lazy { mBinding as ActivityMainBinding }
 
     override fun initView() {
         vpContent?.run {
@@ -56,10 +54,10 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        indicator.setOnTabChangedListener { binding.title = titles[it] }
+        indicator.setOnTabChangedListener { mBinding.title = titles[it] }
     }
 
     override fun initData() {
-        binding.title = titles[0]
+        mBinding.title = titles[0]
     }
 }

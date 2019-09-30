@@ -15,7 +15,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/9/21.
  */
-class WeChatAuthorPageFragment : BaseFragment() {
+class WeChatAuthorPageFragment : BaseFragment<BaseRefreshListBinding>() {
 
     companion object {
 
@@ -34,7 +34,7 @@ class WeChatAuthorPageFragment : BaseFragment() {
     private var cid by Delegates.notNull<Int>()
 
     override fun initView() {
-        (mBinding as BaseRefreshListBinding).baseVM = mWeChatVM
+        mBinding.baseVM = mWeChatVM
 
         rvArticle.adapter = mAdapter
     }

@@ -3,12 +3,13 @@ package com.example.hzh.ktmvvm.view.activity
 import android.content.Context
 import android.content.Intent
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.databinding.ActivityAuthBinding
 import com.example.hzh.library.activity.BaseActivity
 
 /**
  * Create by hzh on 2019/9/26.
  */
-class AuthActivity : BaseActivity() {
+class AuthActivity : BaseActivity<ActivityAuthBinding>() {
 
     companion object {
 

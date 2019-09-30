@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
+import com.example.hzh.ktmvvm.databinding.ActivityCollectionBinding
 import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.addOnTabSelectedListener
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_collection.*
 /**
  * Create by hzh on 2019/9/25.
  */
-class CollectionActivity : BaseActivity() {
+class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
 
     companion object {
 

@@ -9,7 +9,7 @@ import com.example.hzh.library.fragment.BaseFragment
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionArticleFragment : BaseFragment() {
+class CollectionArticleFragment : BaseFragment<BaseRefreshListBinding>() {
 
     companion object {
 
@@ -22,7 +22,7 @@ class CollectionArticleFragment : BaseFragment() {
     private val mCollectionVM by lazy { obtainVM(CollectionVM::class.java) }
 
     override fun initView() {
-        (mBinding as BaseRefreshListBinding).baseVM = mCollectionVM
+        mBinding.baseVM = mCollectionVM
     }
 
     override fun initListener() {
