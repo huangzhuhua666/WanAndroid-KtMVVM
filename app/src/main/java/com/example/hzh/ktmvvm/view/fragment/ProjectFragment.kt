@@ -26,8 +26,6 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding>() {
     private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
 
     override fun initView() {
-        mProjectVM.context = mContext
-
         tabLayout?.run {
             setupWithViewPager(vpContent)
             addOnTabSelectedListener {
@@ -38,7 +36,7 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding>() {
 
     override fun initListener() {
         mProjectVM.treeList.observe(this, Observer { tree ->
-            vpContent?.adapter = ProjectPageAdapter(tree, childFragmentManager)
+            vpContent?.adapter = ProjectPageAdapter(mContext, tree, childFragmentManager)
         })
     }
 

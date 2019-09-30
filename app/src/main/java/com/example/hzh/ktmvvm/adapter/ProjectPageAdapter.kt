@@ -1,9 +1,11 @@
 package com.example.hzh.ktmvvm.adapter
 
+import android.content.Context
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.view.fragment.ProjectPageFragment
 
@@ -11,6 +13,7 @@ import com.example.hzh.ktmvvm.view.fragment.ProjectPageFragment
  * Create by hzh on 2019/9/21.
  */
 class ProjectPageAdapter(
+    private val context: Context,
     private val data: List<Category>,
     fm: FragmentManager
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -26,5 +29,6 @@ class ProjectPageAdapter(
     override fun getCount(): Int = data.size
 
     override fun getPageTitle(position: Int): CharSequence? =
-        HtmlCompat.fromHtml(data[position].name, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        if (data[position].id == -1) context.getString(R.string.fresh_project)
+        else HtmlCompat.fromHtml(data[position].name, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }

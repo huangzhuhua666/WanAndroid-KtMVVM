@@ -1,8 +1,6 @@
 package com.example.hzh.ktmvvm.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
@@ -17,8 +15,6 @@ class ProjectVM : BaseVM() {
 
     private val service by lazy { App.httpClient.getService(ProjectApi::class.java) }
 
-    var context by Delegates.notNull<Context>()
-
     var cid by Delegates.notNull<Int>()
 
     val treeList = MutableLiveData<List<Category>>()
@@ -27,13 +23,7 @@ class ProjectVM : BaseVM() {
 
     fun getProjectTree() {
         doOnIO(
-            tryBlock = {
-                treeList.postValue(
-                    listOf(Category(name = context.getString(R.string.fresh_project))).plus(
-                        service.getProjectTree()
-                    )
-                )
-            },
+            tryBlock = { treeList.postValue(listOf(Category()).plus(service.getProjectTree())) },
             catchBlock = { e -> e.printStackTrace() }
         )
     }
