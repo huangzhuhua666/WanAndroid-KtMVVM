@@ -19,6 +19,7 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        bind:noMoreData="@{homeVM.isOver()}"
         bind:refreshOrLoadMore="@{homeVM}">
 
         <com.scwang.smartrefresh.header.MaterialHeader

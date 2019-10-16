@@ -16,12 +16,13 @@ import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
+import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.android.synthetic.main.activity_web.*
 
 /**
  * Create by hzh on 2019/09/16.
  */
-class WebActivity : BaseActivity<ActivityWebBinding>() {
+class WebActivity : BaseActivity<ActivityWebBinding, BaseVM>() {
 
     companion object {
 
@@ -32,10 +33,10 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
         }
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.activity_web
 
-    override val titleView: View?
+    override val mTitleView: View?
         get() = llTitle
 
     private var url by DelegateExt.notNullSingleValue<String>()

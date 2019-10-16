@@ -6,6 +6,7 @@ import androidx.multidex.MultiDex
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.http.HttpClient
 import com.example.hzh.library.http.NetConfig
+import org.litepal.LitePal
 
 /**
  * Create by hzh on 2019/08/23.
@@ -33,6 +34,9 @@ class App : Application() {
         }
 
         httpClient = HttpClient.getInstance(this)
+
+        LitePal.initialize(this)
+        LitePal.getDatabase()
 
         MultiDex.install(this)
     }

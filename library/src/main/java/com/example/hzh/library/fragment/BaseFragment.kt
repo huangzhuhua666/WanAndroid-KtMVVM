@@ -8,32 +8,45 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.http.APIException
+import com.example.hzh.library.viewmodel.BaseVM
+import com.example.hzh.library.widget.StatusLayout
+import com.example.hzh.library.widget.dialog.LoadingDialog
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/09/10.
  */
-abstract class BaseFragment<B: ViewDataBinding> : Fragment() {
+abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
 
     companion object {
 
         private const val TAG = "Current Fragment"
     }
 
-    protected val mContext by lazy { requireActivity() as BaseActivity<*> }
+    private val mLoadingDialog by lazy { LoadingDialog() }
 
     private var mRootView: View? = null
+
+    private var isFirstIn = true
+
+    protected val mContext by lazy { requireActivity() as BaseActivity<*, *> }
 
     protected var mBinding by Delegates.notNull<B>()
         private set
 
-    private var isFirstIn = true
+    protected abstract val mLayoutId: Int
 
-    protected abstract val layoutId: Int
+    protected open val mTitleView: View?
+        get() = null
 
-    protected open val titleView: View?
+    protected open val mStatusView: StatusLayout?
+        get() = null
+
+    protected open val mViewModel: VM?
         get() = null
 
     /**
@@ -51,7 +64,7 @@ abstract class BaseFragment<B: ViewDataBinding> : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (isUseImmersionBar) immersionBar {
-            titleView?.let { titleBar(it) }
+            mTitleView?.let { titleBar(it) }
 
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
@@ -63,13 +76,25 @@ abstract class BaseFragment<B: ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         isFirstIn = true
-        return setContentView(inflater, container, layoutId)
+        return setContentView(inflater, container, mLayoutId)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
         initListener()
+
+        mViewModel?.let {
+            it.isShowLoading.observe(this, Observer { isShowLoading ->
+                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
+                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
+            })
+
+            it.exception.observe(this, Observer { e ->
+                if (e is APIException && e.isLoginExpired()) onLoginExpired()
+                else onError(e)
+            })
+        }
     }
 
     override fun onResume() {
@@ -108,4 +133,8 @@ abstract class BaseFragment<B: ViewDataBinding> : Fragment() {
     protected open fun initData() {}
 
     protected open fun lazyLoad() {}
+
+    protected open fun onError(e: Throwable) {}
+
+    protected open fun onLoginExpired() {}
 }

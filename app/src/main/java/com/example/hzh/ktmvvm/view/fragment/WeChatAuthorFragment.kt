@@ -14,20 +14,22 @@ import kotlinx.android.synthetic.main.fragment_wechat_author.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding>() {
+class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAuthorVM>() {
 
     companion object {
 
         fun newInstance(): WeChatAuthorFragment = WeChatAuthorFragment()
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.fragment_wechat_author
 
-    private val mWeChatVM by lazy { obtainVM(WeChatAuthorVM::class.java) }
+    override val mViewModel: WeChatAuthorVM?
+        get() = obtainVM(WeChatAuthorVM::class.java)
+
 
     override fun initView() {
-        mBinding.wechatVM = mWeChatVM
+        mBinding.wechatVM = mViewModel
 
         tabLayout?.run {
             setupWithViewPager(vpContent)
@@ -40,18 +42,20 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding>() {
     }
 
     override fun initListener() {
-        mWeChatVM.authorList.observe(this, Observer { authorList ->
-            vpContent?.adapter = WeChatAuthorPageAdapter(authorList, childFragmentManager)
-        })
+        mViewModel?.run {
+            authorList.observe(this@WeChatAuthorFragment, Observer { authorList ->
+                vpContent?.adapter = WeChatAuthorPageAdapter(authorList, childFragmentManager)
+            })
 
-        etSearch.addTextChangedListener {
-            afterTextChanged { mWeChatVM.keyword.value = it?.toString() }
+            etSearch.addTextChangedListener {
+                afterTextChanged { keyword.value = it?.toString() }
+            }
         }
 
         btnClear.setOnClickListener { etSearch.setText("") }
     }
 
     override fun initData() {
-        mWeChatVM.getWeChatAuthors()
+        mViewModel?.getWeChatAuthors()
     }
 }

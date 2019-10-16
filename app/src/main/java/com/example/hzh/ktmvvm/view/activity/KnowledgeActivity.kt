@@ -12,13 +12,14 @@ import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.extension.addOnTabSelectedListener
+import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.android.synthetic.main.activity_knowledge.*
 
 /**
  * Create by hzh on 2019/09/18.
  */
 @Suppress("UNCHECKED_CAST")
-class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding>() {
+class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
 
     companion object {
 
@@ -29,10 +30,10 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding>() {
         }
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.activity_knowledge
 
-    override val titleView: View?
+    override val mTitleView: View?
         get() = llTitle
 
     private var title by DelegateExt.notNullSingleValue<String>()

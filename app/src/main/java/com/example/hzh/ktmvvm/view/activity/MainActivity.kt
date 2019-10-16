@@ -12,14 +12,15 @@ import com.example.hzh.ktmvvm.view.fragment.WeChatAuthorFragment
 import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.toast
+import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.activity_main
 
-    override val titleView: View?
+    override val mTitleView: View?
         get() = llTitle
 
     private val titles by lazy { resources.getStringArray(R.array.main_title) }

@@ -15,7 +15,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/9/21.
  */
-class ProjectPageFragment : BaseFragment<BaseRefreshListBinding>() {
+class ProjectPageFragment : BaseFragment<BaseRefreshListBinding, ProjectVM>() {
 
     companion object {
 
@@ -24,25 +24,26 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding>() {
         }
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
+    override val mViewModel: ProjectVM?
+        get() = obtainVM(ProjectVM::class.java)
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
     private var cid by Delegates.notNull<Int>()
 
     override fun initView() {
-        mBinding.baseVM = mProjectVM
+        mBinding.baseVM = mViewModel
 
         rvArticle.adapter = mAdapter
     }
 
     override fun initListener() {
-        mProjectVM.let {
-            it.articleList.observe(this, Observer { articleList ->
-                when (it.isLoadMore) {
+        mViewModel?.run {
+            articleList.observe(mContext, Observer { articleList ->
+                when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)
                         refreshLayout.finishRefresh()
@@ -61,8 +62,9 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding>() {
     }
 
     override fun initData() {
-        mProjectVM.cid = cid
-
-        mProjectVM.getInitData()
+        mViewModel?.let {
+            it.cid = cid
+            it.getInitData()
+        }
     }
 }

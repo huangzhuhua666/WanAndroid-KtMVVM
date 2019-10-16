@@ -10,12 +10,13 @@ import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.extension.toast
+import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.android.synthetic.main.activity_collection.*
 
 /**
  * Create by hzh on 2019/9/25.
  */
-class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
+class CollectionActivity : BaseActivity<ActivityCollectionBinding, BaseVM>() {
 
     companion object {
 
@@ -24,10 +25,10 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding>() {
         }
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.activity_collection
 
-    override val titleView: View?
+    override val mTitleView: View?
         get() = llTitle
 
     override fun initView() {

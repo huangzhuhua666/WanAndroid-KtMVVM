@@ -13,17 +13,18 @@ import kotlinx.android.synthetic.main.fragment_project.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class ProjectFragment : BaseFragment<FragmentProjectBinding>() {
+class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
 
     companion object {
 
         fun newInstance(): ProjectFragment = ProjectFragment()
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.fragment_project
 
-    private val mProjectVM by lazy { obtainVM(ProjectVM::class.java) }
+    override val mViewModel: ProjectVM?
+        get() = obtainVM(ProjectVM::class.java)
 
     override fun initView() {
         tabLayout?.run {
@@ -35,12 +36,14 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding>() {
     }
 
     override fun initListener() {
-        mProjectVM.treeList.observe(this, Observer { tree ->
-            vpContent?.adapter = ProjectPageAdapter(mContext, tree, childFragmentManager)
-        })
+        mViewModel?.run {
+            treeList.observe(mContext, Observer { tree ->
+                vpContent?.adapter = ProjectPageAdapter(mContext, tree, childFragmentManager)
+            })
+        }
     }
 
     override fun initData() {
-        mProjectVM.getProjectTree()
+        mViewModel?.getProjectTree()
     }
 }

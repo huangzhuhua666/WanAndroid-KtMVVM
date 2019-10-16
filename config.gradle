@@ -63,6 +63,9 @@ ext {
             "navigation-fragment": "androidx.navigation:navigation-fragment-ktx:$navigationVersion",
             "navigation-ui"      : "androidx.navigation:navigation-ui-ktx:$navigationVersion",
 
+            // LitePal数据库
+            "litepal"            : "org.litepal.android:kotlin:3.0.0",
+
             // junit
             "junit"              : "junit:junit:4.12",
 

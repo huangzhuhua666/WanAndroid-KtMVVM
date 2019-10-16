@@ -1,5 +1,6 @@
 package com.example.hzh.library.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
@@ -12,6 +13,10 @@ open class BaseVM : ViewModel() {
     protected var pageNo = 0
 
     var isLoadMore = false
+
+    val isShowLoading = MutableLiveData(false)
+    val isOver = MutableLiveData(false)
+    val exception = MutableLiveData<Throwable>()
 
     fun doOnIO(
         tryBlock: suspend CoroutineScope.() -> Unit,
@@ -41,6 +46,7 @@ open class BaseVM : ViewModel() {
             } catch (e: Throwable) {
                 if (e !is CancellationException || handleCancellationExceptionManually) {
                     catchBlock(e)
+                    exception.value = e
                 } else throw e
             } finally {
                 finallyBlock()

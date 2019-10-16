@@ -18,17 +18,18 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
 
     companion object {
 
         fun newInstance(): HomeFragment = HomeFragment()
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.fragment_home
 
-    private val mHomeVM by lazy { obtainVM(HomeVM::class.java) }
+    override val mViewModel: HomeVM?
+        get() = obtainVM(HomeVM::class.java)
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
@@ -44,10 +45,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var mBanner by DelegateExt.notNullSingleValue<ObsBanner>()
 
     override fun initView() {
-        mBinding.homeVM = mHomeVM
+        mBinding.homeVM = mViewModel
 
         mBannerBinding?.let {
-            it.homeVM = mHomeVM
+            it.homeVM = mViewModel
             it.lifecycleOwner = this
             mBanner = mBannerBinding.root as ObsBanner
         }
@@ -66,15 +67,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initListener() {
-        mBanner.setOnBannerListener {
-            mHomeVM.bannerList.value?.get(it)?.run {
-                WebActivity.open(mContext, url, title)
+        mViewModel?.run {
+            mBanner.setOnBannerListener {
+                bannerList.value?.get(it)?.run { WebActivity.open(mContext, url, title) }
             }
-        }
 
-        mHomeVM.let {
-            it.articleList.observe(this, Observer { articleList ->
-                when (it.isLoadMore) {
+            articleList.observe(this@HomeFragment, Observer { articleList ->
+                when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)
                         refreshLayout.finishRefresh()
@@ -89,6 +88,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initData() {
-        mHomeVM.getInitData()
+        mViewModel?.getInitData()
     }
 }

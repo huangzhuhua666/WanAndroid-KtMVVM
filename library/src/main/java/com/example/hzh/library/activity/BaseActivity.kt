@@ -6,27 +6,40 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
+import com.example.hzh.library.http.APIException
+import com.example.hzh.library.viewmodel.BaseVM
+import com.example.hzh.library.widget.StatusLayout
+import com.example.hzh.library.widget.dialog.LoadingDialog
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/09/09.
  */
-abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
+abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivity() {
 
     companion object {
 
         private const val TAG = "Current Activity"
     }
 
+    private val mLoadingDialog by lazy { LoadingDialog() }
+
     protected val mContext by lazy { this }
 
     protected var mBinding by Delegates.notNull<B>()
-    private set
+        private set
 
-    protected abstract val layoutId: Int
+    protected abstract val mLayoutId: Int
 
-    protected open val titleView: View?
+    protected open val mTitleView: View?
+        get() = null
+
+    protected open val mStatusView: StatusLayout?
+        get() = null
+
+    protected open val mViewModel: VM?
         get() = null
 
     /**
@@ -43,11 +56,11 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, layoutId)
+        mBinding = DataBindingUtil.setContentView(this, mLayoutId)
         mBinding.lifecycleOwner = this
 
         if (isUseImmersionBar) immersionBar {
-            titleView?.let { titleBar(it) }
+            mTitleView?.let { titleBar(it) }
 
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
@@ -58,6 +71,19 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
 
         initView()
         initListener()
+
+        mViewModel?.let {
+            it.isShowLoading.observe(this, Observer { isShowLoading ->
+                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
+                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
+            })
+
+            it.exception.observe(this, Observer { e ->
+                if (e is APIException && e.isLoginExpired()) onLoginExpired()
+                else onError(e)
+            })
+        }
+
         initData()
     }
 
@@ -68,4 +94,8 @@ abstract class BaseActivity<B: ViewDataBinding> : AppCompatActivity() {
     protected abstract fun initListener()
 
     protected abstract fun initData()
+
+    protected open fun onError(e: Throwable) {}
+
+    protected open fun onLoginExpired() {}
 }

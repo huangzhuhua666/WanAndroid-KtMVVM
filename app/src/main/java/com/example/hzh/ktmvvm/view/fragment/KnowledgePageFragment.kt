@@ -15,7 +15,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/09/19.
  */
-class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding>() {
+class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding, KnowledgeVM>() {
 
     companion object {
 
@@ -24,25 +24,26 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding>() {
         }
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    private val mKnowledgeVM by lazy { obtainVM(KnowledgeVM::class.java) }
+    override val mViewModel: KnowledgeVM?
+        get() = obtainVM(KnowledgeVM::class.java)
 
     private val mAdapter by lazy { ArticleAdapter(R.layout.item_article) }
 
     private var cid by Delegates.notNull<Int>()
 
     override fun initView() {
-        mBinding.baseVM = mKnowledgeVM
+        mBinding.baseVM = mViewModel
 
         rvArticle.adapter = mAdapter
     }
 
     override fun initListener() {
-        mKnowledgeVM.let {
-            it.articleList.observe(this, Observer { articleList ->
-                when (it.isLoadMore) {
+        mViewModel?.run {
+            articleList.observe(mContext, Observer { articleList ->
+                when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)
                         refreshLayout.finishRefresh()
@@ -61,8 +62,9 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding>() {
     }
 
     override fun initData() {
-        mKnowledgeVM.cid = cid
-
-        mKnowledgeVM.getInitData()
+        mViewModel?.let {
+            it.cid = cid
+            it.getInitData()
+        }
     }
 }

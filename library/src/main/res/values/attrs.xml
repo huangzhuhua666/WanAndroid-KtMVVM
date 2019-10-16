@@ -62,4 +62,8 @@
         <attr name="paddingTextWithIcon" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="StatusLayout">
+        <attr name="content_view" format="reference"/>
+    </declare-styleable>
+
 </resources>

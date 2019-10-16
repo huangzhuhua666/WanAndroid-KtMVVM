@@ -1,10 +1,9 @@
 package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Banner
-import com.example.hzh.ktmvvm.data.network.HomeApi
+import com.example.hzh.ktmvvm.data.model.ArticleModel
 import com.example.hzh.library.viewmodel.BaseVM
 
 /**
@@ -12,7 +11,7 @@ import com.example.hzh.library.viewmodel.BaseVM
  */
 class HomeVM : BaseVM() {
 
-    private val service by lazy { App.httpClient.getService(HomeApi::class.java) }
+    private val articleModel by lazy { ArticleModel() }
 
     val bannerList = MutableLiveData<List<Banner>>()
 
@@ -20,22 +19,38 @@ class HomeVM : BaseVM() {
 
     override fun getInitData() {
         super.getInitData()
+        isShowLoading.value = true
         doOnIO(
             tryBlock = {
-                service.let {
-                    bannerList.postValue(it.getBanners())
-                    articleList.postValue(it.getTopArticles().plus(it.getArticles(pageNo).datas))
+                articleModel.let {
+                    bannerList.postValue(it.getBanner())
+
+                    it.getHomeArticle(pageNo).run {
+                        articleList.postValue(datas)
+                        isOver.postValue(over)
+                    }
                 }
             },
-            catchBlock = { e -> e.printStackTrace() }
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 
     override fun loadData() {
         super.loadData()
+        isShowLoading.value = true
         doOnIO(
-            tryBlock = { articleList.postValue(service.getArticles(pageNo).datas) },
-            catchBlock = { e -> e.printStackTrace() }
+            tryBlock = {
+                articleModel.getHomeArticle(pageNo).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
+            },
+            catchBlock = { e ->
+                e.printStackTrace()
+                --pageNo
+            },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 }

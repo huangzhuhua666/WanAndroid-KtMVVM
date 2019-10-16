@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Library</string>
+    <string name="refresh">刷新</string>
+    <string name="no_data">暂无数据</string>
+    <string name="net_error">网络错误</string>
+    <string name="request_error">请求错误</string>
+    <string name="loading">加载中&#8230;</string>
 </resources>

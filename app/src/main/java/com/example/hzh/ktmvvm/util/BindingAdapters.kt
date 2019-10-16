@@ -50,6 +50,11 @@ fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     }
 }
 
+@BindingAdapter("bind:noMoreData")
+fun SmartRefreshLayout.noMoreData(isNoMoreData: Boolean) {
+    setNoMoreData(isNoMoreData)
+}
+
 @BindingAdapter("bind:loadWeb")
 fun WebView.loadWeb(url: String?) {
     url?.let {

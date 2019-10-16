@@ -86,6 +86,9 @@ dependencies {
     api rootProject.ext.dependencies["navigation-fragment"]
     api rootProject.ext.dependencies["navigation-ui"]
 
+    // LitePal数据库
+    api rootProject.ext.dependencies["litepal"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 

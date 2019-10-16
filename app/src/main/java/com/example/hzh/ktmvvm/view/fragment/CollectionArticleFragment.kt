@@ -9,20 +9,21 @@ import com.example.hzh.library.fragment.BaseFragment
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionArticleFragment : BaseFragment<BaseRefreshListBinding>() {
+class CollectionArticleFragment : BaseFragment<BaseRefreshListBinding, CollectionVM>() {
 
     companion object {
 
         fun newInstance(): CollectionArticleFragment = CollectionArticleFragment()
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    private val mCollectionVM by lazy { obtainVM(CollectionVM::class.java) }
+    override val mViewModel: CollectionVM?
+        get() = obtainVM(CollectionVM::class.java)
 
     override fun initView() {
-        mBinding.baseVM = mCollectionVM
+        mBinding.baseVM = mViewModel
     }
 
     override fun initListener() {
@@ -30,6 +31,6 @@ class CollectionArticleFragment : BaseFragment<BaseRefreshListBinding>() {
     }
 
     override fun initData() {
-        mCollectionVM.getInitData()
+        mViewModel?.getInitData()
     }
 }

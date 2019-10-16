@@ -12,31 +12,34 @@ import kotlinx.android.synthetic.main.fragment_knowledge.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding>() {
+class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() {
 
     companion object {
 
         fun newInstance(): KnowledgeFragment = KnowledgeFragment()
     }
 
-    override val layoutId: Int
+    override val mLayoutId: Int
         get() = R.layout.fragment_knowledge
 
-    private val mKnowledgeVM by lazy { obtainVM(KnowledgeVM::class.java) }
+    override val mViewModel: KnowledgeVM?
+        get() = obtainVM(KnowledgeVM::class.java)
 
     private val mAdapter by lazy { SystemAdapter(R.layout.item_knowledge) }
 
     override fun initView() {
-        mBinding.knowledgeVM = mKnowledgeVM
+        mBinding.knowledgeVM = mViewModel
 
         rvSystem.adapter = mAdapter
     }
 
     override fun initListener() {
-        mKnowledgeVM.treeList.observe(this, Observer { mAdapter.setNewData(it) })
+        mViewModel?.run {
+            treeList.observe(mContext, Observer { mAdapter.setNewData(it) })
+        }
     }
 
     override fun initData() {
-        mKnowledgeVM.getSystemTree()
+        mViewModel?.getSystemTree()
     }
 }
