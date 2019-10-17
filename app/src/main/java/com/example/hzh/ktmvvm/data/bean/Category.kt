@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.data.bean
 
 import com.alibaba.fastjson.annotation.JSONField
-import org.litepal.annotation.Column
 import org.litepal.crud.LitePalSupport
 import java.io.Serializable
 
@@ -14,7 +13,6 @@ class Category : LitePalSupport(), Serializable {
     var courseId = -1
 
     @JSONField(name = "id")
-    @Column(unique = true)
     var categoryId = -1
 
     var name = ""

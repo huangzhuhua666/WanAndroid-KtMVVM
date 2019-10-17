@@ -11,4 +11,8 @@ class CategoryModel {
     private val repo by lazy { CategoryRepository.getInstance() }
 
     suspend fun getKnowledgeTree(): List<Category> = repo.getKnowledgeTree()
+
+    suspend fun getWeChatAuthors(): List<Category> = repo.getWeChatAuthors()
+
+    suspend fun getProjectTree(): List<Category> = listOf(Category()).plus(repo.getProjectTree())
 }

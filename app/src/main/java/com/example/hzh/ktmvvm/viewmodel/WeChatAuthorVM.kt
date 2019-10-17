@@ -1,10 +1,10 @@
 package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
-import com.example.hzh.ktmvvm.data.network.WeChatAuthorApi
+import com.example.hzh.ktmvvm.data.model.ArticleModel
+import com.example.hzh.ktmvvm.data.model.CategoryModel
 import com.example.hzh.library.viewmodel.BaseVM
 
 /**
@@ -12,7 +12,8 @@ import com.example.hzh.library.viewmodel.BaseVM
  */
 class WeChatAuthorVM : BaseVM() {
 
-    private val service by lazy { App.httpClient.getService(WeChatAuthorApi::class.java) }
+    private val categoryModel by lazy { CategoryModel() }
+    private val articleModel by lazy { ArticleModel() }
 
     var id = MutableLiveData(-1)
 
@@ -24,7 +25,7 @@ class WeChatAuthorVM : BaseVM() {
 
     fun getWeChatAuthors() {
         doOnIO(
-            tryBlock = { authorList.postValue(service.getWeChatAuthors()) },
+            tryBlock = { authorList.postValue(categoryModel.getWeChatAuthors()) },
             catchBlock = { e -> e.printStackTrace() }
         )
     }
@@ -32,39 +33,34 @@ class WeChatAuthorVM : BaseVM() {
     override fun getInitData() {
         isLoadMore = false
         pageNo = 1
+        isShowLoading.value = true
         doOnIO(
             tryBlock = {
-                articleList.postValue(
-                    when (keyword.value) {
-                        "" -> service.getWeChatArticle(id.value!!, pageNo).datas
-                        else -> service.searchWeChatArticle(
-                            id.value!!,
-                            pageNo,
-                            keyword.value!!
-                        ).datas
-                    }
-                )
+                articleModel.getWeChatArticle(id.value!!, pageNo).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
             },
-            catchBlock = { e -> e.printStackTrace() }
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 
     override fun loadData() {
         super.loadData()
+        isShowLoading.value = true
         doOnIO(
             tryBlock = {
-                articleList.postValue(
-                    when (keyword.value) {
-                        "" -> service.getWeChatArticle(id.value!!, pageNo).datas
-                        else -> service.searchWeChatArticle(
-                            id.value!!,
-                            pageNo,
-                            keyword.value!!
-                        ).datas
-                    }
-                )
+                articleModel.getWeChatArticle(id.value!!, pageNo).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
             },
-            catchBlock = { e -> e.printStackTrace() }
+            catchBlock = { e ->
+                e.printStackTrace()
+                --pageNo
+            },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 }

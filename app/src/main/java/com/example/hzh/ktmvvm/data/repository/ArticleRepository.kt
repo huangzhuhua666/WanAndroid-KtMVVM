@@ -110,17 +110,6 @@ class ArticleRepository private constructor() {
         service.getKnowledgeArticles(pageNo, cid)
 
     /**
-     * 最新项目文章
-     */
-    suspend fun getNewProject(pageNo: Int): Page<Article> = service.getNewProject(pageNo)
-
-    /**
-     * 项目文章，从1开始
-     */
-    suspend fun getProject(pageNo: Int, cid: Int): Page<Article> =
-        service.getProject(pageNo, cid)
-
-    /**
      * 微信公众号历史文章
      */
     suspend fun getWeChatArticle(id: Int, pageNo: Int): Page<Article> =
@@ -131,6 +120,17 @@ class ArticleRepository private constructor() {
      */
     suspend fun searchWeChatArticle(id: Int, pageNo: Int, keyword: String): Page<Article> =
         service.searchWeChatArticle(id, pageNo, keyword)
+
+    /**
+     * 最新项目文章
+     */
+    suspend fun getNewProject(pageNo: Int): Page<Article> = service.getNewProject(pageNo)
+
+    /**
+     * 项目文章，从1开始
+     */
+    suspend fun getProject(pageNo: Int, cid: Int): Page<Article> =
+        service.getProject(pageNo, cid)
 
     /**
      * 收藏文章列表

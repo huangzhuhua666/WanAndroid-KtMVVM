@@ -22,20 +22,20 @@ class CategoryRepository private constructor() {
     private val service by lazy { App.httpClient.getService(CategoryApi::class.java) }
 
     suspend fun getKnowledgeTree(): List<Category> {
-        var categorys = LitePal.where(
+        var categoryList = LitePal.where(
             "tag = 1 and expired > ?",
             "${System.currentTimeMillis()}"
         ).find(Category::class.java)
 
-        if (categorys.isEmpty()) {
+        if (categoryList.isEmpty()) {
             LitePal.deleteAll(
                 Category::class.java,
                 "expired < ?",
                 "${System.currentTimeMillis()}"
             )
 
-            categorys = service.getKnowledgeTree()
-            categorys.forEach { cate ->
+            categoryList = service.getKnowledgeTree()
+            categoryList.forEach { cate ->
                 cate.expired = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L
                 cate.tag = 1
                 cate.save()
@@ -44,19 +44,59 @@ class CategoryRepository private constructor() {
                     child.save()
                 }
             }
-        } else categorys.forEach {
+        } else categoryList.forEach {
             it.children = LitePal.where("parentChapterId = ?", "${it.categoryId}")
                 .find(Category::class.java)
         }
 
-        return categorys
+        return categoryList
     }
 
     suspend fun getWeChatAuthors(): List<Category> {
-        return service.getWeChatAuthors()
+        var categoryList = LitePal.where(
+            "tag = 2 and expired > ?",
+            "${System.currentTimeMillis()}"
+        ).find(Category::class.java)
+
+        if (categoryList.isEmpty()) {
+            LitePal.deleteAll(
+                Category::class.java,
+                "expired < ?",
+                "${System.currentTimeMillis()}"
+            )
+
+            categoryList = service.getWeChatAuthors()
+            categoryList.forEach { cate ->
+                cate.expired = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L
+                cate.tag = 2
+                cate.save()
+            }
+        }
+
+        return categoryList
     }
 
     suspend fun getProjectTree(): List<Category> {
-        return service.getProjectTree()
+        var categoryList = LitePal.where(
+            "tag = 3 and expired > ?",
+            "${System.currentTimeMillis()}"
+        ).find(Category::class.java)
+
+        if (categoryList.isEmpty()) {
+            LitePal.deleteAll(
+                Category::class.java,
+                "expired < ?",
+                "${System.currentTimeMillis()}"
+            )
+
+            categoryList = service.getProjectTree()
+            categoryList.forEach { cate ->
+                cate.expired = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L
+                cate.tag = 3
+                cate.save()
+            }
+        }
+
+        return categoryList
     }
 }

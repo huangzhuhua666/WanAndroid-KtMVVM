@@ -1,10 +1,10 @@
 package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
-import com.example.hzh.ktmvvm.data.network.ProjectApi
+import com.example.hzh.ktmvvm.data.model.ArticleModel
+import com.example.hzh.ktmvvm.data.model.CategoryModel
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlin.properties.Delegates
 
@@ -13,7 +13,8 @@ import kotlin.properties.Delegates
  */
 class ProjectVM : BaseVM() {
 
-    private val service by lazy { App.httpClient.getService(ProjectApi::class.java) }
+    private val categoryModel by lazy { CategoryModel() }
+    private val articleModel by lazy { ArticleModel() }
 
     var cid by Delegates.notNull<Int>()
 
@@ -23,44 +24,45 @@ class ProjectVM : BaseVM() {
 
     fun getProjectTree() {
         doOnIO(
-            tryBlock = { treeList.postValue(listOf(Category()).plus(service.getProjectTree())) },
+            tryBlock = { treeList.postValue(categoryModel.getProjectTree()) },
             catchBlock = { e -> e.printStackTrace() }
         )
     }
 
     override fun getInitData() {
         isLoadMore = false
+        isShowLoading.value = true
         doOnIO(
             tryBlock = {
-                articleList.postValue(
-                    when (cid) {
-                        -1 -> {
-                            pageNo = 1
-                            service.getNewProject(pageNo).datas
-                        }
-                        else -> {
-                            pageNo = 0
-                            service.getProject(pageNo, cid).datas
-                        }
-                    }
-                )
+                pageNo = when (cid) {
+                    -1 -> 1
+                    else -> 0
+                }
+                articleModel.getProjectArticle(pageNo, cid).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
             },
-            catchBlock = { e -> e.printStackTrace() }
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 
     override fun loadData() {
         super.loadData()
+        isShowLoading.value = true
         doOnIO(
             tryBlock = {
-                articleList.postValue(
-                    when (cid) {
-                        -1 -> service.getNewProject(pageNo).datas
-                        else -> service.getProject(pageNo, cid).datas
-                    }
-                )
+                articleModel.getProjectArticle(pageNo, cid).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
             },
-            catchBlock = { e -> e.printStackTrace() }
+            catchBlock = { e ->
+                e.printStackTrace()
+                --pageNo
+            },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 }

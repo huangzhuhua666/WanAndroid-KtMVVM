@@ -23,4 +23,12 @@ class ArticleModel {
 
     suspend fun getKnowledgeArticles(pageNo: Int, cid: Int): Page<Article> =
         repo.getKnowledgeArticles(pageNo, cid)
+
+    suspend fun getWeChatArticle(id: Int, pageNo: Int): Page<Article> =
+        repo.getWeChatArticle(id, pageNo)
+
+    suspend fun getProjectArticle(pageNo: Int, cid: Int): Page<Article> = when (cid) {
+        -1 -> repo.getNewProject(pageNo)
+        else -> repo.getProject(pageNo, cid)
+    }
 }
