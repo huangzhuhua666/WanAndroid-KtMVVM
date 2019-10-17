@@ -18,7 +18,7 @@ class KnowledgePageAdapter(
     private val fragmentList by lazy { mutableListOf<Fragment>() }
 
     init {
-        data.forEach { fragmentList.add(KnowledgePageFragment.newInstance(it.id)) }
+        data.forEach { fragmentList.add(KnowledgePageFragment.newInstance(it.categoryId)) }
     }
 
     override fun getItem(position: Int): Fragment = fragmentList[position]

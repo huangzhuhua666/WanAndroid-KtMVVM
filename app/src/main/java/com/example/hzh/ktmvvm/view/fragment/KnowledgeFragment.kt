@@ -2,7 +2,7 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.SystemAdapter
+import com.example.hzh.ktmvvm.adapter.KnowledgeAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentKnowledgeBinding
 import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
 import com.example.hzh.library.extension.obtainVM
@@ -25,18 +25,14 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
     override val mViewModel: KnowledgeVM?
         get() = obtainVM(KnowledgeVM::class.java)
 
-    private val mAdapter by lazy { SystemAdapter(R.layout.item_knowledge) }
+    private val mAdapter by lazy { KnowledgeAdapter(R.layout.item_knowledge) }
 
     override fun initView() {
-        mBinding.knowledgeVM = mViewModel
-
         rvSystem.adapter = mAdapter
     }
 
     override fun initListener() {
-        mViewModel?.run {
-            treeList.observe(mContext, Observer { mAdapter.setNewData(it) })
-        }
+        mViewModel?.treeList?.observe(mContext, Observer { mAdapter.setNewData(it) })
     }
 
     override fun initData() {

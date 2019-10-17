@@ -18,7 +18,7 @@ class WeChatAuthorPageAdapter(
     private val fragmentList by lazy { mutableListOf<Fragment>() }
 
     init {
-        data.forEach { fragmentList.add(WeChatAuthorPageFragment.newInstance(it.id)) }
+        data.forEach { fragmentList.add(WeChatAuthorPageFragment.newInstance(it.categoryId)) }
     }
 
     override fun getItem(position: Int): Fragment = fragmentList[position]

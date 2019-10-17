@@ -3,11 +3,12 @@
 
     <dbname value="WanAndroid"/>
 
-    <version value="3"/>
+    <version value="4"/>
 
     <list>
         <mapping class="com.example.hzh.ktmvvm.data.bean.Banner"/>
         <mapping class="com.example.hzh.ktmvvm.data.bean.Article"/>
+        <mapping class="com.example.hzh.ktmvvm.data.bean.Category"/>
     </list>
 
 </litepal>

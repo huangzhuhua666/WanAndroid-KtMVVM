@@ -15,7 +15,7 @@ import com.example.hzh.library.util.DBViewHolder
 /**
  * Create by hzh on 2019/09/18.
  */
-class SystemAdapter(layoutResId: Int) : BaseQuickAdapter<Category, DBViewHolder>(layoutResId) {
+class KnowledgeAdapter(layoutResId: Int) : BaseQuickAdapter<Category, DBViewHolder>(layoutResId) {
 
     private val mPresenter by lazy { KnowledgePresenter(mContext) }
 

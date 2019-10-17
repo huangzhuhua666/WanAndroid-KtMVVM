@@ -1,10 +1,10 @@
 package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
-import com.example.hzh.ktmvvm.data.network.KnowledgeApi
+import com.example.hzh.ktmvvm.data.model.ArticleModel
+import com.example.hzh.ktmvvm.data.model.CategoryModel
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlin.properties.Delegates
 
@@ -13,7 +13,8 @@ import kotlin.properties.Delegates
  */
 class KnowledgeVM : BaseVM() {
 
-    private val service by lazy { App.httpClient.getService(KnowledgeApi::class.java) }
+    private val categoryModel by lazy { CategoryModel() }
+    private val articleModel by lazy { ArticleModel() }
 
     var cid by Delegates.notNull<Int>()
 
@@ -22,25 +23,44 @@ class KnowledgeVM : BaseVM() {
     val articleList = MutableLiveData<List<Article>>()
 
     fun getSystemTree() {
+        isShowLoading.value = true
         doOnIO(
-            tryBlock = { treeList.postValue(service.getKnowledgeTree()) },
-            catchBlock = { e -> e.printStackTrace() }
+            tryBlock = { treeList.postValue(categoryModel.getKnowledgeTree()) },
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 
     override fun getInitData() {
         super.getInitData()
+        isShowLoading.value = true
         doOnIO(
-            tryBlock = { articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas) },
-            catchBlock = { e -> e.printStackTrace() }
+            tryBlock = {
+                articleModel.getKnowledgeArticles(pageNo, cid).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
+            },
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 
     override fun loadData() {
         super.loadData()
+        isShowLoading.value = true
         doOnIO(
-            tryBlock = { articleList.postValue(service.getKnowledgeArticles(pageNo, cid).datas) },
-            catchBlock = { e -> e.printStackTrace() }
+            tryBlock = {
+                articleModel.getKnowledgeArticles(pageNo, cid).let {
+                    articleList.postValue(it.datas)
+                    isOver.postValue(it.over)
+                }
+            },
+            catchBlock = { e ->
+                e.printStackTrace()
+                --pageNo
+            },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 }

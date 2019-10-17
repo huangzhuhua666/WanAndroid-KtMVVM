@@ -20,4 +20,7 @@ class ArticleModel {
             else -> getArticles(pageNo)
         }
     }
+
+    suspend fun getKnowledgeArticles(pageNo: Int, cid: Int): Page<Article> =
+        repo.getKnowledgeArticles(pageNo, cid)
 }

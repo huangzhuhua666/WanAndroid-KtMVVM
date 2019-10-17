@@ -21,7 +21,7 @@ class ProjectPageAdapter(
     private val fragmentList by lazy { mutableListOf<Fragment>() }
 
     init {
-        data.forEach { fragmentList.add(ProjectPageFragment.newInstance(it.id)) }
+        data.forEach { fragmentList.add(ProjectPageFragment.newInstance(it.categoryId)) }
     }
 
     override fun getItem(position: Int): Fragment = fragmentList[position]
@@ -29,6 +29,6 @@ class ProjectPageAdapter(
     override fun getCount(): Int = data.size
 
     override fun getPageTitle(position: Int): CharSequence? =
-        if (data[position].id == -1) context.getString(R.string.fresh_project)
+        if (data[position].categoryId == -1) context.getString(R.string.fresh_project)
         else HtmlCompat.fromHtml(data[position].name, HtmlCompat.FROM_HTML_MODE_LEGACY)
 }
