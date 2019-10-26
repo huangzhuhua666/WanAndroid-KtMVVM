@@ -29,9 +29,9 @@ class ProjectVM : BaseVM() {
         )
     }
 
-    override fun getInitData() {
+    override fun getInitData(isRefresh: Boolean) {
         isLoadMore = false
-        isShowLoading.value = true
+        isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = {
                 pageNo = when (cid) {
@@ -50,7 +50,6 @@ class ProjectVM : BaseVM() {
 
     override fun loadData() {
         super.loadData()
-        isShowLoading.value = true
         doOnIO(
             tryBlock = {
                 articleModel.getProjectArticle(pageNo, cid).let {
@@ -61,8 +60,7 @@ class ProjectVM : BaseVM() {
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
-            },
-            finallyBlock = { isShowLoading.value = false }
+            }
         )
     }
 }

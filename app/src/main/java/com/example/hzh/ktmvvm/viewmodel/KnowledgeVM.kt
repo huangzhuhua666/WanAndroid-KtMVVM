@@ -31,9 +31,8 @@ class KnowledgeVM : BaseVM() {
         )
     }
 
-    override fun getInitData() {
-        super.getInitData()
-        isShowLoading.value = true
+    override fun getInitData(isRefresh: Boolean) {
+        super.getInitData(isRefresh)
         doOnIO(
             tryBlock = {
                 articleModel.getKnowledgeArticles(pageNo, cid).let {
@@ -48,7 +47,6 @@ class KnowledgeVM : BaseVM() {
 
     override fun loadData() {
         super.loadData()
-        isShowLoading.value = true
         doOnIO(
             tryBlock = {
                 articleModel.getKnowledgeArticles(pageNo, cid).let {
@@ -59,8 +57,7 @@ class KnowledgeVM : BaseVM() {
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
-            },
-            finallyBlock = { isShowLoading.value = false }
+            }
         )
     }
 }

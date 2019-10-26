@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.SslErrorHandler
@@ -73,10 +74,7 @@ class WebActivity : BaseActivity<ActivityWebBinding, BaseVM>() {
 
                 override fun onPageFinished(view: WebView, url: String) {
                     super.onPageFinished(view, url)
-                    mBinding.run {
-                        isLoading = false
-                        title = if (view.title != "") view.title else this@WebActivity.title
-                    }
+                    mBinding.isLoading = false
                 }
 
                 override fun onReceivedSslError(
@@ -91,6 +89,11 @@ class WebActivity : BaseActivity<ActivityWebBinding, BaseVM>() {
             it.webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView, newProgress: Int) {
                     mBinding.progress = newProgress
+                }
+
+                override fun onReceivedTitle(view: WebView?, title: String?) {
+                    super.onReceivedTitle(view, title)
+                    mBinding.title = if (TextUtils.isEmpty(title)) this@WebActivity.title else title
                 }
             }
         }

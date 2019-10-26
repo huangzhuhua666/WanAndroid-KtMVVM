@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_login_to_register"
+            android:id="@+id/actionLoginToRegister"
             app:destination="@id/register"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

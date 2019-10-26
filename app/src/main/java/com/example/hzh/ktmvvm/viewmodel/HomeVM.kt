@@ -17,9 +17,8 @@ class HomeVM : BaseVM() {
 
     val articleList = MutableLiveData<List<Article>>()
 
-    override fun getInitData() {
-        super.getInitData()
-        isShowLoading.value = true
+    override fun getInitData(isRefresh: Boolean) {
+        super.getInitData(isRefresh)
         doOnIO(
             tryBlock = {
                 articleModel.let {
@@ -38,7 +37,6 @@ class HomeVM : BaseVM() {
 
     override fun loadData() {
         super.loadData()
-        isShowLoading.value = true
         doOnIO(
             tryBlock = {
                 articleModel.getHomeArticle(pageNo).let {
@@ -49,8 +47,7 @@ class HomeVM : BaseVM() {
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
-            },
-            finallyBlock = { isShowLoading.value = false }
+            }
         )
     }
 }

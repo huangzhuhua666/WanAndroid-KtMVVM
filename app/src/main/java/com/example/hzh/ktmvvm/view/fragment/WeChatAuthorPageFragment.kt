@@ -64,7 +64,7 @@ class WeChatAuthorPageFragment : BaseFragment<BaseRefreshListBinding, WeChatAuth
     override fun initData() {
         mViewModel?.let {
             it.id.value = cid
-            it.getInitData()
+            it.getInitData(false)
         }
     }
 }

@@ -64,7 +64,7 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding, ProjectVM>() {
     override fun initData() {
         mViewModel?.let {
             it.cid = cid
-            it.getInitData()
+            it.getInitData(false)
         }
     }
 }

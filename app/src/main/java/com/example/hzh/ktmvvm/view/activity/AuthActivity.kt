@@ -1,7 +1,8 @@
 package com.example.hzh.ktmvvm.view.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
+import androidx.navigation.findNavController
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.ActivityAuthBinding
 import com.example.hzh.library.activity.BaseActivity
@@ -14,8 +15,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, BaseVM>() {
 
     companion object {
 
-        fun open(ctx: Context) {
-            ctx.startActivity(Intent(ctx, AuthActivity::class.java))
+        fun open(activity: Activity, requestCode: Int) {
+            activity.startActivityForResult(Intent(activity, AuthActivity::class.java), requestCode)
         }
     }
 
@@ -36,4 +37,7 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, BaseVM>() {
     override fun initData() {
 
     }
+
+    override fun onSupportNavigateUp(): Boolean =
+        findNavController(R.id.navAuthFragment).navigateUp()
 }

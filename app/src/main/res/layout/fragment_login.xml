@@ -1,14 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View"/>
+
+        <import type="android.text.TextUtils"/>
+
+        <import type="com.example.hzh.library.extension.ViewExtKt"/>
+
+        <variable
+            name="authVM"
+            type="com.example.hzh.ktmvvm.viewmodel.AuthVM"/>
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:onClick="@{v -> ViewExtKt.hideKeyboard(v)}"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_et_auth"
+                android:hint="@string/please_input_username"
+                android:inputType="text"
+                android:padding="10dp"
+                android:text="@={authVM.username}"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="16sp"
+                tools:ignore="AutoFill"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnCleanUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_close_black"
+                android:visibility="@{TextUtils.isEmpty(authVM.username) ? View.GONE : View.VISIBLE}"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_et_auth"
+                android:hint="@string/please_input_password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:text="@={authVM.password}"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="16sp"
+                tools:ignore="AutoFill"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnCleanPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_close_black"
+                android:visibility="@{TextUtils.isEmpty(authVM.password) ? View.GONE : View.VISIBLE}"/>
+
+        </FrameLayout>
+
+        <com.example.hzh.library.widget.RTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:onClick="@{v -> authVM.login()}"
+            android:padding="10dp"
+            android:text="@string/login"
+            android:textSize="16sp"
+            app:gradientOrientation="left_right"
+            app:gradientType="line"
+            app:isGradientSolid="true"
+            app:normalGradientEnd="@color/color_00aeff"
+            app:normalGradientStart="@color/color_0088fe"
+            app:normalTextColor="@android:color/white"
+            app:radii="6dp"/>
+
+        <TextView
+            android:id="@+id/btnNoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:padding="6dp"
+            android:text="@string/no_account"
+            android:textColor="@color/color_999999"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 

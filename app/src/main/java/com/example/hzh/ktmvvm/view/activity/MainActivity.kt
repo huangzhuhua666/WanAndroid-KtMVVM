@@ -1,5 +1,7 @@
 package com.example.hzh.ktmvvm.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import androidx.core.view.GravityCompat
 import com.example.hzh.ktmvvm.R
@@ -45,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
             when (it.itemId) {
                 R.id.collect -> {
                     if (App.isLogin) CollectionActivity.open(mContext)
-                    else AuthActivity.open(mContext)
+                    else AuthActivity.open(mContext, 1)
                 }
                 R.id.todo -> toast(R.string.todo)
                 R.id.about -> toast(R.string.about)
@@ -60,5 +62,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
 
     override fun initData() {
         mBinding.title = titles[0]
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) return
     }
 }

@@ -31,6 +31,6 @@ class CollectionArticleFragment : BaseFragment<BaseRefreshListBinding, Collectio
     }
 
     override fun initData() {
-        mViewModel?.getInitData()
+        mViewModel?.getInitData(false)
     }
 }

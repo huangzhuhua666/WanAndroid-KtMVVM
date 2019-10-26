@@ -30,10 +30,10 @@ class WeChatAuthorVM : BaseVM() {
         )
     }
 
-    override fun getInitData() {
+    override fun getInitData(isRefresh: Boolean) {
         isLoadMore = false
         pageNo = 1
-        isShowLoading.value = true
+        isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = {
                 articleModel.getWeChatArticle(id.value!!, pageNo).let {
@@ -48,7 +48,6 @@ class WeChatAuthorVM : BaseVM() {
 
     override fun loadData() {
         super.loadData()
-        isShowLoading.value = true
         doOnIO(
             tryBlock = {
                 articleModel.getWeChatArticle(id.value!!, pageNo).let {
@@ -59,8 +58,7 @@ class WeChatAuthorVM : BaseVM() {
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
-            },
-            finallyBlock = { isShowLoading.value = false }
+            }
         )
     }
 }

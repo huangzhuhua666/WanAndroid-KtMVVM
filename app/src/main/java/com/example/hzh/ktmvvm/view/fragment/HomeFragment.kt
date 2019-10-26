@@ -88,6 +88,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
     }
 
     override fun initData() {
-        mViewModel?.getInitData()
+        mViewModel?.getInitData(false)
     }
 }

@@ -45,7 +45,7 @@ fun ImageView.loadImage(image: String) {
 @BindingAdapter("bind:refreshOrLoadMore")
 fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     setListener {
-        onRefresh { vm.getInitData() }
+        onRefresh { vm.getInitData(true) }
         onLoadMore { vm.loadData() }
     }
 }
@@ -71,7 +71,7 @@ fun TextView.setKnowledgeCategory(childList: List<Category>) {
 @BindingAdapter("bind:setOnSearchListener")
 fun EditText.setOnSearchListener(vm: BaseVM) {
     setOnEditorActionListener { _, actionId, _ ->
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) vm.getInitData()
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) vm.getInitData(false)
         false
     }
 }

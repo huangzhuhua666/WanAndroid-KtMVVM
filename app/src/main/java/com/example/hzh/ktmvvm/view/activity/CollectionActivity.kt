@@ -1,5 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -20,8 +21,8 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding, BaseVM>() {
 
     companion object {
 
-        fun open(ctx: Context) {
-            ctx.startActivity(Intent(ctx, CollectionActivity::class.java))
+        fun open(activity: Activity) {
+            activity.startActivity(Intent(activity, CollectionActivity::class.java))
         }
     }
 

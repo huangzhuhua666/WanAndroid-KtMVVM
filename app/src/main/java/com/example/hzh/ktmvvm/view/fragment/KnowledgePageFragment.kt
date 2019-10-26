@@ -64,7 +64,7 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding, KnowledgeVM>(
     override fun initData() {
         mViewModel?.let {
             it.cid = cid
-            it.getInitData()
+            it.getInitData(false)
         }
     }
 }

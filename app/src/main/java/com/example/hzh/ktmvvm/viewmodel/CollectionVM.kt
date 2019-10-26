@@ -17,8 +17,8 @@ class CollectionVM : BaseVM() {
 
     val articleList = MutableLiveData<List<Article>>()
 
-    override fun getInitData() {
-        super.getInitData()
+    override fun getInitData(isFirstIn: Boolean) {
+        super.getInitData(isFirstIn)
         doOnIO(
             tryBlock = { articleList.postValue(service.getCollections(pageNo).datas) },
             catchBlock = { e ->
