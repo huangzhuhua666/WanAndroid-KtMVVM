@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.hzh.library.R
 import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.extension.toast
 import com.example.hzh.library.http.APIException
 import com.example.hzh.library.viewmodel.BaseVM
 import com.example.hzh.library.widget.StatusLayout
@@ -90,8 +92,10 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
                 else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
             })
 
+            it.toastTip.observe(this, Observer { tip -> mContext.toast(tip) })
+
             it.exception.observe(this, Observer { e ->
-                if (e is APIException && e.isLoginExpired()) onLoginExpired()
+                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
                 else onError(e)
             })
         }
@@ -134,7 +138,12 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
 
     protected open fun lazyLoad() {}
 
-    protected open fun onError(e: Throwable) {}
+    protected open fun onError(e: Throwable) {
+        if (e is APIException) mContext.toast(e.msg)
+        else mContext.toast(e.message ?: getString(R.string.unknown_error))
+    }
 
-    protected open fun onLoginExpired() {}
+    protected open fun onLoginExpired(e: APIException) {
+        mContext.toast(e.msg)
+    }
 }

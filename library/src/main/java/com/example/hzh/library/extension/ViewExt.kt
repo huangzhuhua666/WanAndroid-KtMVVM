@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
@@ -31,3 +32,10 @@ fun <T : ViewModel> Fragment.obtainVM(modelClass: Class<T>): T =
 
 fun Context.inflate(@LayoutRes resource: Int, root: ViewGroup? = null): View =
     LayoutInflater.from(this).inflate(resource, root)
+
+fun hideKeyboard(view: View) {
+    view.run {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+}

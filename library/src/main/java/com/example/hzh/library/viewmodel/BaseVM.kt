@@ -16,6 +16,7 @@ open class BaseVM : ViewModel() {
 
     val isShowLoading = MutableLiveData(false)
     val isOver = MutableLiveData(false)
+    val toastTip = MutableLiveData<@androidx.annotation.StringRes Int>()
     val exception = MutableLiveData<Throwable>()
 
     fun doOnIO(
@@ -54,9 +55,10 @@ open class BaseVM : ViewModel() {
         }
     }
 
-    open fun getInitData() {
+    open fun getInitData(isRefresh: Boolean) {
         isLoadMore = false
         pageNo = 0
+        isShowLoading.value = !isRefresh
     }
 
     open fun loadData() {

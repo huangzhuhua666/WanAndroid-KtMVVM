@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import com.example.hzh.library.R
+import com.example.hzh.library.extension.toast
 import com.example.hzh.library.http.APIException
 import com.example.hzh.library.viewmodel.BaseVM
 import com.example.hzh.library.widget.StatusLayout
@@ -78,8 +80,10 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
                 else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
             })
 
+            it.toastTip.observe(this, Observer { tip -> toast(tip) })
+
             it.exception.observe(this, Observer { e ->
-                if (e is APIException && e.isLoginExpired()) onLoginExpired()
+                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
                 else onError(e)
             })
         }
@@ -95,7 +99,12 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
 
     protected abstract fun initData()
 
-    protected open fun onError(e: Throwable) {}
+    protected open fun onError(e: Throwable) {
+        if (e is APIException) toast(e.msg)
+        else toast(e.message ?: getString(R.string.unknown_error))
+    }
 
-    protected open fun onLoginExpired() {}
+    protected open fun onLoginExpired(e: APIException) {
+        toast(e.msg)
+    }
 }
