@@ -13,12 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/appColor"
+            app:tabBackground="@android:color/transparent"
             app:tabGravity="center"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/color_ffe4b5"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="3dp"
             app:tabMode="scrollable"
+            app:tabRippleColor="@android:color/transparent"
             app:tabTextAppearance="@style/TabTextStyle"/>
 
         <com.example.hzh.library.widget.MyViewPager

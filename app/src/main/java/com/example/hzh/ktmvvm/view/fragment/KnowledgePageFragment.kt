@@ -37,7 +37,7 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding, KnowledgeVM>(
     override fun initView() {
         mBinding.baseVM = mViewModel
 
-        rvArticle.adapter = mAdapter
+        baseList.adapter = mAdapter
     }
 
     override fun initListener() {

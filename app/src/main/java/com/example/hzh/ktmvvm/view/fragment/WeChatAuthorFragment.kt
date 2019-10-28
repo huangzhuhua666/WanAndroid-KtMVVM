@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.fragment_wechat_author.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAuthorVM>() {
+class WeChatAuthorFragment private constructor() :
+    BaseFragment<FragmentWechatAuthorBinding, WeChatAuthorVM>() {
 
     companion object {
 
@@ -26,7 +27,6 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
 
     override val mViewModel: WeChatAuthorVM?
         get() = obtainVM(WeChatAuthorVM::class.java)
-
 
     override fun initView() {
         mBinding.wechatVM = mViewModel
@@ -43,7 +43,7 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
 
     override fun initListener() {
         mViewModel?.run {
-            authorList.observe(this@WeChatAuthorFragment, Observer { authorList ->
+            authorList.observe(viewLifecycleOwner, Observer { authorList ->
                 vpContent?.adapter = WeChatAuthorPageAdapter(authorList, childFragmentManager)
             })
 

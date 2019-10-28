@@ -15,7 +15,8 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/9/21.
  */
-class WeChatAuthorPageFragment : BaseFragment<BaseRefreshListBinding, WeChatAuthorVM>() {
+class WeChatAuthorPageFragment private constructor() :
+    BaseFragment<BaseRefreshListBinding, WeChatAuthorVM>() {
 
     companion object {
 
@@ -37,12 +38,12 @@ class WeChatAuthorPageFragment : BaseFragment<BaseRefreshListBinding, WeChatAuth
     override fun initView() {
         mBinding.baseVM = mViewModel
 
-        rvArticle.adapter = mAdapter
+        baseList.adapter = mAdapter
     }
 
     override fun initListener() {
         mViewModel?.run {
-            articleList.observe(this@WeChatAuthorPageFragment, Observer { articleList ->
+            articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)

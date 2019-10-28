@@ -37,7 +37,7 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding, ProjectVM>() {
     override fun initView() {
         mBinding.baseVM = mViewModel
 
-        rvArticle.adapter = mAdapter
+        baseList.adapter = mAdapter
     }
 
     override fun initListener() {

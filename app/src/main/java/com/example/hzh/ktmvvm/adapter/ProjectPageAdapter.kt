@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.view.fragment.ProjectPageFragment
@@ -16,7 +16,7 @@ class ProjectPageAdapter(
     private val context: Context,
     private val data: List<Category>,
     fm: FragmentManager
-) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val fragmentList by lazy { mutableListOf<Fragment>() }
 

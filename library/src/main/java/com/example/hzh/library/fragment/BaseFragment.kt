@@ -70,6 +70,20 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
 
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
+
+        mViewModel?.let {
+            it.isShowLoading.observe(this, Observer { isShowLoading ->
+                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
+                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
+            })
+
+            it.toastTip.observe(this, Observer { tip -> mContext.toast(tip) })
+
+            it.exception.observe(this, Observer { e ->
+                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
+                else onError(e)
+            })
+        }
     }
 
     override fun onCreateView(
@@ -85,20 +99,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initView()
         initListener()
-
-        mViewModel?.let {
-            it.isShowLoading.observe(this, Observer { isShowLoading ->
-                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
-                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
-            })
-
-            it.toastTip.observe(this, Observer { tip -> mContext.toast(tip) })
-
-            it.exception.observe(this, Observer { e ->
-                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
-                else onError(e)
-            })
-        }
     }
 
     override fun onResume() {
@@ -120,12 +120,14 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
         container: ViewGroup?,
         layoutId: Int
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        return mBinding.let {
-            it.lifecycleOwner = this
-            mRootView = mRootView ?: it.root
-            mRootView
-        }
+        return if (mRootView == null) {
+            mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+            mBinding.let {
+                it.lifecycleOwner = this
+                mRootView = it.root
+                mRootView
+            }
+        } else mRootView
     }
 
     protected open fun onGetBundle(bundle: Bundle) {}

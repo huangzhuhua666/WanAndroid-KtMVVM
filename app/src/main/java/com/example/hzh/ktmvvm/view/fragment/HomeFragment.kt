@@ -37,7 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
         DataBindingUtil.inflate<LayoutBannerBinding>(
             layoutInflater,
             R.layout.layout_banner,
-            rvArticle,
+            baseList,
             false
         )
     }
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
         }
 
         mAdapter.let {
-            rvArticle.adapter = it
+            baseList.adapter = it
             it.addHeaderView(mBanner)
         }
     }
