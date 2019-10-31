@@ -31,8 +31,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
 
     private val mLoadingDialog by lazy { LoadingDialog() }
 
-    private var mRootView: View? = null
-
     private var isFirstIn = true
 
     protected val mContext by lazy { requireActivity() as BaseActivity<*, *> }
@@ -120,14 +118,11 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
         container: ViewGroup?,
         layoutId: Int
     ): View? {
-        return if (mRootView == null) {
-            mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-            mBinding.let {
-                it.lifecycleOwner = this
-                mRootView = it.root
-                mRootView
-            }
-        } else mRootView
+        mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        return mBinding.let {
+            it.lifecycleOwner = this
+            it.root
+        }
     }
 
     protected open fun onGetBundle(bundle: Bundle) {}

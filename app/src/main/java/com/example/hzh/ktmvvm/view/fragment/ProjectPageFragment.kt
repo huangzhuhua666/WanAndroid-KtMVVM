@@ -19,8 +19,8 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding, ProjectVM>() {
 
     companion object {
 
-        fun newInstance(id: Int): ProjectPageFragment = ProjectPageFragment().also {
-            it.arguments = bundleOf("id" to id)
+        fun newInstance(id: Int): ProjectPageFragment = ProjectPageFragment().apply {
+            arguments = bundleOf("id" to id)
         }
     }
 

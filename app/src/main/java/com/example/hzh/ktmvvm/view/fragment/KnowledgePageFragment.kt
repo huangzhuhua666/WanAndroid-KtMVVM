@@ -19,8 +19,8 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding, KnowledgeVM>(
 
     companion object {
 
-        fun newInstance(id: Int): KnowledgePageFragment = KnowledgePageFragment().also {
-            it.arguments = bundleOf("id" to id)
+        fun newInstance(id: Int): KnowledgePageFragment = KnowledgePageFragment().apply {
+            arguments = bundleOf("id" to id)
         }
     }
 

@@ -34,9 +34,7 @@ class WeChatAuthorFragment private constructor() :
         tabLayout?.run {
             setupWithViewPager(vpContent)
             addOnTabSelectedListener {
-                onTabSelected {
-                    it?.run { vpContent?.currentItem = position }
-                }
+                onTabSelected { it?.run { vpContent?.currentItem = position } }
             }
         }
     }
@@ -47,9 +45,7 @@ class WeChatAuthorFragment private constructor() :
                 vpContent?.adapter = WeChatAuthorPageAdapter(authorList, childFragmentManager)
             })
 
-            etSearch.addTextChangedListener {
-                afterTextChanged { keyword.value = it?.toString() }
-            }
+            etSearch.addTextChangedListener { afterTextChanged { keyword.value = it?.toString() } }
         }
 
         btnClear.setOnClickListener { etSearch.setText("") }

@@ -20,8 +20,8 @@ class WeChatAuthorPageFragment private constructor() :
 
     companion object {
 
-        fun newInstance(id: Int): WeChatAuthorPageFragment = WeChatAuthorPageFragment().also {
-            it.arguments = bundleOf("id" to id)
+        fun newInstance(id: Int): WeChatAuthorPageFragment = WeChatAuthorPageFragment().apply {
+            arguments = bundleOf("id" to id)
         }
     }
 
