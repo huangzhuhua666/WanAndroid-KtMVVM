@@ -11,7 +11,6 @@
     </data>
 
     <com.example.hzh.ktmvvm.widget.ObsBanner
-        android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginBottom="5dp"

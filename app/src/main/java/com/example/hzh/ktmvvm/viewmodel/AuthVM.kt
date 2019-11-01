@@ -7,6 +7,7 @@ import com.example.hzh.ktmvvm.data.bean.User
 import com.example.hzh.ktmvvm.data.model.UserModel
 import com.example.hzh.ktmvvm.util.OperateCallback
 import com.example.hzh.library.viewmodel.BaseVM
+import com.jeremyliao.liveeventbus.LiveEventBus
 
 /**
  * Create by hzh on 2019/10/21.
@@ -35,6 +36,7 @@ class AuthVM : BaseVM() {
 
                     override fun onCallback(data: User) {
                         user.postValue(data)
+                        LiveEventBus.get("auth").post(true)
                         toastTip.postValue(R.string.login_success)
                     }
                 })
@@ -62,6 +64,7 @@ class AuthVM : BaseVM() {
 
                         override fun onCallback(data: User) {
                             user.postValue(data)
+                            LiveEventBus.get("auth").post(true)
                             toastTip.postValue(R.string.register_success)
                         }
                     })

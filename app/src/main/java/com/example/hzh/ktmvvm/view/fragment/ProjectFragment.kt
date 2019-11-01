@@ -1,13 +1,14 @@
 package com.example.hzh.ktmvvm.view.fragment
 
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.ProjectPageAdapter
+import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentProjectBinding
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
-import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_project.*
 
 /**
@@ -27,18 +28,26 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
         get() = obtainVM(ProjectVM::class.java)
 
     override fun initView() {
-        tabLayout?.run {
-            setupWithViewPager(vpContent)
-            addOnTabSelectedListener {
-                onTabSelected { it?.run { vpContent?.currentItem = position } }
-            }
-        }
+
     }
 
     override fun initListener() {
         mViewModel?.run {
             treeList.observe(mContext, Observer { tree ->
-                vpContent?.adapter = ProjectPageAdapter(mContext, tree, childFragmentManager)
+                vpContent?.adapter = SimplePageAdapter(
+                    childFragmentManager,
+                    lifecycle,
+                    tree.size
+                ) { ProjectPageFragment.newInstance(tree[it].categoryId) }
+
+                TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+                    tab.text =
+                        if (tree[position].categoryId == -1) getString(R.string.fresh_project)
+                        else HtmlCompat.fromHtml(
+                            tree[position].name,
+                            HtmlCompat.FROM_HTML_MODE_LEGACY
+                        )
+                }.attach()
             })
         }
     }

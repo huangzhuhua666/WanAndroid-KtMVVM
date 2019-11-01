@@ -109,8 +109,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
             initData()
             isFirstIn = false
         }
-
-        lazyLoad()
     }
 
     protected open fun setContentView(
@@ -121,6 +119,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
         mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return mBinding.let {
             it.lifecycleOwner = this
+            it.root.parent?.let { p -> (p as ViewGroup).removeView(it.root) }
             it.root
         }
     }
@@ -132,8 +131,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
     protected abstract fun initListener()
 
     protected open fun initData() {}
-
-    protected open fun lazyLoad() {}
 
     protected open fun onError(e: Throwable) {
         if (e is APIException) mContext.toast(e.msg)

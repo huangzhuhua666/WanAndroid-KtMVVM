@@ -1,39 +1,21 @@
 package com.example.hzh.ktmvvm.adapter
 
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
 /**
  * Create by hzh on 2019/09/10.
  */
 class SimplePageAdapter(
-    private val fragment: List<Fragment>,
-    private val fm: FragmentManager
-) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    fm: FragmentManager,
+    lifecycle: Lifecycle,
+    private val size: Int,
+    private val action: ((Int) -> Fragment)
+) : FragmentStateAdapter(fm, lifecycle) {
 
-    var titles: List<String>? = null
+    override fun getItemCount(): Int = size
 
-    override fun getItem(position: Int): Fragment = fragment[position]
-
-    override fun getCount(): Int = fragment.size
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val fragment = super.instantiateItem(container, position) as Fragment
-        fm.beginTransaction().run {
-            show(fragment)
-            commitAllowingStateLoss()
-        }
-        return fragment
-    }
-
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        fm.beginTransaction().run {
-            hide(fragment[position])
-            commitAllowingStateLoss()
-        }
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? = titles?.get(position)
+    override fun createFragment(position: Int): Fragment = action.invoke(position)
 }

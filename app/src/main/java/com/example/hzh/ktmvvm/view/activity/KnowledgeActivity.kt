@@ -5,14 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.text.HtmlCompat
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.KnowledgePageAdapter
+import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
+import com.example.hzh.ktmvvm.view.fragment.KnowledgePageFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
-import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.viewmodel.BaseVM
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_knowledge.*
 
 /**
@@ -50,14 +52,18 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
     override fun initView() {
         mBinding.title = title
 
-        tabLayout?.run {
-            setupWithViewPager(vpContent)
-            addOnTabSelectedListener {
-                onTabSelected { it?.run { vpContent?.currentItem = position } }
-            }
-        }
+        vpContent?.adapter = SimplePageAdapter(
+            supportFragmentManager,
+            lifecycle,
+            category.size
+        ) { KnowledgePageFragment.newInstance(category[it].categoryId) }
 
-        vpContent?.adapter = KnowledgePageAdapter(category, supportFragmentManager)
+        TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+            tab.text = HtmlCompat.fromHtml(
+                category[position].name,
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
     }
 
     override fun initListener() {

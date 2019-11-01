@@ -50,11 +50,12 @@
 
             </LinearLayout>
 
-            <com.example.hzh.library.widget.MyViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vpContent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/color_f2f2f2"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/indicator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +101,6 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav"
-            style="@style/Widget.MaterialComponents.NavigationView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"

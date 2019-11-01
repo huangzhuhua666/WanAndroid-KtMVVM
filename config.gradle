@@ -18,7 +18,7 @@ ext {
             "androidx"           : "androidx.appcompat:appcompat:1.1.0",
 
             // design
-            "design"             : "com.google.android.material:material:1.0.0",
+            "design"             : "com.google.android.material:material:1.1.0-beta01",
 
             // ktx
             "ktx"                : "androidx.core:core-ktx:1.1.0",
@@ -65,6 +65,12 @@ ext {
 
             // LitePal数据库
             "litepal"            : "org.litepal.android:kotlin:3.0.0",
+
+            // LiveDataBus
+            "LiveDataBus"        : "com.jeremyliao:live-event-bus-x:1.5.5",
+
+            // ViewPager2
+            "ViewPager2"         : "androidx.viewpager2:viewpager2:1.0.0-rc01",
 
             // junit
             "junit"              : "junit:junit:4.12",

@@ -79,10 +79,11 @@
 
         </FrameLayout>
 
-        <com.example.hzh.library.widget.MyViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:overScrollMode="never"
             android:scrollbars="none"/>
 

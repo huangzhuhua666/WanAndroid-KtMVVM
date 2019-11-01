@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.View
 import com.example.hzh.ktmvvm.R
@@ -9,9 +8,9 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.ActivityCollectionBinding
 import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.library.activity.BaseActivity
-import com.example.hzh.library.extension.addOnTabSelectedListener
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.viewmodel.BaseVM
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_collection.*
 
 /**
@@ -32,24 +31,22 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding, BaseVM>() {
     override val mTitleView: View?
         get() = llTitle
 
+    private val titleList = listOf(getString(R.string.article), getString(R.string.website))
+
     override fun initView() {
-        tabLayout?.run {
-            setupWithViewPager(vpContent)
-            addOnTabSelectedListener {
-                onTabSelected { it?.run { vpContent?.currentItem = position } }
-            }
+        listOf(
+            CollectionArticleFragment.newInstance(),
+            CollectionWebsiteFragment.newInstance()
+        ).let { fragmentList ->
+            vpContent?.adapter = SimplePageAdapter(
+                supportFragmentManager, lifecycle,
+                fragmentList.size
+            ) { fragmentList[it] }
         }
 
-        vpContent?.run {
-            listOf(
-                CollectionArticleFragment.newInstance(),
-                CollectionWebsiteFragment.newInstance()
-            ).also {
-                adapter = SimplePageAdapter(it, supportFragmentManager).apply {
-                    titles = listOf(getString(R.string.article), getString(R.string.website))
-                }
-            }
-        }
+        TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+            tab.text = titleList[position]
+        }.attach()
     }
 
     override fun initListener() {

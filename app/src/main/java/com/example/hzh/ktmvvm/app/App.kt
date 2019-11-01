@@ -8,6 +8,7 @@ import androidx.multidex.MultiDex
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.http.HttpClient
 import com.example.hzh.library.http.NetConfig
+import com.jeremyliao.liveeventbus.LiveEventBus
 import org.litepal.LitePal
 
 /**
@@ -49,6 +50,8 @@ class App : Application() {
 
         LitePal.initialize(this)
         LitePal.getDatabase()
+
+        LiveEventBus.config().autoClear(true)
 
         MultiDex.install(this)
     }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
@@ -15,9 +16,14 @@ import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.viewmodel.BaseVM
+import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
+
+    companion object {
+        const val VIEW_COLLECTION = 0x10
+    }
 
     override val mLayoutId: Int
         get() = R.layout.activity_main
@@ -34,9 +40,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
                 KnowledgeFragment.newInstance(),
                 WeChatAuthorFragment.newInstance(),
                 ProjectFragment.newInstance()
-            ).also { adapter = SimplePageAdapter(it, supportFragmentManager) }
+            ).let { fragmentList ->
+                adapter = SimplePageAdapter(
+                    supportFragmentManager,
+                    lifecycle,
+                    fragmentList.size
+                ) { fragmentList[it] }
+                offscreenPageLimit = fragmentList.size
+            }
+
             indicator.viewpager = this
-            isScroll = false
+            isUserInputEnabled = false
         }
     }
 
@@ -47,7 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
             when (it.itemId) {
                 R.id.collect -> {
                     if (App.isLogin) CollectionActivity.open(mContext)
-                    else AuthActivity.open(mContext, 1)
+                    else AuthActivity.open(mContext, VIEW_COLLECTION)
                 }
                 R.id.todo -> toast(R.string.todo)
                 R.id.about -> toast(R.string.about)
@@ -58,6 +72,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
         }
 
         indicator.setOnTabChangedListener { mBinding.title = titles[it] }
+
+        LiveEventBus.get("auth", Boolean::class.java).observe(this, Observer {
+            // TODO
+        })
     }
 
     override fun initData() {
@@ -67,5 +85,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
+
+        when (requestCode) {
+            VIEW_COLLECTION -> CollectionActivity.open(mContext)
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.app.Activity
-import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.hzh.ktmvvm.R
@@ -32,8 +31,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthVM>() {
 
             btnCleanPassword.setOnClickListener { _ -> it.password.value = "" }
 
-            it.user.observe(this, Observer { user ->
-                mContext.setResult(Activity.RESULT_OK, Intent().putExtra("user", user))
+            it.user.observe(viewLifecycleOwner, Observer {
+                mContext.setResult(Activity.RESULT_OK)
                 mContext.finish()
             })
         }

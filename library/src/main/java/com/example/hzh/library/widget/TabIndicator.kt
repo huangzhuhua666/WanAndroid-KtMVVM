@@ -6,7 +6,7 @@ import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.os.bundleOf
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 
 /**
  * Create by hzh on 2019/9/24.
@@ -23,7 +23,7 @@ class TabIndicator @JvmOverloads constructor(
         private const val STATE_ITEM = "state_item"
     }
 
-    var viewpager: ViewPager? = null
+    var viewpager: ViewPager2? = null
         set(value) {
             field = value
             init()
@@ -51,10 +51,10 @@ class TabIndicator @JvmOverloads constructor(
             adapter.let {
                 if (it == null) throw NullPointerException("viewpager的adapter为null")
 
-                if (it.count != count) throw throw IllegalArgumentException("子View数量必须和ViewPager条目数量一致")
+                if (it.itemCount != count) throw throw IllegalArgumentException("子View数量必须和ViewPager条目数量一致")
             }
 
-            addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageScrolled(
                     position: Int,
                     positionOffset: Float,

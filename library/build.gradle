@@ -89,6 +89,12 @@ dependencies {
     // LitePal数据库
     api rootProject.ext.dependencies["litepal"]
 
+    // LiveDataBus
+    api rootProject.ext.dependencies["LiveDataBus"]
+    
+    // ViewPager2
+    api rootProject.ext.dependencies["ViewPager2"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 
