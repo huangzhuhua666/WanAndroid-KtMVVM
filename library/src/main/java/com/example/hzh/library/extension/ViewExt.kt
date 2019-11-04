@@ -1,5 +1,6 @@
 package com.example.hzh.library.extension
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -33,9 +34,9 @@ fun <T : ViewModel> Fragment.obtainVM(modelClass: Class<T>): T =
 fun Context.inflate(@LayoutRes resource: Int, root: ViewGroup? = null): View =
     LayoutInflater.from(this).inflate(resource, root)
 
-fun hideKeyboard(view: View) {
+fun Activity.hideKeyboard(view: View) {
     view.run {
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

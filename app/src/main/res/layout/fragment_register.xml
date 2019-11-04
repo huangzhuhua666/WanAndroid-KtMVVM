@@ -22,8 +22,16 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:gravity="center"
-        android:onClick="@{v -> ViewExtKt.hideKeyboard(v)}"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:text="@string/register"
+            android:textColor="@color/color_333333"
+            android:textSize="36sp"
+            android:textStyle="bold"/>
 
         <FrameLayout
             android:layout_width="match_parent"

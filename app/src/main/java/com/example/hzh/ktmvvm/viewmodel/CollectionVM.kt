@@ -25,7 +25,8 @@ class CollectionVM : BaseVM() {
                 when (e) {
                     is APIException -> if (e.isLoginExpired()) Log.d("TAG", "Login Please")
                 }
-            }
+            },
+            finallyBlock = { isShowLoading.value = false }
         )
     }
 

@@ -19,8 +19,10 @@ class AuthVM : BaseVM() {
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val rePassword = MutableLiveData<String>()
-    val user = MutableLiveData<User>()
 
+    /**
+     * 登录
+     */
     fun login() {
         doOnIO(
             tryBlock = {
@@ -35,7 +37,6 @@ class AuthVM : BaseVM() {
                     }
 
                     override fun onCallback(data: User) {
-                        user.postValue(data)
                         LiveEventBus.get("auth").post(true)
                         toastTip.postValue(R.string.login_success)
                     }
@@ -45,6 +46,9 @@ class AuthVM : BaseVM() {
             finallyBlock = { isShowLoading.value = false })
     }
 
+    /**
+     * 注册
+     */
     fun register() {
         doOnIO(
             tryBlock = {
@@ -63,7 +67,6 @@ class AuthVM : BaseVM() {
                         }
 
                         override fun onCallback(data: User) {
-                            user.postValue(data)
                             LiveEventBus.get("auth").post(true)
                             toastTip.postValue(R.string.register_success)
                         }
@@ -71,5 +74,22 @@ class AuthVM : BaseVM() {
             },
             catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { isShowLoading.value = false })
+    }
+
+    /**
+     * 退出登录
+     */
+    fun logout() {
+        isShowLoading.value = true
+        doOnIO(
+            tryBlock = {
+                userModel.logout().also {
+                    LiveEventBus.get("auth").post(false)
+                    toastTip.postValue(R.string.logout_success)
+                }
+            },
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { isShowLoading.value = false }
+        )
     }
 }

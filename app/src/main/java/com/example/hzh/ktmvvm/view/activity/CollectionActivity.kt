@@ -31,7 +31,12 @@ class CollectionActivity : BaseActivity<ActivityCollectionBinding, BaseVM>() {
     override val mTitleView: View?
         get() = llTitle
 
-    private val titleList = listOf(getString(R.string.article), getString(R.string.website))
+    private val titleList by lazy {
+        listOf(
+            getString(R.string.article),
+            getString(R.string.website)
+        )
+    }
 
     override fun initView() {
         listOf(

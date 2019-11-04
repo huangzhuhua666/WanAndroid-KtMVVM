@@ -26,11 +26,13 @@ fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Ban
     }
 }
 
-@BindingAdapter("bind:loadImage")
-fun ImageView.loadImage(image: String) {
+@BindingAdapter("bind:loadImage", "android:src", requireAll = false)
+fun ImageView.loadImage(image: String, src: Int) {
     if (image == "") return
     Glide.with(context)
         .load(image)
+        .placeholder(src)
+        .error(src)
         .thumbnail(.5f)
         .apply {
             diskCacheStrategy(DiskCacheStrategy.RESOURCE)

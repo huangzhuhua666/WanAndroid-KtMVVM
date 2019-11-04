@@ -2,24 +2,29 @@ package com.example.hzh.ktmvvm.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.SystemClock
 import android.view.View
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
+import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
 import com.example.hzh.ktmvvm.view.fragment.HomeFragment
 import com.example.hzh.ktmvvm.view.fragment.ProjectFragment
 import com.example.hzh.ktmvvm.view.fragment.WeChatAuthorFragment
 import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
+import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.toast
-import com.example.hzh.library.viewmodel.BaseVM
+import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
+class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
     companion object {
         const val VIEW_COLLECTION = 0x10
@@ -31,9 +36,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
     override val mTitleView: View?
         get() = llTitle
 
+    override val mViewModel: AuthVM?
+        get() = obtainVM(AuthVM::class.java)
+
     private val titles by lazy { resources.getStringArray(R.array.main_title) }
 
+    private val mills = LongArray(2)
+
+    private val mHeaderBinding by lazy {
+        DataBindingUtil.bind<DrawerHeadBinding>(nav.getHeaderView(0))
+    }
+
+    private val mLogoutDialog by lazy {
+        ConfirmDialog.Builder().run {
+            title = getString(R.string.confirm_logout)
+            rightClickListener = { mViewModel?.logout() }
+            build()
+        }
+    }
+
     override fun initView() {
+        mHeaderBinding?.run {
+            avatar = App.configSP.getString("icon", "")
+            nickname = App.configSP.getString("nickname", getString(R.string.visitor))
+        }
+
         vpContent?.run {
             listOf(
                 HomeFragment.newInstance(),
@@ -59,13 +86,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
 
         nav.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.collect -> {
+                R.id.collect -> { // 收藏
                     if (App.isLogin) CollectionActivity.open(mContext)
                     else AuthActivity.open(mContext, VIEW_COLLECTION)
                 }
                 R.id.todo -> toast(R.string.todo)
                 R.id.about -> toast(R.string.about)
-                R.id.logout -> toast(R.string.logout)
+                R.id.logout -> mLogoutDialog.show(mContext) // 退出登录
             }
             drawer.closeDrawer(GravityCompat.START)
             true
@@ -73,8 +100,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
 
         indicator.setOnTabChangedListener { mBinding.title = titles[it] }
 
-        LiveEventBus.get("auth", Boolean::class.java).observe(this, Observer {
-            // TODO
+        LiveEventBus.get("auth").observe(this, Observer {
+            mHeaderBinding?.run {
+                avatar = App.configSP.getString("icon", "")
+                nickname = App.configSP.getString("nickname", getString(R.string.visitor))
+            }
         })
     }
 
@@ -89,5 +119,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseVM>() {
         when (requestCode) {
             VIEW_COLLECTION -> CollectionActivity.open(mContext)
         }
+    }
+
+    override fun onBackPressed() {
+        System.arraycopy(mills, 1, mills, 0, 1)
+        mills[1] = SystemClock.uptimeMillis()
+
+        if (mills[1] - mills[0] < 1000) super.onBackPressed()
+        else toast(R.string.click_again_to_exit)
     }
 }

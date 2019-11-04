@@ -26,6 +26,9 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, BaseVM>() {
     override val isStatusBarDarkFont: Boolean
         get() = true
 
+    override val isClickHideKeyboard: Boolean
+        get() = true
+
     override fun initView() {
 
     }

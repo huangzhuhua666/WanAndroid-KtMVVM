@@ -13,6 +13,12 @@ class UserModel {
 
     private val repo by lazy { UserRepository.getInstance() }
 
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     * @param callback 操作回调
+     */
     suspend fun login(username: String?, password: String?, callback: OperateCallback<User>) {
         if (TextUtils.isEmpty(username)) {
             callback.onInputIllegal(R.string.please_input_username)
@@ -29,6 +35,13 @@ class UserModel {
         repo.login(username!!, password!!).let { callback.onCallback(it) }
     }
 
+    /**
+     * 注册
+     * @param username 用户名
+     * @param password 密码
+     * @param rePassword 重复密码
+     * @param callback 操作回调
+     */
     suspend fun register(
         username: String?,
         password: String?,
@@ -59,4 +72,9 @@ class UserModel {
 
         repo.register(username!!, password!!, rePassword!!).let { callback.onCallback(it) }
     }
+
+    /**
+     * 退出登录
+     */
+    suspend fun logout() = repo.logout()
 }

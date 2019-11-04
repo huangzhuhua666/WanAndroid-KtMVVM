@@ -8,6 +8,7 @@ import com.example.hzh.ktmvvm.databinding.FragmentLoginBinding
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
+import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
@@ -30,12 +31,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthVM>() {
             btnCleanUsername.setOnClickListener { _ -> it.username.value = "" }
 
             btnCleanPassword.setOnClickListener { _ -> it.password.value = "" }
-
-            it.user.observe(viewLifecycleOwner, Observer {
-                mContext.setResult(Activity.RESULT_OK)
-                mContext.finish()
-            })
         }
+
+        LiveEventBus.get("auth", Boolean::class.java)
+            .observe(viewLifecycleOwner, Observer { isLogin ->
+                if (isLogin) {
+                    mContext.setResult(Activity.RESULT_OK)
+                    mContext.finish()
+                }
+            })
 
         btnNoAccount.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.actionLoginToRegister)

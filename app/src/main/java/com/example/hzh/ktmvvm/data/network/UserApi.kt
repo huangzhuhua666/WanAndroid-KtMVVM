@@ -11,6 +11,11 @@ import retrofit2.http.POST
  */
 interface UserApi {
 
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     */
     @FormUrlEncoded
     @POST("/user/login")
     suspend fun login(
@@ -18,6 +23,12 @@ interface UserApi {
         @Field("password") password: String
     ): User
 
+    /**
+     * 注册
+     * @param username 用户名
+     * @param password 密码
+     * @param rePassword 重复密码
+     */
     @FormUrlEncoded
     @POST("/user/register")
     suspend fun register(
@@ -26,6 +37,9 @@ interface UserApi {
         @Field("repassword") rePassword: String
     ): User
 
+    /**
+     * 退出登录
+     */
     @GET("/user/logout/json")
     suspend fun logout(): String
 }
