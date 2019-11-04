@@ -33,7 +33,7 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
 
     override fun initListener() {
         mViewModel?.run {
-            treeList.observe(mContext, Observer { tree ->
+            treeList.observe(viewLifecycleOwner, Observer { tree ->
                 vpContent?.adapter = SimplePageAdapter(
                     childFragmentManager,
                     lifecycle,

@@ -118,7 +118,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return mBinding.let {
-            it.lifecycleOwner = this
+            it.lifecycleOwner = viewLifecycleOwner
             it.root.parent?.let { p -> (p as ViewGroup).removeView(it.root) }
             it.root
         }

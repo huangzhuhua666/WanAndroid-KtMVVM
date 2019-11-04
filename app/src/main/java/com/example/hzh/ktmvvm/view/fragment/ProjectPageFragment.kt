@@ -42,7 +42,7 @@ class ProjectPageFragment : BaseFragment<BaseRefreshListBinding, ProjectVM>() {
 
     override fun initListener() {
         mViewModel?.run {
-            articleList.observe(mContext, Observer { articleList ->
+            articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)

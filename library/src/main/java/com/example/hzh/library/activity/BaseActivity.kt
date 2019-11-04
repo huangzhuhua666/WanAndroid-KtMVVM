@@ -75,14 +75,14 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
         initListener()
 
         mViewModel?.let {
-            it.isShowLoading.observe(this, Observer { isShowLoading ->
+            it.isShowLoading.observe(mContext, Observer { isShowLoading ->
                 if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
                 else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
             })
 
-            it.toastTip.observe(this, Observer { tip -> toast(tip) })
+            it.toastTip.observe(mContext, Observer { tip -> toast(tip) })
 
-            it.exception.observe(this, Observer { e ->
+            it.exception.observe(mContext, Observer { e ->
                 if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
                 else onError(e)
             })

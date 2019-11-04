@@ -37,7 +37,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
         DataBindingUtil.inflate<LayoutBannerBinding>(
             layoutInflater,
             R.layout.layout_banner,
-            baseList,
+            rvArticle,
             false
         )
     }
@@ -61,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
         }
 
         mAdapter.let {
-            baseList.adapter = it
+            rvArticle.adapter = it
             it.addHeaderView(mBanner)
         }
     }
@@ -72,7 +72,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeVM>() {
                 bannerList.value?.get(it)?.run { WebActivity.open(mContext, url, title) }
             }
 
-            articleList.observe(this@HomeFragment, Observer { articleList ->
+            articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)

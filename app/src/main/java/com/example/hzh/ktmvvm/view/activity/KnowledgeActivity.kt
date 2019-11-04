@@ -63,7 +63,7 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
                 category[position].name,
                 HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-        }
+        }.attach()
     }
 
     override fun initListener() {

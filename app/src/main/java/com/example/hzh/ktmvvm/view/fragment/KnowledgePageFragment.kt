@@ -42,7 +42,7 @@ class KnowledgePageFragment : BaseFragment<BaseRefreshListBinding, KnowledgeVM>(
 
     override fun initListener() {
         mViewModel?.run {
-            articleList.observe(mContext, Observer { articleList ->
+            articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 when (isLoadMore) {
                     false -> {
                         mAdapter.setNewData(articleList)

@@ -22,8 +22,7 @@ fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Ban
     bannerList?.map { it.title }?.let { setBannerTitles(it) }
     bannerList?.map { it.imagePath }?.let {
         setImageLoader(GlideLoader())
-        setImages(it)
-        start()
+        update(it)
     }
 }
 
