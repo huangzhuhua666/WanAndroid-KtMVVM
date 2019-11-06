@@ -40,6 +40,7 @@ class App : Application() {
         super.onCreate()
         context = this
 
+        // 网络配置
         NetConfig.run {
             CODE_SUCCESS = 0
             CODE_LOGIN_EXPIRED = -1001
@@ -48,9 +49,11 @@ class App : Application() {
 
         httpClient = HttpClient.getInstance(this)
 
+        // 初始化LitePal
         LitePal.initialize(this)
         LitePal.getDatabase()
 
+        // 初始化LiveEventBus
         LiveEventBus.config().autoClear(true)
 
         MultiDex.install(this)

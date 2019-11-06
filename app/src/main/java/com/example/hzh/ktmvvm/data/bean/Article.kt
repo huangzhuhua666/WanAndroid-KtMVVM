@@ -1,5 +1,6 @@
 package com.example.hzh.ktmvvm.data.bean
 
+import androidx.databinding.ObservableField
 import com.alibaba.fastjson.annotation.JSONField
 import org.litepal.annotation.Column
 import org.litepal.crud.LitePalSupport
@@ -14,7 +15,15 @@ class Article : LitePalSupport() {
     var author = ""
     var chapterId = -1
     var chapterName = ""
+
     var collect = false
+        set(value) {
+            field = value
+            oCollect.set(value)
+        }
+    @Column(ignore = true)
+    val oCollect: ObservableField<Boolean> = ObservableField(false)
+
     var courseId = -1
     var desc = ""
     var envelopePic = ""
@@ -27,6 +36,7 @@ class Article : LitePalSupport() {
     var niceDate = ""
     var niceShareDate = ""
     var origin = ""
+    var originId = -1
     var prefix = ""
     var projectLink = ""
     var publishTime = -1L

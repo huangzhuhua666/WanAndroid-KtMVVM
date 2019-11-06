@@ -67,19 +67,13 @@ class UserRepository private constructor() {
     /**
      * 退出登录
      */
-    suspend fun logout() {
-        try {
-            service.logout().also {
-                // 清空登录信息
-                App.isLogin = false
-                App.configSP.edit { clear() }
-            }
-        } catch (e: APIException) {
-            if (e.code == NetConfig.CODE_NO_RESPONSE_BODY) {
-                // 清空登录信息
-                App.isLogin = false
-                App.configSP.edit { clear() }
-            }
-        }
+    suspend fun logout() = try {
+        service.logout()
+    } catch (e: APIException) {
+        if (e.code == NetConfig.CODE_NO_RESPONSE_BODY) { // 操作成功了后台还是返回null，不是我的锅啊
+            // 清空登录信息
+            App.isLogin = false
+            App.configSP.edit { clear() }
+        } else throw e
     }
 }

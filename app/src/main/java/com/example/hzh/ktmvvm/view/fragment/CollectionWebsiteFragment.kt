@@ -1,16 +1,17 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.viewmodel.CollectionVM
 import com.example.hzh.library.extension.obtainVM
-import com.example.hzh.library.fragment.BaseFragment
 import kotlinx.android.synthetic.main.base_refresh_list.*
 
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionWebsiteFragment : BaseFragment<BaseRefreshListBinding, CollectionVM>() {
+class CollectionWebsiteFragment private constructor() :
+    WanFragment<BaseRefreshListBinding, CollectionVM>() {
 
     companion object {
 

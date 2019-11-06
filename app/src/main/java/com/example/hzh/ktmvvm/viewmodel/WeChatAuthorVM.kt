@@ -1,6 +1,8 @@
 package com.example.hzh.ktmvvm.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.data.model.ArticleModel
@@ -19,13 +21,18 @@ class WeChatAuthorVM : BaseVM() {
 
     var keyword = MutableLiveData("")
 
-    var authorList = MutableLiveData<List<Category>>()
+    private val _authorList = MutableLiveData<List<Category>>()
+    val authorList: LiveData<List<Category>> = _authorList
 
-    var articleList = MutableLiveData<List<Article>>()
+    private val _articleList = MutableLiveData<List<Article>>()
+    val articleList: LiveData<List<Article>> = _articleList
 
+    /**
+     * 获取微信公众号
+     */
     fun getWeChatAuthors() {
         doOnIO(
-            tryBlock = { authorList.postValue(categoryModel.getWeChatAuthors()) },
+            tryBlock = { _authorList.postValue(categoryModel.getWeChatAuthors()) },
             catchBlock = { e -> e.printStackTrace() }
         )
     }
@@ -33,16 +40,16 @@ class WeChatAuthorVM : BaseVM() {
     override fun getInitData(isRefresh: Boolean) {
         isLoadMore = false
         pageNo = 1
-        isShowLoading.value = !isRefresh
+        _isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = {
                 articleModel.getWeChatArticle(id.value!!, pageNo).let {
-                    articleList.postValue(it.datas)
-                    isOver.postValue(it.over)
+                    _articleList.postValue(it.datas)
+                    _isOver.postValue(it.over)
                 }
             },
             catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { isShowLoading.value = false }
+            finallyBlock = { _isShowLoading.value = false }
         )
     }
 
@@ -51,14 +58,35 @@ class WeChatAuthorVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.getWeChatArticle(id.value!!, pageNo).let {
-                    articleList.postValue(it.datas)
-                    isOver.postValue(it.over)
+                    _articleList.postValue(it.datas)
+                    _isOver.postValue(it.over)
                 }
             },
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
             }
+        )
+    }
+
+    /**
+     * 收藏、取消收藏
+     * @param article 文章
+     */
+    fun collectOrNot(article: Article) {
+        _isShowLoading.value = true
+        doOnIO(
+            tryBlock = {
+                if (article.collect) articleModel.unCollectArticleList(article.articleId).also {
+                    _toastTip.postValue(R.string.uncollect_success)
+                    article.collect = false
+                } else articleModel.collectionInner(article.articleId).also {
+                    _toastTip.postValue(R.string.collect_success)
+                    article.collect = true
+                }
+            },
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { _isShowLoading.value = false }
         )
     }
 }

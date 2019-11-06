@@ -82,6 +82,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     }
 
     override fun initListener() {
+        LiveEventBus.get("auth").observe(this, Observer {
+            // 登录、退出登录消息，更新用户信息
+            mHeaderBinding?.run {
+                avatar = App.configSP.getString("icon", "")
+                nickname = App.configSP.getString("nickname", getString(R.string.visitor))
+            }
+        })
+
         btnDrawer.setOnClickListener { drawer.openDrawer(GravityCompat.START) }
 
         nav.setNavigationItemSelectedListener {
@@ -92,20 +100,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
                 }
                 R.id.todo -> toast(R.string.todo)
                 R.id.about -> toast(R.string.about)
-                R.id.logout -> mLogoutDialog.show(mContext) // 退出登录
+                R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
             }
             drawer.closeDrawer(GravityCompat.START)
             true
         }
 
         indicator.setOnTabChangedListener { mBinding.title = titles[it] }
-
-        LiveEventBus.get("auth").observe(this, Observer {
-            mHeaderBinding?.run {
-                avatar = App.configSP.getString("icon", "")
-                nickname = App.configSP.getString("nickname", getString(R.string.visitor))
-            }
-        })
     }
 
     override fun initData() {

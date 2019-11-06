@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_project.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
+class ProjectFragment private constructor() : BaseFragment<FragmentProjectBinding, ProjectVM>() {
 
     companion object {
 

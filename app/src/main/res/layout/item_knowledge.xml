@@ -8,23 +8,22 @@
     <data>
 
         <variable
-            name="category"
+            name="item"
             type="com.example.hzh.ktmvvm.data.bean.Category"/>
 
         <variable
             name="presenter"
-            type="com.example.hzh.ktmvvm.adapter.KnowledgePresenter"/>
+            type="com.example.hzh.library.adapter.ItemClickPresenter"/>
     </data>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cvRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{view -> presenter.onClick(view, category)}"
+        android:onClick="@{view -> presenter.onItemClick(view, item)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">
@@ -38,7 +37,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{category.name}"
+                android:text="@{item.name}"
                 android:textColor="@color/color_333333"
                 android:textSize="18sp"
                 tools:text="开发环境"/>
@@ -52,7 +51,7 @@
                 android:maxLines="3"
                 android:textColor="@color/color_666666"
                 android:textSize="12sp"
-                bind:setKnowledgeCategory="@{category.children}"
+                bind:setKnowledgeCategory="@{item.children}"
                 tools:text="分类"/>
 
         </LinearLayout>

@@ -29,21 +29,21 @@ class AuthVM : BaseVM() {
                 userModel.login(username.value, password.value, object : OperateCallback<User> {
 
                     override fun onInputIllegal(@StringRes tip: Int) {
-                        toastTip.postValue(tip)
+                        _toastTip.postValue(tip)
                     }
 
                     override fun onPreOperate() {
-                        isShowLoading.postValue(true)
+                        _isShowLoading.postValue(true)
                     }
 
                     override fun onCallback(data: User) {
                         LiveEventBus.get("auth").post(true)
-                        toastTip.postValue(R.string.login_success)
+                        _toastTip.postValue(R.string.login_success)
                     }
                 })
             },
             catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { isShowLoading.value = false })
+            finallyBlock = { _isShowLoading.value = false })
     }
 
     /**
@@ -59,37 +59,37 @@ class AuthVM : BaseVM() {
                     object : OperateCallback<User> {
 
                         override fun onInputIllegal(@StringRes tip: Int) {
-                            toastTip.postValue(tip)
+                            _toastTip.postValue(tip)
                         }
 
                         override fun onPreOperate() {
-                            isShowLoading.postValue(true)
+                            _isShowLoading.postValue(true)
                         }
 
                         override fun onCallback(data: User) {
                             LiveEventBus.get("auth").post(true)
-                            toastTip.postValue(R.string.register_success)
+                            _toastTip.postValue(R.string.register_success)
                         }
                     })
             },
             catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { isShowLoading.value = false })
+            finallyBlock = { _isShowLoading.value = false })
     }
 
     /**
      * 退出登录
      */
     fun logout() {
-        isShowLoading.value = true
+        _isShowLoading.value = true
         doOnIO(
             tryBlock = {
                 userModel.logout().also {
                     LiveEventBus.get("auth").post(false)
-                    toastTip.postValue(R.string.logout_success)
+                    _toastTip.postValue(R.string.logout_success)
                 }
             },
             catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { isShowLoading.value = false }
+            finallyBlock = { _isShowLoading.value = false }
         )
     }
 }

@@ -17,6 +17,10 @@ import com.youth.banner.Banner
 /**
  * Create by hzh on 2019/09/11.
  */
+
+/**
+ * 设置Banner
+ */
 @BindingAdapter("bind:setImages")
 fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Banner>?) {
     bannerList?.map { it.title }?.let { setBannerTitles(it) }
@@ -26,6 +30,11 @@ fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Ban
     }
 }
 
+/**
+ * 网络图片加载
+ * @param image 图片url
+ * @param src 占位图、加载失败图
+ */
 @BindingAdapter("bind:loadImage", "android:src", requireAll = false)
 fun ImageView.loadImage(image: String, src: Int) {
     if (image == "") return
@@ -43,6 +52,9 @@ fun ImageView.loadImage(image: String, src: Int) {
         .into(this)
 }
 
+/**
+ * SmartRefreshLayout事件驱动
+ */
 @BindingAdapter("bind:refreshOrLoadMore")
 fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     setListener {
@@ -51,11 +63,18 @@ fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     }
 }
 
+/**
+ * 设置已无更多数据
+ */
 @BindingAdapter("bind:noMoreData")
 fun SmartRefreshLayout.noMoreData(isNoMoreData: Boolean) {
     setNoMoreData(isNoMoreData)
 }
 
+/**
+ * h5网页加载
+ * @param url url
+ */
 @BindingAdapter("bind:loadWeb")
 fun WebView.loadWeb(url: String?) {
     url?.let {
@@ -64,11 +83,17 @@ fun WebView.loadWeb(url: String?) {
     }
 }
 
+/**
+ * 知识体系分类文字格式化
+ */
 @BindingAdapter("bind:setKnowledgeCategory")
 fun TextView.setKnowledgeCategory(childList: List<Category>) {
     text = childList.joinToString("     ", transform = { child -> child.name })
 }
 
+/**
+ * EditText点击搜索按钮
+ */
 @BindingAdapter("bind:setOnSearchListener")
 fun EditText.setOnSearchListener(vm: BaseVM) {
     setOnEditorActionListener { _, actionId, _ ->

@@ -1,6 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -25,8 +25,8 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
 
     companion object {
 
-        fun open(ctx: Context, title: String, category: ArrayList<Category>) {
-            ctx.startActivity(Intent(ctx, KnowledgeActivity::class.java).apply {
+        fun open(activity: Activity, title: String, category: ArrayList<Category>) {
+            activity.startActivity(Intent(activity, KnowledgeActivity::class.java).apply {
                 putExtras(bundleOf("title" to title, "category" to category))
             })
         }

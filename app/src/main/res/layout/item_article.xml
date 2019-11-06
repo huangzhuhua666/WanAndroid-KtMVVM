@@ -14,12 +14,12 @@
         <import type="androidx.core.text.HtmlCompat"/>
 
         <variable
-            name="article"
+            name="item"
             type="com.example.hzh.ktmvvm.data.bean.Article"/>
 
         <variable
             name="presenter"
-            type="com.example.hzh.ktmvvm.adapter.ArticlePresenter"/>
+            type="com.example.hzh.library.adapter.ItemClickPresenter"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -30,7 +30,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{view -> presenter.onClick(view, article)}"
+        android:onClick="@{view -> presenter.onItemClick(view, item)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">
@@ -54,35 +54,35 @@
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/set_to_top"
-                    android:visibility="@{article.type == 1 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{item.type == 1 ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/color_ff3b30"
                     app:normalTextColor="@color/color_ff3b30"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/fresh"
-                    android:visibility="@{article.fresh ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{item.fresh ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/color_ff3b30"
                     app:normalTextColor="@color/color_ff3b30"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/QA"
-                    android:visibility="@{article.superChapterId == 440 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{item.superChapterId == 440 ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/appColor"
                     app:normalTextColor="@color/appColor"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/wechat_author"
-                    android:visibility="@{article.superChapterId == 408 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{item.superChapterId == 408 ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/appColor"
                     app:normalTextColor="@color/appColor"/>
 
                 <com.example.hzh.library.widget.RTextView
                     style="@style/TagStyle"
                     android:text="@string/project"
-                    android:visibility="@{article.superChapterId == 294 ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{item.superChapterId == 294 ? View.VISIBLE : View.GONE}"
                     app:normalStrokeColor="@color/appColor"
                     app:normalTextColor="@color/appColor"/>
 
@@ -90,7 +90,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{article.author}"
+                    android:text="@{item.author}"
                     android:textColor="@color/color_999999"
                     android:textSize="14sp"
                     tools:text="作者"/>
@@ -98,7 +98,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{article.niceDate}"
+                    android:text="@{item.niceDate}"
                     android:textColor="@color/color_999999"
                     android:textSize="13sp"
                     tools:text="时间"/>
@@ -121,8 +121,8 @@
                     android:layout_height="90dp"
                     android:layout_marginEnd="8dp"
                     android:scaleType="centerCrop"
-                    android:visibility="@{TextUtils.isEmpty(article.envelopePic) ? View.GONE : View.VISIBLE}"
-                    bind:loadImage="@{article.envelopePic}"
+                    android:visibility="@{TextUtils.isEmpty(item.envelopePic) ? View.GONE : View.VISIBLE}"
+                    bind:loadImage="@{item.envelopePic}"
                     tools:ignore="ContentDescription"
                     tools:src="@mipmap/ic_launcher"/>
 
@@ -133,7 +133,7 @@
                     android:layout_toEndOf="@id/ivPic"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{HtmlCompat.fromHtml(article.title, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
+                    android:text="@{HtmlCompat.fromHtml(item.title, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     tools:text="标题"/>
@@ -148,10 +148,10 @@
                     android:layout_toEndOf="@id/ivPic"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{HtmlCompat.fromHtml(article.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
+                    android:text="@{HtmlCompat.fromHtml(item.desc, HtmlCompat.FROM_HTML_MODE_LEGACY)}"
                     android:textColor="@color/color_666666"
                     android:textSize="15sp"
-                    android:visibility="@{TextUtils.isEmpty(article.desc) ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{TextUtils.isEmpty(item.desc) ? View.GONE : View.VISIBLE}"
                     tools:text="内容"/>
 
             </RelativeLayout>
@@ -172,17 +172,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{@string/article_category(article.superChapterName, article.chapterName)}"
+                    android:text="@{@string/article_category(item.superChapterName, item.chapterName)}"
                     android:textColor="@color/color_666666"
                     android:textSize="14sp"
                     tools:text="分类"/>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnCollect"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_666666"
-                    android:textSize="14sp"
-                    tools:text="收藏"/>
+                    android:onClick="@{view -> presenter.onItemClick(view, item)}"
+                    android:src="@{item.oCollect ? @drawable/ic_heart_pink : @drawable/ic_heart_empty}"
+                    tools:src="@drawable/ic_heart_empty"/>
 
             </LinearLayout>
 

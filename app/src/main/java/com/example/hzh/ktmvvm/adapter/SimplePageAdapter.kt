@@ -11,8 +11,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class SimplePageAdapter(
     fm: FragmentManager,
     lifecycle: Lifecycle,
-    private val size: Int,
-    private val action: ((Int) -> Fragment)
+    private val size: Int, // 总共需要加载的fragment数量
+    private val action: ((Int) -> Fragment) // 用这个来根据position加载fragment
 ) : FragmentStateAdapter(fm, lifecycle) {
 
     override fun getItemCount(): Int = size

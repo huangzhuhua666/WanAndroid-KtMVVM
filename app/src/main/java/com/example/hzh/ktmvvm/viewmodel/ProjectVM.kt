@@ -1,6 +1,8 @@
 package com.example.hzh.ktmvvm.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.data.model.ArticleModel
@@ -18,20 +20,25 @@ class ProjectVM : BaseVM() {
 
     var cid by Delegates.notNull<Int>()
 
-    val treeList = MutableLiveData<List<Category>>()
+    private val _treeList = MutableLiveData<List<Category>>()
+    val treeList: LiveData<List<Category>> = _treeList
 
-    val articleList = MutableLiveData<List<Article>>()
+    private val _articleList = MutableLiveData<List<Article>>()
+    val articleList: LiveData<List<Article>> = _articleList
 
+    /**
+     * 获取项目分类
+     */
     fun getProjectTree() {
         doOnIO(
-            tryBlock = { treeList.postValue(categoryModel.getProjectTree()) },
+            tryBlock = { _treeList.postValue(categoryModel.getProjectTree()) },
             catchBlock = { e -> e.printStackTrace() }
         )
     }
 
     override fun getInitData(isRefresh: Boolean) {
         isLoadMore = false
-        isShowLoading.value = !isRefresh
+        _isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = {
                 pageNo = when (cid) {
@@ -39,12 +46,12 @@ class ProjectVM : BaseVM() {
                     else -> 0
                 }
                 articleModel.getProjectArticle(pageNo, cid).let {
-                    articleList.postValue(it.datas)
-                    isOver.postValue(it.over)
+                    _articleList.postValue(it.datas)
+                    _isOver.postValue(it.over)
                 }
             },
             catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { isShowLoading.value = false }
+            finallyBlock = { _isShowLoading.value = false }
         )
     }
 
@@ -53,14 +60,35 @@ class ProjectVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.getProjectArticle(pageNo, cid).let {
-                    articleList.postValue(it.datas)
-                    isOver.postValue(it.over)
+                    _articleList.postValue(it.datas)
+                    _isOver.postValue(it.over)
                 }
             },
             catchBlock = { e ->
                 e.printStackTrace()
                 --pageNo
             }
+        )
+    }
+
+    /**
+     * 收藏、取消收藏
+     * @param article 文章
+     */
+    fun collectOrNot(article: Article) {
+        _isShowLoading.value = true
+        doOnIO(
+            tryBlock = {
+                if (article.collect) articleModel.unCollectArticleList(article.articleId).also {
+                    _toastTip.postValue(R.string.uncollect_success)
+                    article.collect = false
+                } else articleModel.collectionInner(article.articleId).also {
+                    _toastTip.postValue(R.string.collect_success)
+                    article.collect = true
+                }
+            },
+            catchBlock = { e -> e.printStackTrace() },
+            finallyBlock = { _isShowLoading.value = false }
         )
     }
 }

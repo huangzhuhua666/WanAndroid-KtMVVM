@@ -1,4 +1,4 @@
-package com.example.hzh.library.util
+package com.example.hzh.library.adapter
 
 import android.view.View
 import androidx.databinding.ViewDataBinding

@@ -9,10 +9,6 @@
         <variable
             name="homeVM"
             type="com.example.hzh.ktmvvm.viewmodel.HomeVM"/>
-
-        <variable
-            name="adapter"
-            type="com.example.hzh.ktmvvm.adapter.ArticleAdapter"/>
     </data>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

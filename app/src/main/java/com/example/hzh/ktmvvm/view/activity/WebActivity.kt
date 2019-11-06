@@ -1,6 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
@@ -14,8 +14,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
-import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.viewmodel.BaseVM
 import kotlinx.android.synthetic.main.activity_web.*
@@ -23,12 +23,12 @@ import kotlinx.android.synthetic.main.activity_web.*
 /**
  * Create by hzh on 2019/09/16.
  */
-class WebActivity : BaseActivity<ActivityWebBinding, BaseVM>() {
+class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
 
     companion object {
 
-        fun open(ctx: Context, url: String, title: String) {
-            ctx.startActivity(Intent(ctx, WebActivity::class.java).apply {
+        fun open(activity: Activity, url: String, title: String) {
+            activity.startActivity(Intent(activity, WebActivity::class.java).apply {
                 putExtras(bundleOf("url" to url, "title" to title))
             })
         }

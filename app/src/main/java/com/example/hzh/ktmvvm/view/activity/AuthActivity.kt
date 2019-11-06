@@ -15,8 +15,14 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, BaseVM>() {
 
     companion object {
 
-        fun open(activity: Activity, requestCode: Int) {
-            activity.startActivityForResult(Intent(activity, AuthActivity::class.java), requestCode)
+        fun open(activity: Activity, requestCode: Int = -1) {
+            if (requestCode == -1)
+                activity.startActivity(Intent(activity, AuthActivity::class.java))
+            else
+                activity.startActivityForResult(
+                    Intent(activity, AuthActivity::class.java),
+                    requestCode
+                )
         }
     }
 
