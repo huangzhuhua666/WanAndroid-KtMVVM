@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.base_refresh_list.*
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionWebsiteFragment private constructor() :
-    WanFragment<BaseRefreshListBinding, CollectionVM>() {
+class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, CollectionVM>() {
 
     companion object {
 

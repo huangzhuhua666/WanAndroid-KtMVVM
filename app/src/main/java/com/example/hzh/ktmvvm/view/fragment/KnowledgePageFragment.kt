@@ -23,8 +23,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/09/19.
  */
-class KnowledgePageFragment private constructor() :
-    WanFragment<BaseRefreshListBinding, KnowledgeVM>() {
+class KnowledgePageFragment : WanFragment<BaseRefreshListBinding, KnowledgeVM>() {
 
     companion object {
 

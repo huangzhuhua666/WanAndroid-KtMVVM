@@ -8,9 +8,11 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityCollectionBinding
 import com.example.hzh.ktmvvm.view.fragment.*
+import com.example.hzh.ktmvvm.widget.CollectPopup
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.viewmodel.BaseVM
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lxj.xpopup.XPopup
 import kotlinx.android.synthetic.main.activity_collection.*
 
 /**
@@ -38,6 +40,19 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, BaseVM>() {
         )
     }
 
+    private val mPopupWindow by lazy {
+        XPopup.Builder(mContext)
+            .atView(btnAdd)
+            .hasShadowBg(false)
+            .offsetX(30)
+            .asCustom(CollectPopup(mContext) {
+                when (it.id) {
+                    R.id.btnArticle -> toast("article")
+                    R.id.btnWebsite -> toast("website")
+                }
+            })
+    }
+
     override fun initView() {
         listOf(
             CollectionArticleFragment.newInstance(),
@@ -57,7 +72,7 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, BaseVM>() {
     override fun initListener() {
         btnBack.setOnClickListener { finish() }
 
-        btnAdd.setOnClickListener { toast("TODO") }
+        btnAdd.setOnClickListener { mPopupWindow.show() }
     }
 
     override fun initData() {

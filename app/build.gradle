@@ -43,6 +43,12 @@ dependencies {
 
     // Glide
     implementation rootProject.ext.dependencies["Glide"]
+
+    // LitePal数据库
+    implementation rootProject.ext.dependencies["litepal"]
+
+    // xpopup
+    implementation rootProject.ext.dependencies["xpopup"]
 }
 
 repositories {

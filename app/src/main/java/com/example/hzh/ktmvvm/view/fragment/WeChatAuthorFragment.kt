@@ -15,8 +15,7 @@ import kotlinx.android.synthetic.main.fragment_wechat_author.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class WeChatAuthorFragment private constructor() :
-    BaseFragment<FragmentWechatAuthorBinding, WeChatAuthorVM>() {
+class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAuthorVM>() {
 
     companion object {
 

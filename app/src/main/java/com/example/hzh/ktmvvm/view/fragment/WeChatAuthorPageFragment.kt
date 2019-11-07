@@ -23,8 +23,7 @@ import kotlin.properties.Delegates
 /**
  * Create by hzh on 2019/9/21.
  */
-class WeChatAuthorPageFragment private constructor() :
-    WanFragment<BaseRefreshListBinding, WeChatAuthorVM>() {
+class WeChatAuthorPageFragment : WanFragment<BaseRefreshListBinding, WeChatAuthorVM>() {
 
     companion object {
 

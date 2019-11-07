@@ -20,8 +20,7 @@ import kotlinx.android.synthetic.main.base_refresh_list.refreshLayout
 /**
  * Create by hzh on 2019/9/26.
  */
-class CollectionArticleFragment private constructor() :
-    WanFragment<BaseRefreshListBinding, CollectionVM>() {
+class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, CollectionVM>() {
 
     companion object {
 

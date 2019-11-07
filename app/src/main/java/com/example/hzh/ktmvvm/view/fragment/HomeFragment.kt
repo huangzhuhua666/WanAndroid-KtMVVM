@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * Create by hzh on 2019/09/10.
  */
-class HomeFragment private constructor() : WanFragment<FragmentHomeBinding, HomeVM>() {
+class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
 
     companion object {
 

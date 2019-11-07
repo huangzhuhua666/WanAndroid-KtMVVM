@@ -34,4 +34,5 @@
     <string name="logout_success">已退出登录</string>
     <string name="collect_success">已加入收藏</string>
     <string name="uncollect_success">已移出收藏</string>
+    <string name="outer_article">站外文章</string>
 </resources>

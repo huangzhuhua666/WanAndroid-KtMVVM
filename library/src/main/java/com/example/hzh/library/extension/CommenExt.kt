@@ -1,11 +1,15 @@
 package com.example.hzh.library.extension
 
 import android.content.Context
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * Create by hzh on 2019/09/05.
  */
+const val MM_dd = "M-d"
+const val yyyy_MM_dd = "yyyy-M-d"
+
 fun Char.digit(radix: Int): Int = Character.digit(this, radix)
 
 fun Float.dp2px(context: Context) = (this * context.resources.displayMetrics.density + .5f).toInt()
@@ -17,6 +21,28 @@ fun Float.px2dp(context: Context) = (this / context.resources.displayMetrics.den
 
 fun Float.px2sp(context: Context) =
     (this / context.resources.displayMetrics.scaledDensity + .5f).toInt()
+
+fun Long.dateDistance(): String {
+    val distance: String
+    val current = System.currentTimeMillis()
+    var diff = (current - this) / 1000
+    distance = if (diff / 60 == 0L) {
+        "刚刚"
+    } else if (diff / 60 / 60 == 0L) {
+        "${diff / 60}分钟前"
+    } else if (diff / 60 / 60 / 24 == 0L) {
+        "${diff / 60 / 60}小时前"
+    } else if (diff / 60 / 60 / 24 / 2 == 0L) {
+        "昨天"
+    } else {
+        diff = diff / 60 / 60 / 24
+        if (diff <= 20) "${diff}天前" else this.formatDate(yyyy_MM_dd)
+    }
+    return distance
+}
+
+fun Long.formatDate(style: String): String =
+    SimpleDateFormat(style, Locale.getDefault()).format(this)
 
 fun String.hexStringToByteArray(): ByteArray {
     val len = length

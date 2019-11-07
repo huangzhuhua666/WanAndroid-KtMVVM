@@ -3,10 +3,7 @@ package com.example.hzh.library.widget.dialog
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import androidx.fragment.app.*
 import com.example.hzh.library.R
 
@@ -29,6 +26,9 @@ abstract class BaseDialog : DialogFragment() {
     protected open val windowAnimations: Int
         get() = R.style.AnimDialog
 
+    protected open val gravity: Int
+        get() = Gravity.CENTER
+
     private var mShowTag = ""
     private val mills = LongArray(2)
     protected val dm by lazy { DisplayMetrics() }
@@ -46,6 +46,7 @@ abstract class BaseDialog : DialogFragment() {
             activity?.windowManager?.defaultDisplay?.getMetrics(dm)
 
             dialogWindow = window?.let {
+                it.setGravity(gravity)
                 it.setBackgroundDrawableResource(backgroundDrawableResource)
                 it.attributes.windowAnimations = windowAnimations
                 it
