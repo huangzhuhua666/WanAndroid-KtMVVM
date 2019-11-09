@@ -78,9 +78,11 @@ class WeChatAuthorVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 if (article.collect) articleModel.unCollectArticleList(article.articleId).also {
+                    // 取消收藏
                     _toastTip.postValue(R.string.uncollect_success)
                     article.collect = false
-                } else articleModel.collectionInner(article.articleId).also {
+                } else articleModel.collectInner(article.articleId).also {
+                    // 收藏
                     _toastTip.postValue(R.string.collect_success)
                     article.collect = true
                 }

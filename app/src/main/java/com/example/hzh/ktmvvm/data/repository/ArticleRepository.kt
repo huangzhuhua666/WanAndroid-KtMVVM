@@ -178,8 +178,13 @@ class ArticleRepository private constructor() {
 
     /**
      * 收藏站外文章
+     * @param params author(非必传) 作者
+     *
+     *               title 标题
+     *
+     *               link 连接
      */
-    suspend fun collectOuter(): Article = service.collectOuter()
+    suspend fun collectOuter(params: Map<String, Any>): Article = service.collectOuter(params)
 
     /**
      * 文章列表取消收藏

@@ -30,10 +30,11 @@ class ConfirmDialog private constructor(private val builder: Builder) : BaseDial
         return mBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
         mBinding.builder = builder
+    }
 
+    override fun initListener() {
         btnLeft.setOnClickListener {
             builder.leftClickListener?.invoke()
             dismiss()
@@ -45,12 +46,8 @@ class ConfirmDialog private constructor(private val builder: Builder) : BaseDial
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialogWindow?.setLayout(
-            (dm.widthPixels * 0.8f).toInt(),
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+    override fun initData() {
+
     }
 
     class Builder {

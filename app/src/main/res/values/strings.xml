@@ -35,4 +35,16 @@
     <string name="collect_success">已加入收藏</string>
     <string name="uncollect_success">已移出收藏</string>
     <string name="outer_article">站外文章</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="please_input_website_name">请输入网站名</string>
+    <string name="please_input_website_link">请输入网站链接</string>
+    <string name="operate_success">操作成功</string>
+    <string name="website_name">网站名</string>
+    <string name="link">链接</string>
+    <string name="add_or_edit_website">添加、编辑收藏网站</string>
+    <string name="add_outer_article">添加站外文章</string>
+    <string name="please_input_article_title">请输入文章标题</string>
+    <string name="please_input_article_link">请输入文章链接</string>
+    <string name="please_input_article_author">请输入作者名</string>
 </resources>

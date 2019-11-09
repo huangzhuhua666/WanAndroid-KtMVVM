@@ -97,9 +97,16 @@ interface ArticleApi {
 
     /**
      * 收藏站外文章
+     * @param params author(非必传) 作者
+     *
+     *               title 标题
+     *
+     *               link 连接
      */
+    @JvmSuppressWildcards
     @POST("/lg/collect/add/json")
-    suspend fun collectOuter(): Article
+    @FormUrlEncoded
+    suspend fun collectOuter(@FieldMap params: Map<String, Any>): Article
 
     /**
      * 文章列表取消收藏

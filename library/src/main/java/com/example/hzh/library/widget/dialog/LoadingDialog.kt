@@ -1,8 +1,7 @@
 package com.example.hzh.library.widget.dialog
 
-import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import com.example.hzh.library.R
 import kotlinx.android.synthetic.main.dialog_loading.*
 
@@ -20,16 +19,19 @@ class LoadingDialog : BaseDialog() {
     override val canceledOnTouchOutside: Boolean
         get() = false
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
         lifecycle.addObserver(tlv)
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialogWindow?.setLayout(
-            (dm.widthPixels * 0.6f).toInt(),
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+    override fun initListener() {
+
+    }
+
+    override fun initData() {
+
+    }
+
+    override fun setLayout(window: Window) {
+        window.setLayout((dm.widthPixels * 0.6f).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

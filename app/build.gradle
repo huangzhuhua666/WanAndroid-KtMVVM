@@ -49,6 +49,9 @@ dependencies {
 
     // xpopup
     implementation rootProject.ext.dependencies["xpopup"]
+
+    // flexbox
+    implementation rootProject.ext.dependencies["flexbox"]
 }
 
 repositories {

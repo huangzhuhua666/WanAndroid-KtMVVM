@@ -1,9 +1,12 @@
 package com.example.hzh.ktmvvm.data.model
 
+import android.text.TextUtils
+import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Banner
 import com.example.hzh.ktmvvm.data.bean.Page
 import com.example.hzh.ktmvvm.data.repository.ArticleRepository
+import com.example.hzh.ktmvvm.util.OperateCallback
 
 /**
  * Create by hzh on 2019/9/29.
@@ -67,7 +70,33 @@ class ArticleModel {
      * 收藏站内文章
      * @param id 文章id
      */
-    suspend fun collectionInner(id: Int) = repo.collectInner(id)
+    suspend fun collectInner(id: Int) = repo.collectInner(id)
+
+    /**
+     * 收藏站外文章
+     * @param article
+     * @param callback
+     */
+    suspend fun collectOuter(article: Article, callback: OperateCallback<Article>) {
+        article.run {
+            if (TextUtils.isEmpty(title)) {
+                callback.onInputIllegal(R.string.please_input_article_title)
+                return
+            }
+
+            if (TextUtils.isEmpty(link)) {
+                callback.onInputIllegal(R.string.please_input_article_link)
+                return
+            }
+
+            callback.onPreOperate()
+
+            val params = mutableMapOf("title" to title, "link" to link)
+            if (!TextUtils.isEmpty(author)) params["author"] = author
+
+            repo.collectOuter(params).let { callback.onCallback(it) }
+        }
+    }
 
     /**
      * 文章列表取消收藏

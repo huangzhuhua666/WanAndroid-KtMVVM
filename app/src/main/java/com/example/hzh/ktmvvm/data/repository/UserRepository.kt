@@ -2,10 +2,12 @@ package com.example.hzh.ktmvvm.data.repository
 
 import androidx.core.content.edit
 import com.example.hzh.ktmvvm.app.App
+import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.User
 import com.example.hzh.ktmvvm.data.network.UserApi
 import com.example.hzh.library.http.APIException
 import com.example.hzh.library.http.NetConfig
+import org.litepal.LitePal
 
 /**
  * Create by hzh on 2019/10/22.
@@ -40,6 +42,8 @@ class UserRepository private constructor() {
                 putString("nickname", nickname)
                 putInt("type", type)
             }
+            // 删除之前的缓存信息
+            LitePal.deleteAll(Article::class.java)
         }
     }
 
@@ -61,6 +65,8 @@ class UserRepository private constructor() {
                 putString("nickname", nickname)
                 putInt("type", type)
             }
+            // 删除之前的缓存信息
+            LitePal.deleteAll(Article::class.java)
         }
     }
 
@@ -74,6 +80,8 @@ class UserRepository private constructor() {
             // 清空登录信息
             App.isLogin = false
             App.configSP.edit { clear() }
+            // 删除之前的缓存信息
+            LitePal.deleteAll(Article::class.java)
         } else throw e
     }
 }

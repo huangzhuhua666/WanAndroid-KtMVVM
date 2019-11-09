@@ -1,5 +1,6 @@
 package com.example.hzh.ktmvvm.util
 
+import android.graphics.Color
 import android.view.inputmethod.EditorInfo
 import android.webkit.WebView
 import android.widget.EditText
@@ -11,8 +12,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.library.extension.setListener
 import com.example.hzh.library.viewmodel.BaseVM
+import com.example.hzh.library.widget.RTextView
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.youth.banner.Banner
+import java.util.*
 
 /**
  * Create by hzh on 2019/09/11.
@@ -79,7 +82,8 @@ fun SmartRefreshLayout.noMoreData(isNoMoreData: Boolean) {
 fun WebView.loadWeb(url: String?) {
     url?.let {
         if (it == "") return
-        loadUrl(url)
+        if (!it.startsWith("http")) loadUrl("https://$it")
+        else loadUrl(url)
     }
 }
 
@@ -99,5 +103,17 @@ fun EditText.setOnSearchListener(vm: BaseVM) {
     setOnEditorActionListener { _, actionId, _ ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) vm.getInitData(false)
         false
+    }
+}
+
+/**
+ * 随机字体颜色
+ * @param bound rbg边界 0 ~ bound - 1
+ */
+@BindingAdapter("bind:randomTextColor")
+fun TextView.randomTextColor(bound: Int) {
+    Color.rgb(Random().nextInt(bound), Random().nextInt(bound), Random().nextInt(bound)).let {
+        if (this is RTextView) setNormalTextColor(it)
+        else setTextColor(it)
     }
 }

@@ -1,32 +1,35 @@
 package com.example.hzh.ktmvvm.widget
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.View
 import com.example.hzh.ktmvvm.R
 import com.lxj.xpopup.core.AttachPopupView
-import kotlinx.android.synthetic.main.popup_collect.view.*
+import kotlinx.android.synthetic.main.popup_add_collect.view.*
 
 /**
  * Create by hzh on 2019/11/7.
  */
 @Suppress("ViewConstructor")
-class CollectPopup(
+class AddCollectPopup(
     context: Context,
-    private val onClick: ((View) -> Unit)
+    private val action: ((View) -> Unit)
 ) : AttachPopupView(context) {
 
-    override fun getImplLayoutId(): Int {
-        return R.layout.popup_collect
-    }
+    override fun getImplLayoutId(): Int = R.layout.popup_add_collect
+
+    override fun getPopupBackground(): Drawable = ColorDrawable(0x00000000)
 
     override fun onCreate() {
         super.onCreate()
         btnArticle.setOnClickListener { v ->
-            onClick.invoke(v)
+            action.invoke(v)
             dismiss()
         }
+
         btnWebsite.setOnClickListener { v ->
-            onClick.invoke(v)
+            action.invoke(v)
             dismiss()
         }
     }

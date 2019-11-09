@@ -8,4 +8,6 @@ import android.view.View
 interface ItemClickPresenter<in T> {
 
     fun onItemClick(view: View, item: T)
+
+    fun onLongClick(view: View, item: T): Boolean = false
 }

@@ -14,6 +14,7 @@ import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SingleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
+import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlinx.android.synthetic.main.base_refresh_list.*
 import kotlinx.android.synthetic.main.base_refresh_list.refreshLayout
 
@@ -31,7 +32,7 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
         get() = R.layout.base_refresh_list
 
     override val mViewModel: CollectionVM?
-        get() = obtainVM(CollectionVM::class.java)
+        get() = obtainVM(CollectionVM::class.java).also { it.flag = 0 }
 
     private val mAdapter by lazy { SingleBindingAdapter<Article>(R.layout.item_article) }
 
@@ -42,6 +43,10 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
     }
 
     override fun initListener() {
+        LiveEventBus.get("update_collect_article").observe(viewLifecycleOwner, Observer {
+            mViewModel?.getInitData(false)
+        })
+
         mViewModel?.run {
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 when (isLoadMore) {
@@ -62,7 +67,7 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {
-                        if (App.isLogin) mViewModel?.unCollect(item) // 收藏
+                        if (App.isLogin) mViewModel?.unCollect(item) // 取消收藏
                         else AuthActivity.open(mContext)
                     }
                 }

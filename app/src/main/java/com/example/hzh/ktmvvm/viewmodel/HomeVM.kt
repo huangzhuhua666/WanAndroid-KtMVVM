@@ -26,8 +26,9 @@ class HomeVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.let {
-                    _bannerList.postValue(it.getBanner())
+                    _bannerList.postValue(it.getBanner()) // 获取banner
 
+                    // 获取置顶文章和第一页文章
                     it.getHomeArticle(pageNo).run {
                         _articleList.postValue(datas)
                         _isOver.postValue(over)
@@ -43,6 +44,7 @@ class HomeVM : BaseVM() {
         super.loadData()
         doOnIO(
             tryBlock = {
+                // 加载更多
                 articleModel.getHomeArticle(pageNo).let {
                     _articleList.postValue(it.datas)
                     _isOver.postValue(it.over)
@@ -64,9 +66,11 @@ class HomeVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 if (article.collect) articleModel.unCollectArticleList(article.articleId).also {
+                    // 取消收藏
                     _toastTip.postValue(R.string.uncollect_success)
                     article.collect = false
-                } else articleModel.collectionInner(article.articleId).also {
+                } else articleModel.collectInner(article.articleId).also {
+                    // 收藏
                     _toastTip.postValue(R.string.collect_success)
                     article.collect = true
                 }

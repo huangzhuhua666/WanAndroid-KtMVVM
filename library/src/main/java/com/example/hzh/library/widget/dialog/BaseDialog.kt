@@ -32,7 +32,6 @@ abstract class BaseDialog : DialogFragment() {
     private var mShowTag = ""
     private val mills = LongArray(2)
     protected val dm by lazy { DisplayMetrics() }
-    protected var dialogWindow: Window? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,12 +39,19 @@ abstract class BaseDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(mLayoutId, null, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initListener()
+    }
+
     override fun onStart() {
         super.onStart()
         dialog?.run {
             activity?.windowManager?.defaultDisplay?.getMetrics(dm)
 
-            dialogWindow = window?.let {
+            window?.let {
+                setLayout(it)
                 it.setGravity(gravity)
                 it.setBackgroundDrawableResource(backgroundDrawableResource)
                 it.attributes.windowAnimations = windowAnimations
@@ -57,6 +63,11 @@ abstract class BaseDialog : DialogFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        initData()
+    }
+
     fun show(fragment: Fragment) {
         show(fragment.fragmentManager!!, fragment.javaClass.name)
     }
@@ -66,11 +77,12 @@ abstract class BaseDialog : DialogFragment() {
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
-        if (!isRepeatedShow(tag ?: "")) super.show(manager, tag)
+        if (!isShowing() && !isRepeatedShow(tag ?: "")) super.show(manager, tag)
     }
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
-        return if (!isRepeatedShow(tag ?: "")) super.show(transaction, tag) else -1
+        return if (!isShowing() && !isRepeatedShow(tag ?: ""))
+            super.show(transaction, tag) else -1
     }
 
     private fun isRepeatedShow(tag: String): Boolean {
@@ -83,4 +95,14 @@ abstract class BaseDialog : DialogFragment() {
     }
 
     fun isShowing(): Boolean = dialog?.isShowing ?: false
+
+    abstract fun initView()
+
+    abstract fun initListener()
+
+    abstract fun initData()
+
+    protected open fun setLayout(window: Window) {
+        window.setLayout((dm.widthPixels * 0.8f).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
 }

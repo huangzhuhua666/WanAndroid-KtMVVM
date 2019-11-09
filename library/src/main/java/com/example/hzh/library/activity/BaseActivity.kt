@@ -82,7 +82,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
 
         mViewModel?.let {
             it.isShowLoading.observe(mContext, Observer { isShowLoading ->
-                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
+                if (isShowLoading) mLoadingDialog.show(mContext)
                 else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
             })
 

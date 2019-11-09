@@ -71,7 +71,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
 
         mViewModel?.let {
             it.isShowLoading.observe(this, Observer { isShowLoading ->
-                if (isShowLoading && !mLoadingDialog.isShowing()) mLoadingDialog.show(mContext)
+                if (isShowLoading) mLoadingDialog.show(mContext)
                 else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
             })
 
