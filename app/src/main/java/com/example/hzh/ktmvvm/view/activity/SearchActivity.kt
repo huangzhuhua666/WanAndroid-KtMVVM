@@ -105,6 +105,16 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
                 }
             })
 
+            btnBack.setOnClickListener {
+                mViewModel?.run {
+                    if (isResult.value!!) {
+                        isResult.value = false
+                        return@setOnClickListener
+                    } else finish()
+                }
+                finish()
+            }
+
             // 清空搜索栏
             btnClear.setOnClickListener { keyword.value = "" }
 
