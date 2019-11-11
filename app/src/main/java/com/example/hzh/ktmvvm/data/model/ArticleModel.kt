@@ -111,4 +111,11 @@ class ArticleModel {
      */
     suspend fun unCollectMyCollection(id: Int, originId: Int) =
         repo.unCollectMyCollection(id, originId)
+
+    /**
+     * 搜索，支持多个关键词、空格分开
+     * @param pageNo 页码，从0开始
+     * @param keyword 关键词
+     */
+    suspend fun search(pageNo: Int, keyword: String): Page<Article> = repo.search(pageNo, keyword)
 }

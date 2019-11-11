@@ -48,6 +48,10 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".view.activity.SearchActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".view.activity.WebActivity"
             android:screenOrientation="portrait"/>
     </application>

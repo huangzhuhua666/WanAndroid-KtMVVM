@@ -126,4 +126,16 @@ interface ArticleApi {
         @Path("id") id: Int,
         @Field("originId") originId: Int
     ): String
+
+    /**
+     * 搜索，支持多个关键词、空格分开
+     * @param pageNo 页码，从0开始
+     * @param keyword 关键词
+     */
+    @POST("/article/query/{pageNo}/json")
+    @FormUrlEncoded
+    suspend fun search(
+        @Path("pageNo") pageNo: Int,
+        @Field("k") keyword: String
+    ): Page<Article>
 }

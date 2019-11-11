@@ -216,4 +216,12 @@ class ArticleRepository private constructor() {
             }
         } else throw e
     }
+
+    /**
+     * 搜索，支持多个关键词、空格分开
+     * @param pageNo 页码，从0开始
+     * @param keyword 关键词
+     */
+    suspend fun search(pageNo: Int, keyword: String): Page<Article> =
+        service.search(pageNo, keyword)
 }

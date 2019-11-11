@@ -21,4 +21,5 @@ class Website : LitePalSupport() {
     var order: Int = -1
     var userId: Int = -1
     var visible: Int = -1
+    var expired = -1L
 }

@@ -5,6 +5,7 @@ import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.data.network.WebsiteApi
 import com.example.hzh.library.http.APIException
 import com.example.hzh.library.http.NetConfig
+import org.litepal.LitePal
 
 /**
  * Create by hzh on 2019/11/8.
@@ -52,5 +53,40 @@ class WebsiteRepository private constructor() {
     } catch (e: APIException) {
         if (e.code == NetConfig.CODE_NO_RESPONSE_BODY) "" // 操作成功了后台还是返回null，不是我的锅啊
         else throw e
+    }
+
+    /**
+     * 获取热搜词
+     */
+    suspend fun getHotKey(): List<Website> = service.getHotKey()
+
+    /**
+     * 获取常用网站
+     */
+    suspend fun getCommonWebsite(): List<Website> {
+        // 获取缓存
+        var websiteList = LitePal.where(
+            "expired > ?",
+            "${System.currentTimeMillis()}"
+        ).find(Website::class.java)
+
+        if (websiteList.isEmpty()) { // 缓存过期
+            // 删除缓存
+            LitePal.deleteAll(
+                Website::class.java,
+                "expired < ?",
+                "${System.currentTimeMillis()}"
+            )
+
+            // 从网络获取数据
+            websiteList = service.getCommonWebsite()
+            // 缓存
+            websiteList.forEach { cate ->
+                cate.expired = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000L
+                cate.save()
+            }
+        }
+
+        return websiteList
     }
 }

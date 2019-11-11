@@ -47,4 +47,9 @@
     <string name="please_input_article_title">请输入文章标题</string>
     <string name="please_input_article_link">请输入文章链接</string>
     <string name="please_input_article_author">请输入作者名</string>
+    <string name="search_something">搜点啥？</string>
+    <string name="search_history">搜索历史</string>
+    <string name="clear">清空</string>
+    <string name="hot_search">大家都在搜</string>
+    <string name="common_website">常用网站</string>
 </resources>

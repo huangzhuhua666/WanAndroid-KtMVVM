@@ -92,6 +92,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
         btnDrawer.setOnClickListener { drawer.openDrawer(GravityCompat.START) }
 
+        btnSearch.setOnClickListener { SearchActivity.open(mContext) }
+
         nav.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.collect -> { // 收藏

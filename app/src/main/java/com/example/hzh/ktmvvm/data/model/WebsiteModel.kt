@@ -69,4 +69,14 @@ class WebsiteModel {
      * @param id 收藏网站的id
      */
     suspend fun deleteWebsite(id: Int) = repo.deleteWebsite(id)
+
+    /**
+     * 获取热搜词
+     */
+    suspend fun getHotKey(): List<Website> = repo.getHotKey()
+
+    /**
+     * 获取常用网站
+     */
+    suspend fun getCommonWebsite(): List<Website> = repo.getCommonWebsite()
 }

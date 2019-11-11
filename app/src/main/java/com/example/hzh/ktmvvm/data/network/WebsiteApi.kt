@@ -50,4 +50,16 @@ interface WebsiteApi {
     @POST("/lg/collect/deletetool/json")
     @FormUrlEncoded
     suspend fun deleteWebsite(@Field("id") id: Int): String
+
+    /**
+     * 获取热搜词
+     */
+    @GET("/hotkey/json")
+    suspend fun getHotKey(): List<Website>
+
+    /**
+     * 获取常用网站
+     */
+    @GET("/friend/json")
+    suspend fun getCommonWebsite(): List<Website>
 }

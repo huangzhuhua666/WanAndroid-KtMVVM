@@ -9,7 +9,7 @@
 
         <variable
             name="item"
-            type="com.example.hzh.ktmvvm.data.bean.Website"/>
+            type="String"/>
 
         <variable
             name="presenter"
@@ -27,17 +27,16 @@
         android:gravity="center"
         android:maxLines="1"
         android:onClick="@{v -> presenter.onItemClick(v, item)}"
-        android:onLongClick="@{v -> presenter.onLongClick(v, item)}"
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="24dp"
         android:paddingBottom="8dp"
-        android:text="@{item.name}"
+        android:text="@{item}"
         app:normalSolid="@android:color/white"
         app:normalStrokeColor="@color/color_4c4c4c"
         app:normalStrokeWidth="1dp"
         app:radii="36dp"
         bind:randomTextColor="@{235}"
-        tools:text="@string/website"/>
+        tools:text="keyword"/>
 
 </layout>
