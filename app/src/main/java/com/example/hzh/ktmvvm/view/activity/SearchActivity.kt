@@ -10,6 +10,7 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.databinding.ActivitySearchBinding
+import com.example.hzh.ktmvvm.util.ArticleDiffCallback
 import com.example.hzh.ktmvvm.util.StringDiffCallback
 import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.viewmodel.SearchVM
@@ -96,13 +97,8 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
 
             articleList.observe(mContext, Observer {
                 // 搜索结果
-                when (isLoadMore) {
-                    false -> mArticleAdapter.setNewData(it)
-                    true -> {
-                        mArticleAdapter.addData(it)
-                        refreshLayout.finishLoadMore()
-                    }
-                }
+                mArticleAdapter.setNewDiffData(ArticleDiffCallback(it))
+                if (isLoadMore) refreshLayout.finishLoadMore()
             })
 
             btnBack.setOnClickListener {

@@ -52,7 +52,7 @@ class CollectionVM : BaseVM() {
             tryBlock = {
                 articleModel.getCollections(pageNo).run {
                     // 获取收藏文章
-                    _articleList.postValue(datas)
+                    _articleList.postValue(_articleList.value?.plus(datas))
                     _isOver.postValue(over)
                 }
             },

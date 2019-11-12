@@ -67,7 +67,7 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
     }
 
     override fun initListener() {
-
+        btnBack.setOnClickListener { finish() }
     }
 
     override fun initData() {

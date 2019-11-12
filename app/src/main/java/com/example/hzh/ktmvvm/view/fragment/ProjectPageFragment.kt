@@ -9,6 +9,7 @@ import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
+import com.example.hzh.ktmvvm.util.ArticleDiffCallback
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
@@ -60,16 +61,8 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
 
         mViewModel?.run {
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
-                when (isLoadMore) {
-                    false -> {
-                        mAdapter.setNewData(articleList)
-                        refreshLayout.finishRefresh()
-                    }
-                    true -> {
-                        mAdapter.addData(articleList)
-                        refreshLayout.finishLoadMore()
-                    }
-                }
+                mAdapter.setNewDiffData(ArticleDiffCallback(articleList))
+                refreshLayout.run { if (isLoadMore) finishLoadMore() else finishRefresh() }
             })
         }
 

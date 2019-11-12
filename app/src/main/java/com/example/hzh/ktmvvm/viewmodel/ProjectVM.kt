@@ -60,7 +60,7 @@ class ProjectVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.getProjectArticle(pageNo, cid).let {
-                    _articleList.postValue(it.datas)
+                    _articleList.postValue(_articleList.value?.plus(it.datas))
                     _isOver.postValue(it.over)
                 }
             },

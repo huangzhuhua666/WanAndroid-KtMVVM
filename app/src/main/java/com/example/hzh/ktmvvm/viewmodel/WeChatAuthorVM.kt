@@ -58,7 +58,7 @@ class WeChatAuthorVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.getWeChatArticle(id.value!!, pageNo).let {
-                    _articleList.postValue(it.datas)
+                    _articleList.postValue(_articleList.value?.plus(it.datas))
                     _isOver.postValue(it.over)
                 }
             },
