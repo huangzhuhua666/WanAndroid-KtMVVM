@@ -171,6 +171,7 @@
             android:layout_height="match_parent"
             android:visibility="@{searchVM.isResult ? View.VISIBLE : View.GONE}"
             app:srlEnableRefresh="false"
+            bind:isFinishGetData="@{searchVM.isFinish}"
             bind:noMoreData="@{searchVM.isOver}"
             bind:refreshOrLoadMore="@{searchVM}"
             tools:visibility="gone">

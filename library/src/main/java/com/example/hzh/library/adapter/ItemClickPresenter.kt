@@ -7,7 +7,7 @@ import android.view.View
  */
 interface ItemClickPresenter<in T> {
 
-    fun onItemClick(view: View, item: T)
+    fun onItemClick(view: View, item: T, position: Int)
 
-    fun onLongClick(view: View, item: T): Boolean = false
+    fun onLongClick(view: View, item: T, position: Int): Boolean = false
 }

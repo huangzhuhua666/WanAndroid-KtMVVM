@@ -42,7 +42,6 @@ class AuthVM : BaseVM() {
                     }
                 })
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false })
     }
 
@@ -72,7 +71,6 @@ class AuthVM : BaseVM() {
                         }
                     })
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false })
     }
 
@@ -88,7 +86,6 @@ class AuthVM : BaseVM() {
                     _toastTip.postValue(R.string.logout_success)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

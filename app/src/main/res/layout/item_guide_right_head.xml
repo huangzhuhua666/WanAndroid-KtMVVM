@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.example.hzh.ktmvvm.data.bean.Guide"/>
+
+        <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
+            name="presenter"
+            type="com.example.hzh.library.adapter.ItemClickPresenter"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_ececec"
+            android:padding="6dp"
+            android:text="@{item.name}"
+            android:textColor="@color/color_333333"
+            android:textSize="14sp"
+            tools:text="@string/common_website"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvInner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+
+    </LinearLayout>
+
+</layout>

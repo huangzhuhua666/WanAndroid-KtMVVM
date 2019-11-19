@@ -15,9 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/llTitle"
@@ -25,11 +26,7 @@
                 android:layout_height="49dp"
                 android:background="@color/appColor"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/vpContent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/btnDrawer"
@@ -61,22 +58,15 @@
                 android:id="@+id/vpContent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_weight="1"
                 android:background="@color/color_f2f2f2"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/indicator"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llTitle"/>
+                android:orientation="horizontal"/>
 
             <com.example.hzh.library.widget.TabIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/color_f5f5f5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vpContent">
+                android:background="@color/color_f5f5f5">
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
@@ -92,6 +82,12 @@
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
+                    app:tabIconNormal="@drawable/ic_navigation_normal"
+                    app:tabIconSelect="@drawable/ic_navigation_select"
+                    app:tabText="@string/navigation"/>
+
+                <com.example.hzh.library.widget.TabView
+                    style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_wechat_normal"
                     app:tabIconSelect="@drawable/ic_wechat_select"
                     app:tabText="@string/wechat_author"/>
@@ -104,7 +100,7 @@
 
             </com.example.hzh.library.widget.TabIndicator>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav"

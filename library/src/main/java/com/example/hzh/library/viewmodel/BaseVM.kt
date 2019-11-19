@@ -17,9 +17,9 @@ open class BaseVM : ViewModel() {
     protected var pageNo = 0
 
     /**
-     * 标记是刷新还是加载更多
+     * 标记是否已加载完数据
      */
-    var isLoadMore = false
+    val isFinish = MutableLiveData(false)
 
     /**
      * 标记是否需要显示loading动画
@@ -77,6 +77,7 @@ open class BaseVM : ViewModel() {
             try {
                 withContext(Dispatchers.IO) { tryBlock() }
             } catch (e: Throwable) {
+                e.printStackTrace()
                 if (e !is CancellationException || handleCancellationExceptionManually) {
                     catchBlock(e)
                     _exception.value = e
@@ -92,7 +93,6 @@ open class BaseVM : ViewModel() {
      * @param isRefresh 标记是否需要loading动画
      */
     open fun getInitData(isRefresh: Boolean) {
-        isLoadMore = false
         pageNo = 0
         _isShowLoading.value = !isRefresh
     }
@@ -101,7 +101,6 @@ open class BaseVM : ViewModel() {
      * 加载更多数据
      */
     open fun loadData() {
-        isLoadMore = true
         ++pageNo
     }
 }

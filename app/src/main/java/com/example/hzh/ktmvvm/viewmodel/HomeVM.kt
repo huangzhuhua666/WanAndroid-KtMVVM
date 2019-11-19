@@ -35,8 +35,10 @@ class HomeVM : BaseVM() {
                     }
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -50,10 +52,8 @@ class HomeVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -75,7 +75,6 @@ class HomeVM : BaseVM() {
                     article.collect = true
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

@@ -18,6 +18,10 @@
             type="com.example.hzh.ktmvvm.data.bean.Article"/>
 
         <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
             name="presenter"
             type="com.example.hzh.library.adapter.ItemClickPresenter"/>
     </data>
@@ -30,7 +34,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{view -> presenter.onItemClick(view, item)}"
+        android:onClick="@{view -> presenter.onItemClick(view, item, position)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">
@@ -182,7 +186,7 @@
                     android:id="@+id/btnCollect"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:onClick="@{view -> presenter.onItemClick(view, item)}"
+                    android:onClick="@{view -> presenter.onItemClick(view, item, position)}"
                     android:src="@{item.oCollect ? @drawable/ic_heart_pink : @drawable/ic_heart_empty}"
                     tools:src="@drawable/ic_heart_empty"/>
 

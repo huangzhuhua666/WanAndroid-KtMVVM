@@ -9,7 +9,7 @@
 
         <variable
             name="item"
-            type="String"/>
+            type="com.example.hzh.ktmvvm.data.bean.SubGuide"/>
 
         <variable
             name="position"
@@ -35,12 +35,13 @@
         android:paddingTop="8dp"
         android:paddingEnd="24dp"
         android:paddingBottom="8dp"
-        android:text="@{item}"
+        android:text="@{item.title}"
+        android:textSize="12sp"
         app:normalSolid="@android:color/white"
         app:normalStrokeColor="@color/color_4c4c4c"
         app:normalStrokeWidth="1dp"
         app:radii="36dp"
         bind:randomTextColor="@{235}"
-        tools:text="keyword"/>
+        tools:text="@string/website"/>
 
 </layout>

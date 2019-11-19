@@ -15,12 +15,11 @@ import com.example.hzh.ktmvvm.util.StringDiffCallback
 import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.viewmodel.SearchVM
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.adapter.SingleBindingAdapter
+import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.activity_search.refreshLayout
 
 /**
  * Create by hzh on 2019/11/11.
@@ -46,13 +45,13 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
     override val isClickHideKeyboard: Boolean
         get() = true
 
-    private val mHistoryAdapter by lazy { SingleBindingAdapter<String>(R.layout.item_search_history) }
+    private val mHistoryAdapter by lazy { SimpleBindingAdapter<String>(R.layout.item_search_history) }
 
-    private val mHotAdapter by lazy { SingleBindingAdapter<Website>(R.layout.item_website) }
+    private val mHotAdapter by lazy { SimpleBindingAdapter<Website>(R.layout.item_website) }
 
-    private val mCommonAdapter by lazy { SingleBindingAdapter<Website>(R.layout.item_website) }
+    private val mCommonAdapter by lazy { SimpleBindingAdapter<Website>(R.layout.item_website) }
 
-    private val mArticleAdapter by lazy { SingleBindingAdapter<Article>(R.layout.item_article) }
+    private val mArticleAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
     override fun initView() {
         mBinding.searchVM = mViewModel
@@ -98,7 +97,6 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
             articleList.observe(mContext, Observer {
                 // 搜索结果
                 mArticleAdapter.setNewDiffData(ArticleDiffCallback(it))
-                if (isLoadMore) refreshLayout.finishLoadMore()
             })
 
             btnBack.setOnClickListener {
@@ -115,7 +113,7 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
             btnClear.setOnClickListener { keyword.value = "" }
 
             mHistoryAdapter.mPresenter = object : ItemClickPresenter<String> {
-                override fun onItemClick(view: View, item: String) {
+                override fun onItemClick(view: View, item: String, position: Int) {
                     keyword.value = item // 关键词设置到EditText
                     saveHistory(item) // 保存搜索历史
                     getInitData(false) // 搜索
@@ -123,7 +121,7 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
             }
 
             mHotAdapter.mPresenter = object : ItemClickPresenter<Website> {
-                override fun onItemClick(view: View, item: Website) {
+                override fun onItemClick(view: View, item: Website, position: Int) {
                     keyword.value = item.name // 关键词设置到EditText
                     saveHistory(item.name) // 保存搜索历史
                     getInitData(false) // 搜索
@@ -132,13 +130,13 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
         }
 
         mCommonAdapter.mPresenter = object : ItemClickPresenter<Website> {
-            override fun onItemClick(view: View, item: Website) {
+            override fun onItemClick(view: View, item: Website, position: Int) {
                 WebActivity.open(mContext, item.link, item.name) // 浏览网站
             }
         }
 
         mArticleAdapter.mPresenter = object : ItemClickPresenter<Article> {
-            override fun onItemClick(view: View, item: Article) {
+            override fun onItemClick(view: View, item: Article, position: Int) {
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

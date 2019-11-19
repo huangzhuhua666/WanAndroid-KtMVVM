@@ -8,6 +8,10 @@
             type="Object"/>
 
         <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
             name="presenter"
             type="Object"/>
     </data>

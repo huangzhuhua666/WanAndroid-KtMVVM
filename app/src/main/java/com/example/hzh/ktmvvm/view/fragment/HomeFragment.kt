@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
@@ -15,13 +16,13 @@ import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.HomeVM
 import com.example.hzh.ktmvvm.widget.ObsBanner
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.adapter.SingleBindingAdapter
-import com.example.hzh.library.extension.DelegateExt
+import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.youth.banner.BannerConfig
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlin.properties.Delegates
 
 /**
  * Create by hzh on 2019/09/10.
@@ -39,18 +40,18 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
     override val mViewModel: HomeVM?
         get() = obtainVM(HomeVM::class.java)
 
-    private val mAdapter by lazy { SingleBindingAdapter<Article>(R.layout.item_article) }
+    private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
     private val mBannerBinding by lazy {
         DataBindingUtil.inflate<LayoutBannerBinding>(
             layoutInflater,
             R.layout.layout_banner,
-            rvArticle,
+            rvArticle.parent as ViewGroup,
             false
         )
     }
 
-    private var mBanner by DelegateExt.notNullSingleValue<ObsBanner>()
+    private var mBanner by Delegates.notNull<ObsBanner>()
 
     override fun initView() {
         mBinding.homeVM = mViewModel
@@ -91,12 +92,11 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
 
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 mAdapter.setNewDiffData(ArticleDiffCallback(articleList))
-                refreshLayout.run { if (isLoadMore) finishLoadMore() else finishRefresh() }
             })
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Article> {
-            override fun onItemClick(view: View, item: Article) {
+            override fun onItemClick(view: View, item: Article, position: Int) {
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

@@ -29,12 +29,14 @@ class KnowledgeVM : BaseVM() {
     /**
      * 获取知识体系数据
      */
-    fun getSystemTree() {
-        _isShowLoading.value = true
+    fun getSystemTree(isRefresh: Boolean) {
+        _isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = { _treeList.postValue(categoryModel.getKnowledgeTree()) },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -47,8 +49,10 @@ class KnowledgeVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -61,10 +65,8 @@ class KnowledgeVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -86,7 +88,6 @@ class KnowledgeVM : BaseVM() {
                     article.collect = true
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

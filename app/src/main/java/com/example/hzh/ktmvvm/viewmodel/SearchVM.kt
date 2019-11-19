@@ -40,17 +40,16 @@ class SearchVM : BaseVM() {
         k = keyword.value ?: ""
         if (k == "") return
         super.getInitData(isRefresh)
+        isResult.value = true
         // 保存搜索历史
         saveHistory(k)
         doOnIO(
             tryBlock = {
                 articleModel.search(pageNo, k).let {
-                    isResult.postValue(true)
                     _articleList.postValue(it.datas)
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -64,10 +63,8 @@ class SearchVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -96,7 +93,6 @@ class SearchVM : BaseVM() {
         _isShowLoading.value = true
         doOnIO(
             tryBlock = { _hotKeyList.postValue(websiteModel.getHotKey()) },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -108,7 +104,6 @@ class SearchVM : BaseVM() {
         _isShowLoading.value = true
         doOnIO(
             tryBlock = { _commonWebList.postValue(websiteModel.getCommonWebsite()) },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -131,7 +126,6 @@ class SearchVM : BaseVM() {
                     article.collect = true
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

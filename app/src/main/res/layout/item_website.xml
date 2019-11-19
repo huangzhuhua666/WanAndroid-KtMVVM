@@ -12,6 +12,10 @@
             type="com.example.hzh.ktmvvm.data.bean.Website"/>
 
         <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
             name="presenter"
             type="com.example.hzh.library.adapter.ItemClickPresenter"/>
     </data>
@@ -26,13 +30,14 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:onClick="@{v -> presenter.onItemClick(v, item)}"
-        android:onLongClick="@{v -> presenter.onLongClick(v, item)}"
+        android:onClick="@{v -> presenter.onItemClick(v, item, position)}"
+        android:onLongClick="@{v -> presenter.onLongClick(v, item, position)}"
         android:paddingStart="24dp"
         android:paddingTop="8dp"
         android:paddingEnd="24dp"
         android:paddingBottom="8dp"
         android:text="@{item.name}"
+        android:textSize="14sp"
         app:normalSolid="@android:color/white"
         app:normalStrokeColor="@color/color_4c4c4c"
         app:normalStrokeWidth="1dp"

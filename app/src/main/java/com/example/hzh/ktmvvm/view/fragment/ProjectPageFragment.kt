@@ -14,7 +14,7 @@ import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.adapter.SingleBindingAdapter
+import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -39,7 +39,7 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
     override val mViewModel: ProjectVM?
         get() = obtainVM(ProjectVM::class.java)
 
-    private val mAdapter by lazy { SingleBindingAdapter<Article>(R.layout.item_article) }
+    private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
     private var cid by Delegates.notNull<Int>()
 
@@ -62,12 +62,11 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
         mViewModel?.run {
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
                 mAdapter.setNewDiffData(ArticleDiffCallback(articleList))
-                refreshLayout.run { if (isLoadMore) finishLoadMore() else finishRefresh() }
             })
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Article> {
-            override fun onItemClick(view: View, item: Article) {
+            override fun onItemClick(view: View, item: Article, position: Int) {
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

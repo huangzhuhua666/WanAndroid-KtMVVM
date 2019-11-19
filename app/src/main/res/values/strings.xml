@@ -2,6 +2,7 @@
     <string name="app_name">WanAndroid</string>
     <string name="home">首页</string>
     <string name="category">知识体系</string>
+    <string name="navigation">导航</string>
     <string name="wechat_author">公众号</string>
     <string name="project">项目</string>
     <string name="set_to_top">置顶</string>

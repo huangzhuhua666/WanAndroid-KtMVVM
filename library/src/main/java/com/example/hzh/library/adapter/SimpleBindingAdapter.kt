@@ -11,13 +11,15 @@ import com.example.hzh.library.R
 /**
  * Create by hzh on 2019/11/5.
  */
-class SingleBindingAdapter<T>(layoutResId: Int) : BaseQuickAdapter<T, DBViewHolder>(layoutResId) {
+open class SimpleBindingAdapter<T>(layoutResId: Int) :
+    BaseQuickAdapter<T, DBViewHolder>(layoutResId) {
 
     var mPresenter: ItemClickPresenter<T>? = null
 
     override fun convert(helper: DBViewHolder, item: T) {
         helper.getBinding().run {
             setVariable(BR.item, item)
+            setVariable(BR.position, helper.adapterPosition)
             setVariable(BR.presenter, mPresenter)
             executePendingBindings()
         }
@@ -29,5 +31,5 @@ class SingleBindingAdapter<T>(layoutResId: Int) : BaseQuickAdapter<T, DBViewHold
             layoutResId,
             parent,
             false
-        ).let { it.root.apply { setTag(R.id.BaseQuickAdapter_databinding_support, it) }  }
+        ).let { it.root.apply { setTag(R.id.BaseQuickAdapter_databinding_support, it) } }
 }

@@ -29,7 +29,6 @@ class CollectionVM : BaseVM() {
     val websiteList: LiveData<List<Website>> = _websiteList
 
     override fun getInitData(isRefresh: Boolean) {
-        isLoadMore = false
         pageNo = 0
         doOnIO(
             tryBlock = {
@@ -41,8 +40,10 @@ class CollectionVM : BaseVM() {
                 }
                 else _websiteList.postValue(websiteModel.getCollectWebsite()) // 获取收藏网站列表
             },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -56,10 +57,8 @@ class CollectionVM : BaseVM() {
                     _isOver.postValue(over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -86,7 +85,6 @@ class CollectionVM : BaseVM() {
                     }
                 })
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -105,7 +103,6 @@ class CollectionVM : BaseVM() {
                     getInitData(false)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -137,7 +134,6 @@ class CollectionVM : BaseVM() {
                 if (website.websiteId == -1) websiteModel.collectWebsite(website, callback) // 添加网站
                 else websiteModel.editWebsite(website, callback) // 编辑网站
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }
@@ -155,7 +151,6 @@ class CollectionVM : BaseVM() {
                     getInitData(false)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

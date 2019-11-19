@@ -12,6 +12,10 @@
             type="com.example.hzh.ktmvvm.data.bean.Category"/>
 
         <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
             name="presenter"
             type="com.example.hzh.library.adapter.ItemClickPresenter"/>
     </data>
@@ -23,7 +27,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:onClick="@{view -> presenter.onItemClick(view, item)}"
+        android:onClick="@{view -> presenter.onItemClick(view, item, position)}"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="3dp">

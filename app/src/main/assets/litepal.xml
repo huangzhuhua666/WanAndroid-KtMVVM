@@ -10,6 +10,8 @@
         <mapping class="com.example.hzh.ktmvvm.data.bean.Article"/>
         <mapping class="com.example.hzh.ktmvvm.data.bean.Category"/>
         <mapping class="com.example.hzh.ktmvvm.data.bean.Website"/>
+        <mapping class="com.example.hzh.ktmvvm.data.bean.Guide"/>
+        <mapping class="com.example.hzh.ktmvvm.data.bean.SubGuide"/>
     </list>
 
 </litepal>

@@ -14,7 +14,7 @@ import com.example.hzh.ktmvvm.viewmodel.CollectionVM
 import com.example.hzh.ktmvvm.widget.EditCollectPopup
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.adapter.SingleBindingAdapter
+import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -38,7 +38,7 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
     override val mViewModel: CollectionVM?
         get() = obtainVM(CollectionVM::class.java).also { it.flag = 1 }
 
-    private val mAdapter by lazy { SingleBindingAdapter<Website>(R.layout.item_website) }
+    private val mAdapter by lazy { SimpleBindingAdapter<Website>(R.layout.item_website) }
 
     private var mEditWebDialog: EditWebsiteDialog? = null
 
@@ -71,11 +71,11 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Website> {
-            override fun onItemClick(view: View, item: Website) {
+            override fun onItemClick(view: View, item: Website, position: Int) {
                 WebActivity.open(mContext, item.link, item.name)
             }
 
-            override fun onLongClick(view: View, item: Website): Boolean {
+            override fun onLongClick(view: View, item: Website, position: Int): Boolean {
                 XPopup.Builder(mContext)
                     .atView(view)
                     .offsetX(view.width / 2)

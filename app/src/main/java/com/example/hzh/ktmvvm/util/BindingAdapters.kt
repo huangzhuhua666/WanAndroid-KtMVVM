@@ -66,6 +66,14 @@ fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     }
 }
 
+@BindingAdapter("bind:isFinishGetData")
+fun SmartRefreshLayout.isFinishGetData(isFinish: Boolean) {
+    if (isFinish) {
+        finishRefresh()
+        finishLoadMore()
+    }
+}
+
 /**
  * 设置已无更多数据
  */

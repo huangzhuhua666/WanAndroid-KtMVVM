@@ -29,15 +29,10 @@ class ProjectVM : BaseVM() {
     /**
      * 获取项目分类
      */
-    fun getProjectTree() {
-        doOnIO(
-            tryBlock = { _treeList.postValue(categoryModel.getProjectTree()) },
-            catchBlock = { e -> e.printStackTrace() }
-        )
-    }
+    fun getProjectTree() =
+        doOnIO(tryBlock = { _treeList.postValue(categoryModel.getProjectTree()) })
 
     override fun getInitData(isRefresh: Boolean) {
-        isLoadMore = false
         _isShowLoading.value = !isRefresh
         doOnIO(
             tryBlock = {
@@ -50,8 +45,10 @@ class ProjectVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -64,10 +61,8 @@ class ProjectVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -89,7 +84,6 @@ class ProjectVM : BaseVM() {
                     article.collect = true
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

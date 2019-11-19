@@ -30,15 +30,10 @@ class WeChatAuthorVM : BaseVM() {
     /**
      * 获取微信公众号
      */
-    fun getWeChatAuthors() {
-        doOnIO(
-            tryBlock = { _authorList.postValue(categoryModel.getWeChatAuthors()) },
-            catchBlock = { e -> e.printStackTrace() }
-        )
-    }
+    fun getWeChatAuthors() =
+        doOnIO(tryBlock = { _authorList.postValue(categoryModel.getWeChatAuthors()) })
 
     override fun getInitData(isRefresh: Boolean) {
-        isLoadMore = false
         pageNo = 1
         _isShowLoading.value = !isRefresh
         doOnIO(
@@ -48,8 +43,10 @@ class WeChatAuthorVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
-            finallyBlock = { _isShowLoading.value = false }
+            finallyBlock = {
+                _isShowLoading.value = false
+                isFinish.value = true
+            }
         )
     }
 
@@ -62,10 +59,8 @@ class WeChatAuthorVM : BaseVM() {
                     _isOver.postValue(it.over)
                 }
             },
-            catchBlock = { e ->
-                e.printStackTrace()
-                --pageNo
-            }
+            catchBlock = { --pageNo },
+            finallyBlock = { isFinish.value = true }
         )
     }
 
@@ -87,7 +82,6 @@ class WeChatAuthorVM : BaseVM() {
                     article.collect = true
                 }
             },
-            catchBlock = { e -> e.printStackTrace() },
             finallyBlock = { _isShowLoading.value = false }
         )
     }

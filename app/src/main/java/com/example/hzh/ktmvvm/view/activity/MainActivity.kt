@@ -12,10 +12,7 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
 import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
-import com.example.hzh.ktmvvm.view.fragment.HomeFragment
-import com.example.hzh.ktmvvm.view.fragment.ProjectFragment
-import com.example.hzh.ktmvvm.view.fragment.WeChatAuthorFragment
-import com.example.hzh.ktmvvm.view.fragment.KnowledgeFragment
+import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.obtainVM
@@ -65,6 +62,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
             listOf(
                 HomeFragment.newInstance(),
                 KnowledgeFragment.newInstance(),
+                NavigationFragment.newInstance(),
                 WeChatAuthorFragment.newInstance(),
                 ProjectFragment.newInstance()
             ).let { fragmentList ->

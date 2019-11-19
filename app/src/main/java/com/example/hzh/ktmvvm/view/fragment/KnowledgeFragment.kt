@@ -8,7 +8,7 @@ import com.example.hzh.ktmvvm.databinding.FragmentKnowledgeBinding
 import com.example.hzh.ktmvvm.view.activity.KnowledgeActivity
 import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.adapter.SingleBindingAdapter
+import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_knowledge.*
@@ -30,9 +30,9 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
         get() = obtainVM(KnowledgeVM::class.java)
 
     private val mAdapter by lazy {
-        SingleBindingAdapter<Category>(R.layout.item_knowledge).also {
+        SimpleBindingAdapter<Category>(R.layout.item_knowledge).also {
             it.mPresenter = object : ItemClickPresenter<Category> {
-                override fun onItemClick(view: View, item: Category) {
+                override fun onItemClick(view: View, item: Category, position: Int) {
                     KnowledgeActivity.open(mContext, item.name, item.children as ArrayList)
                 }
             }
@@ -40,14 +40,18 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
     }
 
     override fun initView() {
+        mBinding.baseVM = mViewModel
+
         rvSystem.adapter = mAdapter
     }
 
     override fun initListener() {
         mViewModel?.treeList?.observe(mContext, Observer { mAdapter.setNewData(it) })
+
+        refreshLayout.setOnRefreshListener { mViewModel?.getSystemTree(true) }
     }
 
     override fun initData() {
-        mViewModel?.getSystemTree()
+        mViewModel?.getSystemTree(false)
     }
 }
