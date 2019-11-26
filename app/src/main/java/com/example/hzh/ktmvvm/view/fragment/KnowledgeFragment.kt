@@ -30,8 +30,11 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
 
     private val mAdapter by lazy {
         SimpleBindingAdapter<Category>(R.layout.item_knowledge).also {
-            it.mPresenter = object : ItemClickPresenter<Category> {
+            it.mPresenter = object : ItemClickPresenter<Category>() {
                 override fun onItemClick(view: View, item: Category, position: Int) {
+                    super.onItemClick(view, item, position)
+                    if (isFastClick) return
+
                     KnowledgeActivity.open(mContext, item.name, item.children as ArrayList)
                 }
             }

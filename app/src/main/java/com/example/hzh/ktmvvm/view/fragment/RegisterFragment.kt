@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.FragmentRegisterBinding
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -28,11 +29,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, AuthVM>() {
     override fun initListener() {
         mBinding.run {
             mViewModel?.let {
-                btnCleanUsername.setOnClickListener { _ -> it.username.value = "" }
+                btnCleanUsername.filterFastClickListener { _ -> it.username.value = "" }
 
-                btnCleanPassword.setOnClickListener { _ -> it.password.value = "" }
+                btnCleanPassword.filterFastClickListener { _ -> it.password.value = "" }
 
-                btnCleanRePassword.setOnClickListener { _ -> it.rePassword.value = "" }
+                btnCleanRePassword.filterFastClickListener { _ -> it.rePassword.value = "" }
             }
 
             LiveEventBus.get("auth", Boolean::class.java)
@@ -43,7 +44,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, AuthVM>() {
                     }
                 })
 
-            btnHadAccount.setOnClickListener { Navigation.findNavController(it).navigateUp() }
+            btnHadAccount.filterFastClickListener { Navigation.findNavController(it).navigateUp() }
         }
     }
 }

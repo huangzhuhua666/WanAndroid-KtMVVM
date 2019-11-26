@@ -1,5 +1,6 @@
 package com.example.hzh.ktmvvm.view.fragment
 
+import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -52,6 +53,8 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
 
     private var mBanner by Delegates.notNull<ObsBanner>()
 
+    private val mBannerFastClick = LongArray(2)
+
     override fun initView() {
         mBinding.homeVM = mViewModel
 
@@ -86,7 +89,11 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
 
         mViewModel?.run {
             mBanner.setOnBannerListener {
-                bannerList.value?.get(it)?.run { WebActivity.open(mContext, url, title) }
+                System.arraycopy(mBannerFastClick, 1, mBannerFastClick, 0, 1)
+                mBannerFastClick[1] = SystemClock.uptimeMillis()
+
+                if (mBannerFastClick[1] - mBannerFastClick[0] > 600) // 防快击
+                    bannerList.value?.get(it)?.run { WebActivity.open(mContext, url, title) }
             }
 
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
@@ -94,8 +101,11 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
             })
         }
 
-        mAdapter.mPresenter = object : ItemClickPresenter<Article> {
+        mAdapter.mPresenter = object : ItemClickPresenter<Article>() {
             override fun onItemClick(view: View, item: Article, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

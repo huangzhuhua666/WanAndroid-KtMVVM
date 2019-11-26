@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.hzh.library.R
 import com.example.hzh.library.databinding.DialogConfirmBinding
-import kotlinx.android.synthetic.main.dialog_confirm.*
+import com.example.hzh.library.extension.filterFastClickListener
 import kotlin.properties.Delegates
 
 /**
@@ -35,12 +35,12 @@ class ConfirmDialog private constructor(private val builder: Builder) : BaseDial
     }
 
     override fun initListener() {
-        btnLeft.setOnClickListener {
+        mBinding.btnLeft.filterFastClickListener {
             builder.leftClickListener?.invoke()
             dismiss()
         }
 
-        btnRight.setOnClickListener {
+        mBinding.btnRight.filterFastClickListener {
             builder.rightClickListener?.invoke()
             dismiss()
         }

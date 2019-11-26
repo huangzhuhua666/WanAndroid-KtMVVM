@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.annotation.RequiresPermission
 import androidx.core.view.isGone
 import com.example.hzh.library.R
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.inflate
 import kotlinx.android.synthetic.main.layout_status.view.*
 
@@ -33,7 +34,7 @@ class StatusLayout @JvmOverloads constructor(
         mStatusView.isGone = true
         addView(mStatusView)
 
-        btnRefresh.setOnClickListener {
+        btnRefresh.filterFastClickListener {
             showContent()
             refreshAction?.invoke()
         }

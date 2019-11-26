@@ -22,8 +22,11 @@ class RightGuideAdapter(private val action: ((View, SubGuide, Int) -> Unit)) :
             layoutManager = FlexboxLayoutManager(mContext)
             adapter = SimpleBindingAdapter<SubGuide>(R.layout.item_guide_right_child).also {
                 it.setNewData(item.articles)
-                it.mPresenter = object : ItemClickPresenter<SubGuide> {
+                it.mPresenter = object : ItemClickPresenter<SubGuide>() {
                     override fun onItemClick(view: View, item: SubGuide, position: Int) {
+                        super.onItemClick(view, item, position)
+                        if (isFastClick) return
+
                         action.invoke(view, item, position)
                     }
                 }

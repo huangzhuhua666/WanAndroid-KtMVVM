@@ -4,6 +4,7 @@ import androidx.core.view.isVisible
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.library.extension.addTextChangedListener
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.widget.dialog.BaseDialog
 import kotlinx.android.synthetic.main.dialog_edit_website.*
 
@@ -32,13 +33,13 @@ class EditWebsiteDialog(
             afterTextChanged { btnCleanLink.isVisible = it.toString().isNotBlank() }
         }
 
-        btnCleanName.setOnClickListener { etName.setText("") }
+        btnCleanName.filterFastClickListener { etName.setText("") }
 
-        btnCleanLink.setOnClickListener { etLink.setText("") }
+        btnCleanLink.filterFastClickListener { etLink.setText("") }
 
-        btnCancel.setOnClickListener { dismiss() }
+        btnCancel.filterFastClickListener { dismiss() }
 
-        btnSubmit.setOnClickListener {
+        btnSubmit.filterFastClickListener {
             action.invoke(Website().apply {
                 websiteId = website.websiteId
                 name = etName.text.trim().toString()

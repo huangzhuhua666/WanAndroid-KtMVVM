@@ -12,6 +12,7 @@ import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.ActivityAddOrEditTodoBinding
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.ktmvvm.widget.TimePicker
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.formatDate
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.yyyy_MM_dd
@@ -69,50 +70,50 @@ class AddOrEditTodoActivity : WanActivity<ActivityAddOrEditTodoBinding, TodoVM>(
         LiveEventBus.get("save_todo").observe(mContext, Observer { finish() })
 
         mBinding.let {
-            it.btnBack.setOnClickListener { finish() }
+            it.btnBack.filterFastClickListener { finish() }
 
-            it.btnSave.setOnClickListener { mViewModel?.addOrEditTodo(todo) }
+            it.btnSave.filterFastClickListener { mViewModel?.addOrEditTodo(todo) }
 
-            it.btnDate.setOnClickListener { mTimePicker.show() }
+            it.btnDate.filterFastClickListener { mTimePicker.show() }
 
             // 生活标签
-            it.cbLife.setOnClickListener { _ ->
+            it.cbLife.filterFastClickListener { _ ->
                 todo.type = if (todo.type == 1) 0 else 1
                 it.todo = todo
             }
 
             // 工作标签
-            it.cbWork.setOnClickListener { _ ->
+            it.cbWork.filterFastClickListener { _ ->
                 todo.type = if (todo.type == 2) 0 else 2
                 it.todo = todo
             }
 
             // 学习标签
-            it.cbStudy.setOnClickListener { _ ->
+            it.cbStudy.filterFastClickListener { _ ->
                 todo.type = if (todo.type == 3) 0 else 3
                 it.todo = todo
             }
 
             // 娱乐标签
-            it.cbEntertainment.setOnClickListener { _ ->
+            it.cbEntertainment.filterFastClickListener { _ ->
                 todo.type = if (todo.type == 4) 0 else 4
                 it.todo = todo
             }
 
             // 优先级高
-            it.cbHigh.setOnClickListener { _ ->
+            it.cbHigh.filterFastClickListener { _ ->
                 todo.priority = if (todo.priority == 1) 0 else 1
                 it.todo = todo
             }
 
             // 优先级中
-            it.cbMedium.setOnClickListener { _ ->
+            it.cbMedium.filterFastClickListener { _ ->
                 todo.priority = if (todo.priority == 2) 0 else 2
                 it.todo = todo
             }
 
             // 优先级低
-            it.cbLow.setOnClickListener { _ ->
+            it.cbLow.filterFastClickListener { _ ->
                 todo.priority = if (todo.priority == 3) 0 else 3
                 it.todo = todo
             }

@@ -4,6 +4,7 @@ import androidx.core.view.isVisible
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.library.extension.addTextChangedListener
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.widget.dialog.BaseDialog
 import kotlinx.android.synthetic.main.dialog_edit_article.*
 
@@ -33,15 +34,15 @@ class EditArticleDialog(private val action: ((Article) -> Unit)) : BaseDialog() 
             afterTextChanged { btnCleanAuthor.isVisible = it.toString().isNotBlank() }
         }
 
-        btnCleanTitle.setOnClickListener { etTitle.setText("") }
+        btnCleanTitle.filterFastClickListener { etTitle.setText("") }
 
-        btnCleanLink.setOnClickListener { etLink.setText("") }
+        btnCleanLink.filterFastClickListener { etLink.setText("") }
 
-        btnCleanAuthor.setOnClickListener { etAuthor.setText("") }
+        btnCleanAuthor.filterFastClickListener { etAuthor.setText("") }
 
-        btnCancel.setOnClickListener { dismiss() }
+        btnCancel.filterFastClickListener { dismiss() }
 
-        btnSubmit.setOnClickListener {
+        btnSubmit.filterFastClickListener {
             action.invoke(Article().apply {
                 title = etTitle.text.trim().toString()
                 link = etLink.text.trim().toString()

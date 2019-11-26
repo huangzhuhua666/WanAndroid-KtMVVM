@@ -14,6 +14,7 @@ import com.example.hzh.ktmvvm.viewmodel.CollectionVM
 import com.example.hzh.ktmvvm.widget.AddCollectPopup
 import com.example.hzh.ktmvvm.widget.EditArticleDialog
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -95,9 +96,9 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>(
         })
 
         mBinding.run {
-            btnBack.setOnClickListener { finish() }
+            btnBack.filterFastClickListener { finish() }
 
-            btnAdd.setOnClickListener { mMenuWindow.show() }
+            btnAdd.filterFastClickListener { mMenuWindow.show() }
         }
     }
 

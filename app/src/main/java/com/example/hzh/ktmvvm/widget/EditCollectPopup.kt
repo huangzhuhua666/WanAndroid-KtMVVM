@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.library.extension.filterFastClickListener
 import com.lxj.xpopup.core.AttachPopupView
 import kotlinx.android.synthetic.main.popup_edit_collect.view.*
 
@@ -23,12 +24,12 @@ class EditCollectPopup(
 
     override fun onCreate() {
         super.onCreate()
-        btnEdit.setOnClickListener {
+        btnEdit.filterFastClickListener {
             action.invoke(it)
             dismiss()
         }
 
-        btnDelete.setOnClickListener {
+        btnDelete.filterFastClickListener {
             action.invoke(it)
             dismiss()
         }

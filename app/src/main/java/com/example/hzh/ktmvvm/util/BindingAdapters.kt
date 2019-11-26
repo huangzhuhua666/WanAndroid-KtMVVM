@@ -6,6 +6,7 @@ import android.webkit.WebView
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -26,7 +27,9 @@ import java.util.*
  */
 @BindingAdapter("bind:setImages")
 fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Banner>?) {
-    bannerList?.map { it.title }?.let { setBannerTitles(it) }
+    setBannerTitles(bannerList?.map {
+        HtmlCompat.fromHtml(it.title, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+    })
     bannerList?.map { it.imagePath }?.let {
         setImageLoader(GlideLoader())
         update(it)

@@ -16,6 +16,7 @@ import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.viewmodel.SearchVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -100,30 +101,36 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
             })
 
             mBinding.run {
-                btnBack.setOnClickListener {
+                btnBack.filterFastClickListener {
                     mViewModel?.run {
                         if (isResult.value!!) {
                             isResult.value = false
-                            return@setOnClickListener
+                            return@filterFastClickListener
                         } else finish()
                     }
                     finish()
                 }
 
                 // 清空搜索栏
-                btnClear.setOnClickListener { keyword.value = "" }
+                btnClear.filterFastClickListener { keyword.value = "" }
             }
 
-            mHistoryAdapter.mPresenter = object : ItemClickPresenter<String> {
+            mHistoryAdapter.mPresenter = object : ItemClickPresenter<String>() {
                 override fun onItemClick(view: View, item: String, position: Int) {
+                    super.onItemClick(view, item, position)
+                    if (isFastClick) return
+
                     keyword.value = item // 关键词设置到EditText
                     saveHistory(item) // 保存搜索历史
                     getInitData(false) // 搜索
                 }
             }
 
-            mHotAdapter.mPresenter = object : ItemClickPresenter<Website> {
+            mHotAdapter.mPresenter = object : ItemClickPresenter<Website>() {
                 override fun onItemClick(view: View, item: Website, position: Int) {
+                    super.onItemClick(view, item, position)
+                    if (isFastClick) return
+
                     keyword.value = item.name // 关键词设置到EditText
                     saveHistory(item.name) // 保存搜索历史
                     getInitData(false) // 搜索
@@ -131,14 +138,20 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
             }
         }
 
-        mCommonAdapter.mPresenter = object : ItemClickPresenter<Website> {
+        mCommonAdapter.mPresenter = object : ItemClickPresenter<Website>() {
             override fun onItemClick(view: View, item: Website, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 WebActivity.open(mContext, item.link, item.name) // 浏览网站
             }
         }
 
-        mArticleAdapter.mPresenter = object : ItemClickPresenter<Article> {
+        mArticleAdapter.mPresenter = object : ItemClickPresenter<Article>() {
             override fun onItemClick(view: View, item: Article, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

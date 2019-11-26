@@ -54,8 +54,11 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
             })
         }
 
-        mAdapter.mPresenter = object : ItemClickPresenter<Article> {
+        mAdapter.mPresenter = object : ItemClickPresenter<Article>() {
             override fun onItemClick(view: View, item: Article, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 when (view.id) {
                     R.id.cvRoot -> WebActivity.open(mContext, item.link, item.title) // 浏览文章
                     R.id.btnCollect -> {

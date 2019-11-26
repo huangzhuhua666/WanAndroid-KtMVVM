@@ -71,8 +71,11 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
             })
         }
 
-        mAdapter.mPresenter = object : ItemClickPresenter<Website> {
+        mAdapter.mPresenter = object : ItemClickPresenter<Website>() {
             override fun onItemClick(view: View, item: Website, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 WebActivity.open(mContext, item.link, item.name)
             }
 

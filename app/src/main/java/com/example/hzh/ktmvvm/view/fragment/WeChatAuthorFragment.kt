@@ -7,6 +7,7 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentWechatAuthorBinding
 import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
 import com.example.hzh.library.extension.addTextChangedListener
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
@@ -53,7 +54,7 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
             }
         }
 
-        mBinding.btnClear.setOnClickListener { mBinding.etSearch.setText("") }
+        mBinding.btnClear.filterFastClickListener { mBinding.etSearch.setText("") }
     }
 
     override fun initData() {

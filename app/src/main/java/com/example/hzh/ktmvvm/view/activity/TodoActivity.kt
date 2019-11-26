@@ -8,6 +8,7 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityTodoBinding
 import com.example.hzh.ktmvvm.view.fragment.TodoListFragment
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.viewmodel.BaseVM
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -50,9 +51,9 @@ class TodoActivity : WanActivity<ActivityTodoBinding, BaseVM>() {
 
     override fun initListener() {
         mBinding.run {
-            btnBack.setOnClickListener { finish() }
+            btnBack.filterFastClickListener { finish() }
 
-            btnAdd.setOnClickListener { AddOrEditTodoActivity.open(mContext) }
+            btnAdd.filterFastClickListener { AddOrEditTodoActivity.open(mContext) }
         }
     }
 

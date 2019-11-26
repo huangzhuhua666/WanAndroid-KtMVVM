@@ -64,8 +64,11 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
 
         mBinding.refreshLayout.setOnRefreshListener { mViewModel?.getInitData(true) }
 
-        mLeftAdapter.mPresenter = object : ItemClickPresenter<Guide> {
+        mLeftAdapter.mPresenter = object : ItemClickPresenter<Guide>() {
             override fun onItemClick(view: View, item: Guide, position: Int) {
+                super.onItemClick(view, item, position)
+                if (isFastClick) return
+
                 isLeft = true
                 currentIndex = position
                 mLeftAdapter.changeCheckPosition(position) // 选中

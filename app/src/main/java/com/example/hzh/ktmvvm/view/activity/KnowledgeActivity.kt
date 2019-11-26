@@ -13,6 +13,7 @@ import com.example.hzh.ktmvvm.databinding.ActivityKnowledgeBinding
 import com.example.hzh.ktmvvm.view.fragment.KnowledgePageFragment
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.viewmodel.BaseVM
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -68,7 +69,7 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
     }
 
     override fun initListener() {
-        mBinding.btnBack.setOnClickListener { finish() }
+        mBinding.btnBack.filterFastClickListener { finish() }
     }
 
     override fun initData() {

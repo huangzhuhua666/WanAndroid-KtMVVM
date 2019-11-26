@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.os.bundleOf
 import androidx.viewpager2.widget.ViewPager2
+import com.example.hzh.library.extension.filterFastClickListener
 
 /**
  * Create by hzh on 2019/9/24.
@@ -81,7 +82,7 @@ class TabIndicator @JvmOverloads constructor(
             getChildAt(i)?.let {
                 if (it is TabView) {
                     mTabList.add(it)
-                    it.setOnClickListener {
+                    it.filterFastClickListener {
                         //点击前先重置所有按钮的状态
                         resetState()
                         mTabList[i].mAlpha = 1.0f

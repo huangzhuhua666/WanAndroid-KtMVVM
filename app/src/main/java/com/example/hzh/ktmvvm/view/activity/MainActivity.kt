@@ -15,6 +15,7 @@ import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
 import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.widget.dialog.ConfirmDialog
@@ -24,6 +25,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
     companion object {
         const val VIEW_COLLECTION = 0x10
+        const val VIEW_TODO = 0x11
     }
 
     override val mLayoutId: Int
@@ -91,9 +93,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         })
 
         mBinding.run {
-            btnDrawer.setOnClickListener { drawer.openDrawer(GravityCompat.START) }
+            btnDrawer.filterFastClickListener { drawer.openDrawer(GravityCompat.START) }
 
-            btnSearch.setOnClickListener { SearchActivity.open(mContext) }
+            btnSearch.filterFastClickListener { SearchActivity.open(mContext) }
 
             nav.setNavigationItemSelectedListener {
                 when (it.itemId) {
@@ -101,7 +103,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
                         if (App.isLogin) CollectionActivity.open(mContext)
                         else AuthActivity.open(mContext, VIEW_COLLECTION)
                     }
-                    R.id.todo -> TodoActivity.open(mContext) // 待办清单
+                    R.id.todo -> { // 待办清单
+                        if (App.isLogin) TodoActivity.open(mContext)
+                        else AuthActivity.open(mContext, VIEW_TODO)
+                    }
                     R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
                 }
                 drawer.closeDrawer(GravityCompat.START)
@@ -122,6 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
         when (requestCode) {
             VIEW_COLLECTION -> CollectionActivity.open(mContext)
+            VIEW_TODO -> TodoActivity.open(mContext)
         }
     }
 

@@ -16,6 +16,7 @@ import com.example.hzh.ktmvvm.view.activity.TodoDetailActivity
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.MultiTypeBindingAdapter
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -72,43 +73,43 @@ class TodoListFragment : WanFragment<FragmentTodoListBinding, TodoVM>() {
 
         mBinding.run {
             // 生活标签
-            cbLife.setOnClickListener {
+            cbLife.filterFastClickListener {
                 mViewModel?.type?.value = if (mViewModel?.type?.value!! == 1) 0 else 1
                 mViewModel?.getInitData(false)
             }
 
             // 工作标签
-            cbWork.setOnClickListener {
+            cbWork.filterFastClickListener {
                 mViewModel?.type?.value = if (mViewModel?.type?.value!! == 2) 0 else 2
                 mViewModel?.getInitData(false)
             }
 
             // 学习标签
-            cbStudy.setOnClickListener {
+            cbStudy.filterFastClickListener {
                 mViewModel?.type?.value = if (mViewModel?.type?.value!! == 3) 0 else 3
                 mViewModel?.getInitData(false)
             }
 
             // 娱乐标签
-            cbEntertainment.setOnClickListener {
+            cbEntertainment.filterFastClickListener {
                 mViewModel?.type?.value = if (mViewModel?.type?.value!! == 4) 0 else 4
                 mViewModel?.getInitData(false)
             }
 
             // 优先级高
-            cbHigh.setOnClickListener {
+            cbHigh.filterFastClickListener {
                 mViewModel?.priority?.value = if (mViewModel?.priority?.value!! == 1) 0 else 1
                 mViewModel?.getInitData(false)
             }
 
             // 优先级中
-            cbMedium.setOnClickListener {
+            cbMedium.filterFastClickListener {
                 mViewModel?.priority?.value = if (mViewModel?.priority?.value!! == 2) 0 else 2
                 mViewModel?.getInitData(false)
             }
 
             // 优先级低
-            cbLow.setOnClickListener {
+            cbLow.filterFastClickListener {
                 mViewModel?.priority?.value = if (mViewModel?.priority?.value!! == 3) 0 else 3
                 mViewModel?.getInitData(false)
             }
@@ -121,7 +122,7 @@ class TodoListFragment : WanFragment<FragmentTodoListBinding, TodoVM>() {
             })
         }
 
-        mAdapter.mPresenter = object : ItemClickPresenter<MultiItemEntity> {
+        mAdapter.mPresenter = object : ItemClickPresenter<MultiItemEntity>() {
             override fun onItemClick(view: View, item: MultiItemEntity, position: Int) {
                 if (item is Todo) {
                     when (view.id) {

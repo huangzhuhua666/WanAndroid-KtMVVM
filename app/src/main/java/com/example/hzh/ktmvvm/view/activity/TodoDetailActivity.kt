@@ -10,6 +10,7 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.ActivityTodoDetailBinding
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
@@ -49,9 +50,9 @@ class TodoDetailActivity : WanActivity<ActivityTodoDetailBinding, TodoVM>() {
 
     override fun initListener() {
         mBinding.let {
-            it.btnBack.setOnClickListener { finish() }
+            it.btnBack.filterFastClickListener { finish() }
 
-            it.btnDelete.setOnClickListener {
+            it.btnDelete.filterFastClickListener {
                 LiveEventBus.get("todo_delete").post(todo)
                 finish()
             }

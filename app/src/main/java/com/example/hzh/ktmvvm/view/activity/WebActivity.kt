@@ -17,6 +17,7 @@ import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
 import com.example.hzh.library.extension.DelegateExt
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.viewmodel.BaseVM
 
 /**
@@ -60,9 +61,9 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
 
     override fun initListener() {
         mBinding.run {
-            btnBack.setOnClickListener { if (web.canGoBack()) web.goBack() else finish() }
+            btnBack.filterFastClickListener { if (web.canGoBack()) web.goBack() else finish() }
 
-            btnClose.setOnClickListener { finish() }
+            btnClose.filterFastClickListener { finish() }
 
             web.let {
                 it.webViewClient = object : WebViewClient() {

@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.FragmentLoginBinding
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
+import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -28,9 +29,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthVM>() {
     override fun initListener() {
         mBinding.run {
             mViewModel?.let {
-                btnCleanUsername.setOnClickListener { _ -> it.username.value = "" }
+                btnCleanUsername.filterFastClickListener { _ -> it.username.value = "" }
 
-                btnCleanPassword.setOnClickListener { _ -> it.password.value = "" }
+                btnCleanPassword.filterFastClickListener { _ -> it.password.value = "" }
             }
 
             LiveEventBus.get("auth", Boolean::class.java)
@@ -41,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthVM>() {
                     }
                 })
 
-            btnNoAccount.setOnClickListener {
+            btnNoAccount.filterFastClickListener {
                 Navigation.findNavController(it).navigate(R.id.actionLoginToRegister)
             }
         }
