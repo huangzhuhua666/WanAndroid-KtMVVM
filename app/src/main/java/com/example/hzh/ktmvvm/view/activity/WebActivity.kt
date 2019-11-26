@@ -18,7 +18,6 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.viewmodel.BaseVM
-import kotlinx.android.synthetic.main.activity_web.*
 
 /**
  * Create by hzh on 2019/09/16.
@@ -27,8 +26,8 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
 
     companion object {
 
-        fun open(activity: Activity, url: String, title: String) {
-            activity.startActivity(Intent(activity, WebActivity::class.java).apply {
+        fun open(activity: Activity, url: String, title: String) = activity.let {
+            it.startActivity(Intent(it, WebActivity::class.java).apply {
                 putExtras(bundleOf("url" to url, "title" to title))
             })
         }
@@ -38,7 +37,7 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
         get() = R.layout.activity_web
 
     override val mTitleView: View?
-        get() = llTitle
+        get() = mBinding.llTitle
 
     private var url by DelegateExt.notNullSingleValue<String>()
 
@@ -52,48 +51,53 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
     }
 
     override fun initView() {
-        tvTitle?.isSelected = true
+        mBinding.run {
+            tvTitle.isSelected = true
 
-        lifecycle.addObserver(web)
+            lifecycle.addObserver(web)
+        }
     }
 
     override fun initListener() {
-        btnBack.setOnClickListener { if (web.canGoBack()) web.goBack() else finish() }
+        mBinding.run {
+            btnBack.setOnClickListener { if (web.canGoBack()) web.goBack() else finish() }
 
-        btnClose.setOnClickListener { finish() }
+            btnClose.setOnClickListener { finish() }
 
-        web?.let {
-            it.webViewClient = object : WebViewClient() {
-                override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                    mBinding.run {
-                        isLoading = true
-                        title = getString(R.string.loading)
+            web.let {
+                it.webViewClient = object : WebViewClient() {
+                    override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
+                        mBinding.run {
+                            isLoading = true
+                            title = getString(R.string.loading)
+                        }
+                    }
+
+                    override fun onPageFinished(view: WebView, url: String) {
+                        super.onPageFinished(view, url)
+                        mBinding.isLoading = false
+                    }
+
+                    override fun onReceivedSslError(
+                        view: WebView?,
+                        handler: SslErrorHandler?,
+                        error: SslError?
+                    ) {
+                        handler?.proceed()
                     }
                 }
 
-                override fun onPageFinished(view: WebView, url: String) {
-                    super.onPageFinished(view, url)
-                    mBinding.isLoading = false
-                }
+                it.webChromeClient = object : WebChromeClient() {
+                    override fun onProgressChanged(view: WebView, newProgress: Int) {
+                        mBinding.progress = newProgress
+                    }
 
-                override fun onReceivedSslError(
-                    view: WebView?,
-                    handler: SslErrorHandler?,
-                    error: SslError?
-                ) {
-                    handler?.proceed()
-                }
-            }
-
-            it.webChromeClient = object : WebChromeClient() {
-                override fun onProgressChanged(view: WebView, newProgress: Int) {
-                    mBinding.progress = newProgress
-                }
-
-                override fun onReceivedTitle(view: WebView?, title: String?) {
-                    super.onReceivedTitle(view, title)
-                    mBinding.title = if (TextUtils.isEmpty(title)) this@WebActivity.title else title
+                    override fun onReceivedTitle(view: WebView?, title: String?) {
+                        super.onReceivedTitle(view, title)
+                        mBinding.title =
+                            if (TextUtils.isEmpty(title)) this@WebActivity.title else title
+                    }
                 }
             }
         }
@@ -104,8 +108,8 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && web.canGoBack()) {
-            web.goBack()
+        if (keyCode == KeyEvent.KEYCODE_BACK && mBinding.web.canGoBack()) {
+            mBinding.web.goBack()
             return true
         }
         return super.onKeyDown(keyCode, event)

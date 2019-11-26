@@ -20,7 +20,6 @@ import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lxj.xpopup.XPopup
-import kotlinx.android.synthetic.main.base_refresh_list.*
 
 /**
  * Create by hzh on 2019/9/26.
@@ -43,13 +42,15 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
     private var mEditWebDialog: EditWebsiteDialog? = null
 
     override fun initView() {
-        mBinding.baseVM = mViewModel
+        mBinding.let {
+            it.baseVM = mViewModel
 
-        refreshLayout.setEnableLoadMore(false)
+            it.refreshLayout.setEnableLoadMore(false)
 
-        baseList.apply {
-            layoutManager = FlexboxLayoutManager(mContext)
-            adapter = mAdapter
+            it.baseList.apply {
+                layoutManager = FlexboxLayoutManager(mContext)
+                adapter = mAdapter
+            }
         }
     }
 
@@ -66,7 +67,7 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
         mViewModel?.run {
             websiteList.observe(viewLifecycleOwner, Observer {
                 mAdapter.setNewDiffData(WebsiteDiffCallback(it))
-                refreshLayout.finishRefresh()
+                mBinding.refreshLayout.finishRefresh()
             })
         }
 

@@ -77,25 +77,23 @@ class ArticleModel {
      * @param article
      * @param callback
      */
-    suspend fun collectOuter(article: Article, callback: OperateCallback<Article>) {
-        article.run {
-            if (TextUtils.isEmpty(title)) {
-                callback.onInputIllegal(R.string.please_input_article_title)
-                return
-            }
-
-            if (TextUtils.isEmpty(link)) {
-                callback.onInputIllegal(R.string.please_input_article_link)
-                return
-            }
-
-            callback.onPreOperate()
-
-            val params = mutableMapOf("title" to title, "link" to link)
-            if (!TextUtils.isEmpty(author)) params["author"] = author
-
-            repo.collectOuter(params).let { callback.onCallback(it) }
+    suspend fun collectOuter(article: Article, callback: OperateCallback<Article>) = article.run {
+        if (TextUtils.isEmpty(title)) {
+            callback.onInputIllegal(R.string.please_input_article_title)
+            return
         }
+
+        if (TextUtils.isEmpty(link)) {
+            callback.onInputIllegal(R.string.please_input_article_link)
+            return
+        }
+
+        callback.onPreOperate()
+
+        val params = mutableMapOf("title" to title, "link" to link)
+        if (!TextUtils.isEmpty(author)) params["author"] = author
+
+        repo.collectOuter(params).let { callback.onCallback(it) }
     }
 
     /**

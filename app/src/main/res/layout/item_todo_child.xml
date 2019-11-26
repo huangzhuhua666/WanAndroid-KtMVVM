@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="android.text.TextUtils"/>
+
+        <variable
+            name="item"
+            type="com.example.hzh.ktmvvm.data.bean.Todo"/>
+
+        <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
+            name="presenter"
+            type="com.example.hzh.library.adapter.ItemClickPresenter"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:onClick="@{v -> presenter.onItemClick(v, item, position)}"
+        android:paddingBottom="10dp">
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:onClick="@{v -> presenter.onItemClick(v, item, position)}"
+            android:padding="4dp"
+            android:src="@{item.status == 0 ? @drawable/ic_complete : @drawable/ic_undo}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            tools:src="@drawable/ic_complete"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{item.title}"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/btnDelete"
+            app:layout_constraintStart_toEndOf="@id/btnStatus"
+            app:layout_constraintTop_toTopOf="@id/btnStatus"
+            tools:text="Todo标题"/>
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{item.content}"
+            android:textColor="@color/color_666666"
+            android:textSize="14sp"
+            android:visibility="@{TextUtils.isEmpty(item.content) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            tools:text="Todo内容"/>
+
+        <TextView
+            android:id="@+id/tvCompleteTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{@string/complete_time(item.completeDateStr)}"
+            android:textColor="@color/color_999999"
+            android:textSize="12sp"
+            android:visibility="@{TextUtils.isEmpty(item.completeDateStr) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvContent"
+            app:layout_goneMarginTop="8dp"
+            tools:text="@string/complete_time"/>
+
+        <com.example.hzh.library.widget.RTextView
+            android:id="@+id/tvTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp"
+            android:text="@{item.type == 1 ? @string/life : item.type == 2 ? @string/work : item.type == 3 ? @string/study : item.type == 4 ? @string/entertainment : @string/def}"
+            android:textSize="14sp"
+            android:visibility="@{item.type == 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="@id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvCompleteTime"
+            app:normalSolid="@android:color/white"
+            app:normalStrokeColor="@color/appColor"
+            app:normalStrokeWidth="1dp"
+            app:normalTextColor="@color/appColor"
+            app:radii="10dp"
+            tools:text="@string/work"/>
+
+        <com.example.hzh.library.widget.RTextView
+            android:id="@+id/tvPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp"
+            android:text="@{item.priority == 1 ? @string/high : item.priority == 2 ? @string/medium : item.priority == 3 ? @string/low : @string/def}"
+            android:textSize="14sp"
+            android:visibility="@{item.priority == 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintStart_toEndOf="@id/tvTag"
+            app:layout_constraintTop_toTopOf="@id/tvTag"
+            app:layout_goneMarginStart="0dp"
+            app:layout_goneMarginTop="8dp"
+            app:normalSolid="@android:color/white"
+            app:normalStrokeColor="@color/appColor"
+            app:normalStrokeWidth="1dp"
+            app:normalTextColor="@color/appColor"
+            app:radii="10dp"
+            tools:text="@string/high"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:onClick="@{v -> presenter.onItemClick(v, item, position)}"
+            android:padding="4dp"
+            android:src="@drawable/ic_delete_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btnStatus"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

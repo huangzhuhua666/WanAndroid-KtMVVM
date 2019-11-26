@@ -70,13 +70,9 @@ class CollectionVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 articleModel.collectOuter(article, object : OperateCallback<Article> {
-                    override fun onInputIllegal(tip: Int) {
-                        _toastTip.postValue(tip)
-                    }
+                    override fun onInputIllegal(tip: Int) = _toastTip.postValue(tip)
 
-                    override fun onPreOperate() {
-                        _isShowLoading.postValue(true)
-                    }
+                    override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: Article) {
                         LiveEventBus.get("dismiss_dialog").post(true)
@@ -115,13 +111,9 @@ class CollectionVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 val callback = object : OperateCallback<Website> {
-                    override fun onInputIllegal(tip: Int) {
-                        _toastTip.postValue(tip)
-                    }
+                    override fun onInputIllegal(tip: Int) = _toastTip.postValue(tip)
 
-                    override fun onPreOperate() {
-                        _isShowLoading.postValue(true)
-                    }
+                    override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: Website) {
                         LiveEventBus.get("dismiss_dialog").post(true)

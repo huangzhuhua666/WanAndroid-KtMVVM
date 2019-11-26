@@ -10,10 +10,6 @@
         android:title="@string/todo"/>
 
     <item
-        android:id="@+id/about"
-        android:title="@string/about"/>
-
-    <item
         android:id="@+id/logout"
         android:title="@string/logout"/>
 

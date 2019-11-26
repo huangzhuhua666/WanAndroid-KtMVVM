@@ -21,7 +21,6 @@ import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.youth.banner.BannerConfig
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlin.properties.Delegates
 
 /**
@@ -46,7 +45,7 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
         DataBindingUtil.inflate<LayoutBannerBinding>(
             layoutInflater,
             R.layout.layout_banner,
-            rvArticle.parent as ViewGroup,
+            mBinding.rvArticle.parent as ViewGroup,
             false
         )
     }
@@ -70,7 +69,7 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
         }
 
         mAdapter.let {
-            rvArticle.adapter = it
+            mBinding.rvArticle.adapter = it
             it.addHeaderView(mBanner)
         }
     }

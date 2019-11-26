@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="todo"
+            type="com.example.hzh.ktmvvm.data.bean.Todo"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_f5f5f5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/appColor"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_back"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@{todo.id == -1 ? @string/add_todo : @string/edit_todo}"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                tools:text="@string/add_todo"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_done_white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="@string/write_a_title"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@={todo.title}"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="16sp"
+                tools:ignore="AutoFill"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/content"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+                android:hint="@string/do_something"
+                android:inputType="text"
+                android:lineSpacingExtra="3dp"
+                android:text="@={todo.content}"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="16sp"
+                tools:ignore="AutoFill"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <TextView
+            android:id="@+id/btnDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@{todo.dateStr}"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp"
+            tools:text="2019-11-21"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tag"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/cbLife"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.type == 1}"
+                android:text="@string/life"/>
+
+            <CheckBox
+                android:id="@+id/cbWork"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.type == 2}"
+                android:text="@string/work"/>
+
+            <CheckBox
+                android:id="@+id/cbStudy"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.type == 3}"
+                android:text="@string/study"/>
+
+            <CheckBox
+                android:id="@+id/cbEntertainment"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.type == 4}"
+                android:text="@string/entertainment"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priority"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <CheckBox
+                android:id="@+id/cbHigh"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.priority == 1}"
+                android:text="@string/high"/>
+
+            <CheckBox
+                android:id="@+id/cbMedium"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.priority == 2}"
+                android:text="@string/medium"/>
+
+            <CheckBox
+                android:id="@+id/cbLow"
+                style="@style/TodoTagStyle"
+                android:checked="@{todo.priority == 3}"
+                android:text="@string/low"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+    </LinearLayout>
+
+</layout>

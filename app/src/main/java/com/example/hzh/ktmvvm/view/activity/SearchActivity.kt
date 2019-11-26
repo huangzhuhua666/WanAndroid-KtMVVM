@@ -19,7 +19,6 @@ import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * Create by hzh on 2019/11/11.
@@ -28,16 +27,15 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
 
     companion object {
 
-        fun open(activity: Activity) {
-            activity.startActivity(Intent(activity, SearchActivity::class.java))
-        }
+        fun open(activity: Activity) =
+            activity.let { it.startActivity(Intent(it, SearchActivity::class.java)) }
     }
 
     override val mLayoutId: Int
         get() = R.layout.activity_search
 
     override val mTitleView: View?
-        get() = llTitle
+        get() = mBinding.llTitle
 
     override val mViewModel: SearchVM?
         get() = obtainVM(SearchVM::class.java)
@@ -56,25 +54,27 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
     override fun initView() {
         mBinding.searchVM = mViewModel
 
-        rvHistory.run {
-            isNestedScrollingEnabled = false
-            layoutManager = FlexboxLayoutManager(mContext)
-            adapter = mHistoryAdapter
-        }
+        mBinding.let {
+            it.rvHistory.run {
+                isNestedScrollingEnabled = false
+                layoutManager = FlexboxLayoutManager(mContext)
+                adapter = mHistoryAdapter
+            }
 
-        rvHot.run {
-            isNestedScrollingEnabled = false
-            layoutManager = FlexboxLayoutManager(mContext)
-            adapter = mHotAdapter
-        }
+            it.rvHot.run {
+                isNestedScrollingEnabled = false
+                layoutManager = FlexboxLayoutManager(mContext)
+                adapter = mHotAdapter
+            }
 
-        rvCommon.run {
-            isNestedScrollingEnabled = false
-            layoutManager = FlexboxLayoutManager(mContext)
-            adapter = mCommonAdapter
-        }
+            it.rvCommon.run {
+                isNestedScrollingEnabled = false
+                layoutManager = FlexboxLayoutManager(mContext)
+                adapter = mCommonAdapter
+            }
 
-        rvResult.adapter = mArticleAdapter
+            it.rvResult.adapter = mArticleAdapter
+        }
     }
 
     override fun initListener() {
@@ -99,18 +99,20 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
                 mArticleAdapter.setNewDiffData(ArticleDiffCallback(it))
             })
 
-            btnBack.setOnClickListener {
-                mViewModel?.run {
-                    if (isResult.value!!) {
-                        isResult.value = false
-                        return@setOnClickListener
-                    } else finish()
+            mBinding.run {
+                btnBack.setOnClickListener {
+                    mViewModel?.run {
+                        if (isResult.value!!) {
+                            isResult.value = false
+                            return@setOnClickListener
+                        } else finish()
+                    }
+                    finish()
                 }
-                finish()
-            }
 
-            // 清空搜索栏
-            btnClear.setOnClickListener { keyword.value = "" }
+                // 清空搜索栏
+                btnClear.setOnClickListener { keyword.value = "" }
+            }
 
             mHistoryAdapter.mPresenter = object : ItemClickPresenter<String> {
                 override fun onItemClick(view: View, item: String, position: Int) {

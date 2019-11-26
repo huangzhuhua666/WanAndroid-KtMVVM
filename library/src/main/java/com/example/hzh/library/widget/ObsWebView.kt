@@ -2,6 +2,7 @@ package com.example.hzh.library.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -31,8 +32,14 @@ class ObsWebView @JvmOverloads constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        stopLoading()
+        parent?.run {
+            this as ViewGroup
+            removeView(this@ObsWebView)
+        }
+
         settings.javaScriptEnabled = false
+        stopLoading()
+        clearHistory()
         removeAllViews()
         destroy()
     }

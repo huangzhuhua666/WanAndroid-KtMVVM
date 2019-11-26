@@ -58,6 +58,9 @@ dependencies {
 
     // flexbox
     implementation rootProject.ext.dependencies["flexbox"]
+
+    // picker
+    implementation rootProject.ext.dependencies["picker"]
 }
 
 repositories {

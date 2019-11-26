@@ -11,7 +11,6 @@ import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
-import kotlinx.android.synthetic.main.fragment_knowledge.*
 
 /**
  * Create by hzh on 2019/09/10.
@@ -40,15 +39,16 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
     }
 
     override fun initView() {
-        mBinding.baseVM = mViewModel
+        mBinding.run {
+            baseVM = mViewModel
 
-        rvSystem.adapter = mAdapter
+            rvSystem.adapter = mAdapter
+        }
     }
 
     override fun initListener() {
         mViewModel?.treeList?.observe(mContext, Observer { mAdapter.setNewData(it) })
-
-        refreshLayout.setOnRefreshListener { mViewModel?.getSystemTree(true) }
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel?.getSystemTree(true) }
     }
 
     override fun initData() {

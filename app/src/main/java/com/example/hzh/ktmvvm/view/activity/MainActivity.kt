@@ -19,7 +19,6 @@ import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
@@ -31,7 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         get() = R.layout.activity_main
 
     override val mTitleView: View?
-        get() = llTitle
+        get() = mBinding.llTitle
 
     override val mViewModel: AuthVM?
         get() = obtainVM(AuthVM::class.java)
@@ -41,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     private val mills = LongArray(2)
 
     private val mHeaderBinding by lazy {
-        DataBindingUtil.bind<DrawerHeadBinding>(nav.getHeaderView(0))
+        DataBindingUtil.bind<DrawerHeadBinding>(mBinding.nav.getHeaderView(0))
     }
 
     private val mLogoutDialog by lazy {
@@ -54,28 +53,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
     override fun initView() {
         mHeaderBinding?.run {
+            lifecycleOwner = this@MainActivity
             avatar = App.configSP.getString("icon", "")
             nickname = App.configSP.getString("nickname", getString(R.string.visitor))
         }
 
-        vpContent?.run {
-            listOf(
-                HomeFragment.newInstance(),
-                KnowledgeFragment.newInstance(),
-                NavigationFragment.newInstance(),
-                WeChatAuthorFragment.newInstance(),
-                ProjectFragment.newInstance()
-            ).let { fragmentList ->
-                adapter = SimplePageAdapter(
-                    supportFragmentManager,
-                    lifecycle,
-                    fragmentList.size
-                ) { fragmentList[it] }
-                offscreenPageLimit = fragmentList.size
-            }
+        mBinding.run {
+            vpContent.run {
+                listOf(
+                    HomeFragment.newInstance(),
+                    KnowledgeFragment.newInstance(),
+                    NavigationFragment.newInstance(),
+                    WeChatAuthorFragment.newInstance(),
+                    ProjectFragment.newInstance()
+                ).let { fragmentList ->
+                    adapter = SimplePageAdapter(
+                        supportFragmentManager,
+                        lifecycle,
+                        fragmentList.size
+                    ) { fragmentList[it] }
+                    offscreenPageLimit = fragmentList.size
+                }
 
-            indicator.viewpager = this
-            isUserInputEnabled = false
+                indicator.viewpager = this
+                isUserInputEnabled = false
+            }
         }
     }
 
@@ -88,25 +90,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
             }
         })
 
-        btnDrawer.setOnClickListener { drawer.openDrawer(GravityCompat.START) }
+        mBinding.run {
+            btnDrawer.setOnClickListener { drawer.openDrawer(GravityCompat.START) }
 
-        btnSearch.setOnClickListener { SearchActivity.open(mContext) }
+            btnSearch.setOnClickListener { SearchActivity.open(mContext) }
 
-        nav.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.collect -> { // 收藏
-                    if (App.isLogin) CollectionActivity.open(mContext)
-                    else AuthActivity.open(mContext, VIEW_COLLECTION)
+            nav.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.collect -> { // 收藏
+                        if (App.isLogin) CollectionActivity.open(mContext)
+                        else AuthActivity.open(mContext, VIEW_COLLECTION)
+                    }
+                    R.id.todo -> TodoActivity.open(mContext) // 待办清单
+                    R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
                 }
-                R.id.todo -> toast(R.string.todo)
-                R.id.about -> toast(R.string.about)
-                R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
+                drawer.closeDrawer(GravityCompat.START)
+                true
             }
-            drawer.closeDrawer(GravityCompat.START)
-            true
-        }
 
-        indicator.setOnTabChangedListener { mBinding.title = titles[it] }
+            indicator.setOnTabChangedListener { mBinding.title = titles[it] }
+        }
     }
 
     override fun initData() {

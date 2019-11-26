@@ -15,7 +15,6 @@ import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.viewmodel.BaseVM
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_knowledge.*
 
 /**
  * Create by hzh on 2019/09/18.
@@ -25,8 +24,8 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
 
     companion object {
 
-        fun open(activity: Activity, title: String, category: ArrayList<Category>) {
-            activity.startActivity(Intent(activity, KnowledgeActivity::class.java).apply {
+        fun open(activity: Activity, title: String, category: ArrayList<Category>) = activity.let {
+            it.startActivity(Intent(it, KnowledgeActivity::class.java).apply {
                 putExtras(bundleOf("title" to title, "category" to category))
             })
         }
@@ -36,7 +35,7 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
         get() = R.layout.activity_knowledge
 
     override val mTitleView: View?
-        get() = llTitle
+        get() = mBinding.llTitle
 
     private var title by DelegateExt.notNullSingleValue<String>()
 
@@ -50,24 +49,26 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
     }
 
     override fun initView() {
-        mBinding.title = title
+        mBinding.run {
+            title = title
 
-        vpContent?.adapter = SimplePageAdapter(
-            supportFragmentManager,
-            lifecycle,
-            category.size
-        ) { KnowledgePageFragment.newInstance(category[it].categoryId) }
+            vpContent?.adapter = SimplePageAdapter(
+                supportFragmentManager,
+                lifecycle,
+                category.size
+            ) { KnowledgePageFragment.newInstance(category[it].categoryId) }
 
-        TabLayoutMediator(tabLayout, vpContent) { tab, position ->
-            tab.text = HtmlCompat.fromHtml(
-                category[position].name,
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-        }.attach()
+            TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+                tab.text = HtmlCompat.fromHtml(
+                    category[position].name,
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+            }.attach()
+        }
     }
 
     override fun initListener() {
-        btnBack.setOnClickListener { finish() }
+        mBinding.btnBack.setOnClickListener { finish() }
     }
 
     override fun initData() {

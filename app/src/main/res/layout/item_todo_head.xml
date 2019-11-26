@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <import type="android.text.TextUtils"/>
+
+        <variable
+            name="item"
+            type="com.example.hzh.ktmvvm.data.bean.TodoHead"/>
+
+        <variable
+            name="position"
+            type="Integer"/>
+
+        <variable
+            name="presenter"
+            type="com.example.hzh.library.adapter.ItemClickPresenter"/>
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ececec"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@{item.dateStr}"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp"
+        tools:drawableEnd="@drawable/ic_arrow_up_black"
+        tools:text="2019-11-23"/>
+
+</layout>

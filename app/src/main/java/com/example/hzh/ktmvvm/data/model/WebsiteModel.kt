@@ -23,22 +23,20 @@ class WebsiteModel {
      * @param website
      * @param callback
      */
-    suspend fun collectWebsite(website: Website, callback: OperateCallback<Website>) {
-        website.run {
-            if (TextUtils.isEmpty(name)) {
-                callback.onInputIllegal(R.string.please_input_website_name)
-                return
-            }
-
-            if (TextUtils.isEmpty(link)) {
-                callback.onInputIllegal(R.string.please_input_website_link)
-                return
-            }
-
-            callback.onPreOperate()
-
-            repo.collectWebsite(name, link).let { callback.onCallback(it) }
+    suspend fun collectWebsite(website: Website, callback: OperateCallback<Website>) = website.run {
+        if (TextUtils.isEmpty(name)) {
+            callback.onInputIllegal(R.string.please_input_website_name)
+            return
         }
+
+        if (TextUtils.isEmpty(link)) {
+            callback.onInputIllegal(R.string.please_input_website_link)
+            return
+        }
+
+        callback.onPreOperate()
+
+        repo.collectWebsite(name, link).let { callback.onCallback(it) }
     }
 
     /**
@@ -46,22 +44,20 @@ class WebsiteModel {
      * @param website
      * @param callback
      */
-    suspend fun editWebsite(website: Website, callback: OperateCallback<Website>) {
-        website.run {
-            if (TextUtils.isEmpty(name)) {
-                callback.onInputIllegal(R.string.please_input_website_name)
-                return
-            }
-
-            if (TextUtils.isEmpty(link)) {
-                callback.onInputIllegal(R.string.please_input_website_link)
-                return
-            }
-
-            callback.onPreOperate()
-
-            repo.editWebsite(websiteId, name, link).let { callback.onCallback(it) }
+    suspend fun editWebsite(website: Website, callback: OperateCallback<Website>) = website.run {
+        if (TextUtils.isEmpty(name)) {
+            callback.onInputIllegal(R.string.please_input_website_name)
+            return
         }
+
+        if (TextUtils.isEmpty(link)) {
+            callback.onInputIllegal(R.string.please_input_website_link)
+            return
+        }
+
+        callback.onPreOperate()
+
+        repo.editWebsite(websiteId, name, link).let { callback.onCallback(it) }
     }
 
     /**

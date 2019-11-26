@@ -16,7 +16,6 @@ import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
-import kotlinx.android.synthetic.main.base_refresh_list.*
 
 /**
  * Create by hzh on 2019/9/26.
@@ -37,9 +36,11 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
     private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
     override fun initView() {
-        mBinding.baseVM = mViewModel
+        mBinding.run {
+            baseVM = mViewModel
 
-        baseList.adapter = mAdapter
+            baseList.adapter = mAdapter
+        }
     }
 
     override fun initListener() {

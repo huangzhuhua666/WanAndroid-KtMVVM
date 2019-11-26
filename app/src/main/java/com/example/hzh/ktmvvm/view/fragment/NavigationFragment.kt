@@ -15,7 +15,6 @@ import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlinx.android.synthetic.main.fragment_navigation.*
 import kotlin.math.abs
 
 /**
@@ -44,14 +43,16 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
     private var currentIndex = 0
 
     override fun initView() {
-        mBinding.baseVM = mViewModel
+        mBinding.let {
+            it.baseVM = mViewModel
 
-        rvLeft.adapter = mLeftAdapter
+            it.rvLeft.adapter = mLeftAdapter
 
-        rvRight.run {
-            FlexboxLayoutManager(mContext)
-            layoutManager = LinearLayoutManager(mContext)
-            adapter = mRightAdapter
+            it.rvRight.run {
+                FlexboxLayoutManager(mContext)
+                layoutManager = LinearLayoutManager(mContext)
+                adapter = mRightAdapter
+            }
         }
     }
 
@@ -61,23 +62,23 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
             mRightAdapter.run { setNewData(it) }
         })
 
-        refreshLayout.setOnRefreshListener { mViewModel?.getInitData(true) }
+        mBinding.refreshLayout.setOnRefreshListener { mViewModel?.getInitData(true) }
 
         mLeftAdapter.mPresenter = object : ItemClickPresenter<Guide> {
             override fun onItemClick(view: View, item: Guide, position: Int) {
                 isLeft = true
                 currentIndex = position
                 mLeftAdapter.changeCheckPosition(position) // 选中
-                moveToCenter(rvLeft, position) // 选中项移动到中间
+                moveToCenter(mBinding.rvLeft, position) // 选中项移动到中间
 
-                (rvRight.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                (mBinding.rvRight.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
                     position,
                     0
                 )
             }
         }
 
-        rvRight.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        mBinding.rvRight.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (isLeft) { // 点击左边导航，不需要这里监听处理
@@ -120,6 +121,6 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
 
         currentIndex = position
         mLeftAdapter.changeCheckPosition(position)
-        moveToCenter(rvLeft, position)
+        moveToCenter(mBinding.rvLeft, position)
     }
 }

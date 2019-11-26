@@ -28,13 +28,9 @@ class AuthVM : BaseVM() {
             tryBlock = {
                 userModel.login(username.value, password.value, object : OperateCallback<User> {
 
-                    override fun onInputIllegal(@StringRes tip: Int) {
-                        _toastTip.postValue(tip)
-                    }
+                    override fun onInputIllegal(@StringRes tip: Int) = _toastTip.postValue(tip)
 
-                    override fun onPreOperate() {
-                        _isShowLoading.postValue(true)
-                    }
+                    override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: User) {
                         LiveEventBus.get("auth").post(true)
@@ -57,13 +53,9 @@ class AuthVM : BaseVM() {
                     rePassword.value,
                     object : OperateCallback<User> {
 
-                        override fun onInputIllegal(@StringRes tip: Int) {
-                            _toastTip.postValue(tip)
-                        }
+                        override fun onInputIllegal(@StringRes tip: Int) = _toastTip.postValue(tip)
 
-                        override fun onPreOperate() {
-                            _isShowLoading.postValue(true)
-                        }
+                        override fun onPreOperate() = _isShowLoading.postValue(true)
 
                         override fun onCallback(data: User) {
                             LiveEventBus.get("auth").post(true)

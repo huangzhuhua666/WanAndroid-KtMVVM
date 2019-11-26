@@ -8,7 +8,8 @@ import java.util.*
  * Create by hzh on 2019/09/05.
  */
 const val MM_dd = "M-d"
-const val yyyy_MM_dd = "yyyy-M-d"
+const val yyyy_M_d = "yyyy-M-d"
+const val yyyy_MM_dd = "yyyy-MM-dd"
 
 fun Char.digit(radix: Int): Int = Character.digit(this, radix)
 
@@ -36,7 +37,7 @@ fun Long.dateDistance(): String {
         "昨天"
     } else {
         diff = diff / 60 / 60 / 24
-        if (diff <= 20) "${diff}天前" else this.formatDate(yyyy_MM_dd)
+        if (diff <= 20) "${diff}天前" else this.formatDate(yyyy_M_d)
     }
     return distance
 }

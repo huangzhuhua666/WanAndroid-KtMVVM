@@ -10,7 +10,6 @@ import com.example.hzh.library.extension.addTextChangedListener
 import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.fragment_wechat_author.*
 
 /**
  * Create by hzh on 2019/09/10.
@@ -35,13 +34,13 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
     override fun initListener() {
         mViewModel?.run {
             authorList.observe(viewLifecycleOwner, Observer { authorList ->
-                vpContent?.adapter = SimplePageAdapter(
+                mBinding.vpContent?.adapter = SimplePageAdapter(
                     childFragmentManager,
                     lifecycle,
                     authorList.size
                 ) { WeChatAuthorPageFragment.newInstance(authorList[it].categoryId) }
 
-                TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+                TabLayoutMediator(mBinding.tabLayout, mBinding.vpContent) { tab, position ->
                     tab.text = HtmlCompat.fromHtml(
                         authorList[position].name,
                         HtmlCompat.FROM_HTML_MODE_LEGACY
@@ -49,10 +48,12 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
                 }.attach()
             })
 
-            etSearch.addTextChangedListener { afterTextChanged { keyword.value = it?.toString() } }
+            mBinding.etSearch.addTextChangedListener {
+                afterTextChanged { keyword.value = it?.toString() }
+            }
         }
 
-        btnClear.setOnClickListener { etSearch.setText("") }
+        mBinding.btnClear.setOnClickListener { mBinding.etSearch.setText("") }
     }
 
     override fun initData() {

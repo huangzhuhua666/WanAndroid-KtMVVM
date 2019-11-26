@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="todo"
+            type="com.example.hzh.ktmvvm.data.bean.Todo"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_f5f5f5"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/appColor"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_back"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/detail"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/ic_delete_white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@={todo.title}"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"
+                tools:text="这是标题"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="@string/content"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nothing_write"
+                android:lineSpacingExtra="3dp"
+                android:text="@={todo.content}"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@{todo.dateStr}"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp"
+            tools:text="2019-11-21"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:drawableStart="@drawable/ic_done_red"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@{todo.completeDateStr}"
+            android:textColor="@color/color_ff3b30"
+            android:textSize="16sp"
+            tools:text="2019-11-25"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="@{todo.type == 0 ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tag"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <com.example.hzh.library.widget.RTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp"
+                android:text="@{todo.type == 1 ? @string/life : todo.type == 2 ? @string/work : todo.type == 3 ? @string/study : todo.type == 4 ? @string/entertainment : @string/def}"
+                android:textSize="14sp"
+                app:normalSolid="@android:color/white"
+                app:normalStrokeColor="@color/appColor"
+                app:normalStrokeWidth="1dp"
+                app:normalTextColor="@color/appColor"
+                app:radii="10dp"
+                tools:text="@string/work"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"
+            android:visibility="@{todo.type == 0 ? View.GONE : View.VISIBLE}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="@{todo.priority == 0 ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priority"
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"/>
+
+            <com.example.hzh.library.widget.RTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp"
+                android:text="@{todo.priority == 1 ? @string/high : todo.priority == 2 ? @string/medium : todo.priority == 3 ? @string/low : @string/def}"
+                android:textSize="14sp"
+                app:normalSolid="@android:color/white"
+                app:normalStrokeColor="@color/appColor"
+                app:normalStrokeWidth="1dp"
+                app:normalTextColor="@color/appColor"
+                app:radii="10dp"
+                tools:text="@string/high"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_ececec"
+            android:visibility="@{todo.priority == 0 ? View.GONE : View.VISIBLE}"/>
+
+    </LinearLayout>
+
+</layout>
