@@ -50,16 +50,16 @@ class KnowledgeActivity : BaseActivity<ActivityKnowledgeBinding, BaseVM>() {
     }
 
     override fun initView() {
-        mBinding.run {
-            title = title
+        mBinding.let {
+            it.title = title
 
-            vpContent?.adapter = SimplePageAdapter(
+            it.vpContent.adapter = SimplePageAdapter(
                 supportFragmentManager,
                 lifecycle,
                 category.size
             ) { KnowledgePageFragment.newInstance(category[it].categoryId) }
 
-            TabLayoutMediator(tabLayout, vpContent) { tab, position ->
+            TabLayoutMediator(it.tabLayout, it.vpContent) { tab, position ->
                 tab.text = HtmlCompat.fromHtml(
                     category[position].name,
                     HtmlCompat.FROM_HTML_MODE_LEGACY
