@@ -25,12 +25,6 @@ fun Context.toast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, duration).show()
 }
 
-fun <T : ViewModel> FragmentActivity.obtainVM(modelClass: Class<T>): T =
-    ViewModelProviders.of(this)[modelClass]
-
-fun <T : ViewModel> Fragment.obtainVM(modelClass: Class<T>): T =
-    ViewModelProviders.of(this)[modelClass]
-
 fun Context.inflate(@LayoutRes resource: Int, root: ViewGroup? = null): View =
     LayoutInflater.from(this).inflate(resource, root)
 

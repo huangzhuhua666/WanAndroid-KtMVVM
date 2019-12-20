@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.SystemClock
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -12,11 +13,11 @@ import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
 import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.filterFastClickListener
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -34,8 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     override val mTitleView: View?
         get() = mBinding.llTitle
 
-    override val mViewModel: AuthVM?
-        get() = obtainVM(AuthVM::class.java)
+    override val mViewModel: AuthVM? by viewModels()
 
     private val titles by lazy { resources.getStringArray(R.array.main_title) }
 
@@ -61,7 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         }
 
         mBinding.run {
-            vpContent.run {
+            vpContent?.run {
                 listOf(
                     HomeFragment.newInstance(),
                     KnowledgeFragment.newInstance(),
@@ -84,7 +84,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     }
 
     override fun initListener() {
-        LiveEventBus.get("auth").observe(this, Observer {
+        LiveEventBus.get(Event.AUTH).observe(this, Observer {
             // 登录、退出登录消息，更新用户信息
             mHeaderBinding?.run {
                 avatar = App.configSP.getString("icon", "")

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.User
 import com.example.hzh.ktmvvm.data.model.UserModel
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.util.OperateCallback
 import com.example.hzh.library.viewmodel.BaseVM
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -33,7 +34,7 @@ class AuthVM : BaseVM() {
                     override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: User) {
-                        LiveEventBus.get("auth").post(true)
+                        LiveEventBus.get(Event.AUTH).post(true)
                         _toastTip.postValue(R.string.login_success)
                     }
                 })
@@ -58,7 +59,7 @@ class AuthVM : BaseVM() {
                         override fun onPreOperate() = _isShowLoading.postValue(true)
 
                         override fun onCallback(data: User) {
-                            LiveEventBus.get("auth").post(true)
+                            LiveEventBus.get(Event.AUTH).post(true)
                             _toastTip.postValue(R.string.register_success)
                         }
                     })
@@ -74,7 +75,7 @@ class AuthVM : BaseVM() {
         doOnIO(
             tryBlock = {
                 userModel.logout().also {
-                    LiveEventBus.get("auth").post(false)
+                    LiveEventBus.get(Event.AUTH).post(false)
                     _toastTip.postValue(R.string.logout_success)
                 }
             },

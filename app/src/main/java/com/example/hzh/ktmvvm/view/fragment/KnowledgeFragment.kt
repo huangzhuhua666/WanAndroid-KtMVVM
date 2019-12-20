@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Category
@@ -9,7 +10,6 @@ import com.example.hzh.ktmvvm.view.activity.KnowledgeActivity
 import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 
 /**
@@ -25,8 +25,7 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
     override val mLayoutId: Int
         get() = R.layout.fragment_knowledge
 
-    override val mViewModel: KnowledgeVM?
-        get() = obtainVM(KnowledgeVM::class.java)
+    override val mViewModel: KnowledgeVM? by viewModels()
 
     private val mAdapter by lazy {
         SimpleBindingAdapter<Category>(R.layout.item_knowledge).also {

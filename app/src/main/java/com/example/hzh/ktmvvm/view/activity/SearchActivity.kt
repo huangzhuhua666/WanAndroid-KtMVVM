@@ -3,6 +3,7 @@ package com.example.hzh.ktmvvm.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
@@ -17,7 +18,6 @@ import com.example.hzh.ktmvvm.viewmodel.SearchVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
 import com.example.hzh.library.extension.filterFastClickListener
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
 
@@ -38,8 +38,7 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
     override val mTitleView: View?
         get() = mBinding.llTitle
 
-    override val mViewModel: SearchVM?
-        get() = obtainVM(SearchVM::class.java)
+    override val mViewModel: SearchVM? by viewModels()
 
     override val isClickHideKeyboard: Boolean
         get() = true

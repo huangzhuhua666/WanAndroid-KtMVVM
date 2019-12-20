@@ -1,12 +1,14 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
@@ -15,7 +17,6 @@ import com.example.hzh.ktmvvm.widget.EditCollectPopup
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -34,14 +35,15 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    override val mViewModel: CollectionVM?
-        get() = obtainVM(CollectionVM::class.java).also { it.flag = 1 }
+    override val mViewModel: CollectionVM? by viewModels()
 
     private val mAdapter by lazy { SimpleBindingAdapter<Website>(R.layout.item_website) }
 
     private var mEditWebDialog: EditWebsiteDialog? = null
 
     override fun initView() {
+        mViewModel?.flag = 1
+
         mBinding.let {
             it.baseVM = mViewModel
 
@@ -55,12 +57,12 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
     }
 
     override fun initListener() {
-        LiveEventBus.get("dismiss_dialog", Boolean::class.java)
+        LiveEventBus.get(Event.DIALOG_DISMISS, Boolean::class.java)
             .observe(viewLifecycleOwner, Observer {
                 // 编辑成功，关闭dialog
                 mEditWebDialog?.run { if (it && isShowing()) dismiss() }
             })
-        LiveEventBus.get("update_collect_website").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.COLLECTION_WEBSITE_UPDATE).observe(viewLifecycleOwner, Observer {
             mViewModel?.getInitData(false)
         })
 

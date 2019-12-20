@@ -4,17 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.ActivityAddOrEditTodoBinding
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.ktmvvm.widget.TimePicker
 import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.formatDate
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.extension.yyyy_MM_dd
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -40,8 +41,7 @@ class AddOrEditTodoActivity : WanActivity<ActivityAddOrEditTodoBinding, TodoVM>(
     override val mTitleView: View?
         get() = mBinding.llTitle
 
-    override val mViewModel: TodoVM?
-        get() = obtainVM(TodoVM::class.java)
+    override val mViewModel: TodoVM? by viewModels()
 
     override val isClickHideKeyboard: Boolean
         get() = true
@@ -67,7 +67,7 @@ class AddOrEditTodoActivity : WanActivity<ActivityAddOrEditTodoBinding, TodoVM>(
     }
 
     override fun initListener() {
-        LiveEventBus.get("save_todo").observe(mContext, Observer { finish() })
+        LiveEventBus.get(Event.TODO_SAVE).observe(mContext, Observer { finish() })
 
         mBinding.let {
             it.btnBack.filterFastClickListener { finish() }

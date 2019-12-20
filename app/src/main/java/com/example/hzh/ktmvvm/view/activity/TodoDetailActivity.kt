@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.os.bundleOf
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.ActivityTodoDetailBinding
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.library.extension.filterFastClickListener
-import com.example.hzh.library.extension.obtainVM
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
 
@@ -35,8 +36,7 @@ class TodoDetailActivity : WanActivity<ActivityTodoDetailBinding, TodoVM>() {
     override val mTitleView: View?
         get() = mBinding.llTitle
 
-    override val mViewModel: TodoVM?
-        get() = obtainVM(TodoVM::class.java)
+    override val mViewModel: TodoVM? by viewModels()
 
     private var todo by Delegates.notNull<Todo>()
 
@@ -53,7 +53,7 @@ class TodoDetailActivity : WanActivity<ActivityTodoDetailBinding, TodoVM>() {
             it.btnBack.filterFastClickListener { finish() }
 
             it.btnDelete.filterFastClickListener {
-                LiveEventBus.get("todo_delete").post(todo)
+                LiveEventBus.get(Event.TODO_DELETE).post(todo)
                 finish()
             }
         }

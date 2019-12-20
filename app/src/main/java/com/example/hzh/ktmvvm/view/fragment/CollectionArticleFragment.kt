@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
@@ -8,12 +9,12 @@ import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.util.ArticleDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.CollectionVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 
@@ -30,12 +31,13 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    override val mViewModel: CollectionVM?
-        get() = obtainVM(CollectionVM::class.java).also { it.flag = 0 }
+    override val mViewModel: CollectionVM? by viewModels()
 
     private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
     override fun initView() {
+        mViewModel?.flag = 0
+
         mBinding.run {
             baseVM = mViewModel
 
@@ -44,7 +46,7 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
     }
 
     override fun initListener() {
-        LiveEventBus.get("update_collect_article").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.COLLECTION_ARTICLE_UPDATE).observe(viewLifecycleOwner, Observer {
             mViewModel?.getInitData(false)
         })
 

@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
@@ -8,7 +9,6 @@ import com.example.hzh.ktmvvm.databinding.FragmentWechatAuthorBinding
 import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
 import com.example.hzh.library.extension.addTextChangedListener
 import com.example.hzh.library.extension.filterFastClickListener
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,8 +25,7 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
     override val mLayoutId: Int
         get() = R.layout.fragment_wechat_author
 
-    override val mViewModel: WeChatAuthorVM?
-        get() = obtainVM(WeChatAuthorVM::class.java)
+    override val mViewModel: WeChatAuthorVM? by viewModels()
 
     override fun initView() {
         mBinding.wechatVM = mViewModel

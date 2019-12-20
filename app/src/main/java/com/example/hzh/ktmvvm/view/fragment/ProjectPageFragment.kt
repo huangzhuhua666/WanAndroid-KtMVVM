@@ -3,6 +3,7 @@ package com.example.hzh.ktmvvm.view.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
@@ -10,12 +11,12 @@ import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.util.ArticleDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
@@ -35,8 +36,7 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    override val mViewModel: ProjectVM?
-        get() = obtainVM(ProjectVM::class.java)
+    override val mViewModel: ProjectVM? by viewModels()
 
     private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
@@ -51,11 +51,11 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
     }
 
     override fun initListener() {
-        LiveEventBus.get("auth").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.AUTH).observe(viewLifecycleOwner, Observer {
             // 登录消息，刷新文章列表
             mViewModel?.getInitData(false)
         })
-        LiveEventBus.get("uncollect").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.ARTICLE_CANCEL_COLLECT).observe(viewLifecycleOwner, Observer {
             // 我的收藏页面取消收藏，数据可能有变化，刷新一下列表
             mViewModel?.getInitData(false)
         })

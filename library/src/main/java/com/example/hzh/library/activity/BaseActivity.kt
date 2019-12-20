@@ -44,8 +44,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
     protected open val mStatusView: StatusLayout?
         get() = null
 
-    protected open val mViewModel: VM?
-        get() = null
+    protected open val mViewModel: VM? = null
 
     /**
      * 使用沉浸式状态栏

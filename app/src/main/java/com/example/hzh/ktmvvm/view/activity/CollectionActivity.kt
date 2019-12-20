@@ -3,19 +3,21 @@ package com.example.hzh.ktmvvm.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityCollectionBinding
-import com.example.hzh.ktmvvm.view.fragment.*
+import com.example.hzh.ktmvvm.util.Event
+import com.example.hzh.ktmvvm.view.fragment.CollectionArticleFragment
+import com.example.hzh.ktmvvm.view.fragment.CollectionWebsiteFragment
 import com.example.hzh.ktmvvm.viewmodel.CollectionVM
 import com.example.hzh.ktmvvm.widget.AddCollectPopup
 import com.example.hzh.ktmvvm.widget.EditArticleDialog
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
 import com.example.hzh.library.extension.filterFastClickListener
-import com.example.hzh.library.extension.obtainVM
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lxj.xpopup.XPopup
@@ -37,8 +39,7 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>(
     override val mTitleView: View?
         get() = mBinding.llTitle
 
-    override val mViewModel: CollectionVM?
-        get() = obtainVM(CollectionVM::class.java)
+    override val mViewModel: CollectionVM? by viewModels()
 
     private val titleList by lazy {
         listOf(
@@ -90,7 +91,7 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>(
     }
 
     override fun initListener() {
-        LiveEventBus.get("dismiss_dialog", Boolean::class.java).observe(mContext, Observer {
+        LiveEventBus.get(Event.DIALOG_DISMISS, Boolean::class.java).observe(mContext, Observer {
             mEditArticleDialog?.run { if (it && isShowing()) dismiss() }
             mEditWebDialog?.run { if (it && isShowing()) dismiss() }
         })

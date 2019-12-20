@@ -1,12 +1,12 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.core.text.HtmlCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentProjectBinding
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -23,8 +23,7 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
     override val mLayoutId: Int
         get() = R.layout.fragment_project
 
-    override val mViewModel: ProjectVM?
-        get() = obtainVM(ProjectVM::class.java)
+    override val mViewModel: ProjectVM? by viewModels()
 
     override fun initView() {
 

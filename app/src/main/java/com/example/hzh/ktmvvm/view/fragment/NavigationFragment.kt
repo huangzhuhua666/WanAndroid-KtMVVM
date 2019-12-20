@@ -1,6 +1,7 @@
 package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,6 @@ import com.example.hzh.ktmvvm.databinding.FragmentNavigationBinding
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.NavigationVM
 import com.example.hzh.library.adapter.ItemClickPresenter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.flexbox.FlexboxLayoutManager
 import kotlin.math.abs
@@ -30,8 +30,7 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
     override val mLayoutId: Int
         get() = R.layout.fragment_navigation
 
-    override val mViewModel: NavigationVM?
-        get() = obtainVM(NavigationVM::class.java)
+    override val mViewModel: NavigationVM? by viewModels()
 
     private val mLeftAdapter by lazy { LeftGuideAdapter() }
 

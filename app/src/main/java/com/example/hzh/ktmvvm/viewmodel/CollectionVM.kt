@@ -7,6 +7,7 @@ import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.data.model.ArticleModel
 import com.example.hzh.ktmvvm.data.model.WebsiteModel
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.util.OperateCallback
 import com.example.hzh.library.viewmodel.BaseVM
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -75,8 +76,8 @@ class CollectionVM : BaseVM() {
                     override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: Article) {
-                        LiveEventBus.get("dismiss_dialog").post(true)
-                        LiveEventBus.get("update_collect_article").post(true)
+                        LiveEventBus.get(Event.DIALOG_DISMISS).post(true)
+                        LiveEventBus.get(Event.COLLECTION_ARTICLE_UPDATE).post(true)
                         _toastTip.postValue(R.string.collect_success)
                     }
                 })
@@ -95,7 +96,7 @@ class CollectionVM : BaseVM() {
             tryBlock = {
                 articleModel.unCollectMyCollection(article.articleId, article.originId).also {
                     _toastTip.postValue(R.string.uncollect_success)
-                    LiveEventBus.get("uncollect").post(false)
+                    LiveEventBus.get(Event.ARTICLE_CANCEL_COLLECT).post(false)
                     getInitData(false)
                 }
             },
@@ -116,8 +117,8 @@ class CollectionVM : BaseVM() {
                     override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: Website) {
-                        LiveEventBus.get("dismiss_dialog").post(true)
-                        LiveEventBus.get("update_collect_website").post(true)
+                        LiveEventBus.get(Event.DIALOG_DISMISS).post(true)
+                        LiveEventBus.get(Event.COLLECTION_WEBSITE_UPDATE).post(true)
 
                         _toastTip.postValue(if (website.websiteId == -1) R.string.collect_success else R.string.operate_success)
                     }

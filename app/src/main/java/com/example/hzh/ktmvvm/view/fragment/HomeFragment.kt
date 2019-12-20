@@ -4,6 +4,7 @@ import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
@@ -12,13 +13,13 @@ import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.FragmentHomeBinding
 import com.example.hzh.ktmvvm.databinding.LayoutBannerBinding
 import com.example.hzh.ktmvvm.util.ArticleDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.HomeVM
 import com.example.hzh.ktmvvm.widget.ObsBanner
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.youth.banner.BannerConfig
@@ -37,8 +38,7 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
     override val mLayoutId: Int
         get() = R.layout.fragment_home
 
-    override val mViewModel: HomeVM?
-        get() = obtainVM(HomeVM::class.java)
+    override val mViewModel: HomeVM? by viewModels()
 
     private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
@@ -78,11 +78,11 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
     }
 
     override fun initListener() {
-        LiveEventBus.get("auth").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.AUTH).observe(viewLifecycleOwner, Observer {
             // 登录消息，刷新文章列表
             mViewModel?.getInitData(false)
         })
-        LiveEventBus.get("uncollect").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.ARTICLE_CANCEL_COLLECT).observe(viewLifecycleOwner, Observer {
             // 我的收藏页面取消收藏，数据可能有变化，刷新一下列表
             mViewModel?.getInitData(false)
         })

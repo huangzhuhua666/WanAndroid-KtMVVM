@@ -3,6 +3,7 @@ package com.example.hzh.ktmvvm.view.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
@@ -10,12 +11,12 @@ import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.util.ArticleDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.KnowledgeVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
-import com.example.hzh.library.extension.obtainVM
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
@@ -35,8 +36,7 @@ class KnowledgePageFragment : WanFragment<BaseRefreshListBinding, KnowledgeVM>()
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 
-    override val mViewModel: KnowledgeVM?
-        get() = obtainVM(KnowledgeVM::class.java)
+    override val mViewModel: KnowledgeVM? by viewModels()
 
     private val mAdapter by lazy { SimpleBindingAdapter<Article>(R.layout.item_article) }
 
@@ -51,7 +51,7 @@ class KnowledgePageFragment : WanFragment<BaseRefreshListBinding, KnowledgeVM>()
     }
 
     override fun initListener() {
-        LiveEventBus.get("auth").observe(viewLifecycleOwner, Observer {
+        LiveEventBus.get(Event.AUTH).observe(viewLifecycleOwner, Observer {
             // 登录消息，刷新文章列表
             mViewModel?.getInitData(false)
         })

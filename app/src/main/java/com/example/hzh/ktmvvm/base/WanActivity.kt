@@ -3,6 +3,7 @@ package com.example.hzh.ktmvvm.base
 import androidx.core.content.edit
 import androidx.databinding.ViewDataBinding
 import com.example.hzh.ktmvvm.app.App
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.http.APIException
 import com.example.hzh.library.viewmodel.BaseVM
@@ -17,6 +18,6 @@ abstract class WanActivity<B : ViewDataBinding, VM : BaseVM> : BaseActivity<B, V
         super.onLoginExpired(e)
         App.isLogin = false
         App.configSP.edit { clear() }
-        LiveEventBus.get("auth").post(false)
+        LiveEventBus.get(Event.AUTH).post(false)
     }
 }

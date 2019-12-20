@@ -7,6 +7,7 @@ import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.data.bean.TodoHead
 import com.example.hzh.ktmvvm.data.model.TodoModel
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.util.OperateCallback
 import com.example.hzh.library.viewmodel.BaseVM
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -97,7 +98,7 @@ class TodoVM : BaseVM() {
                     override fun onPreOperate() = _isShowLoading.postValue(true)
 
                     override fun onCallback(data: Todo) {
-                        LiveEventBus.get("save_todo").post(true)
+                        LiveEventBus.get(Event.TODO_SAVE).post(true)
                         _toastTip.postValue(R.string.save_success)
                     }
                 }
@@ -119,7 +120,7 @@ class TodoVM : BaseVM() {
                 todoModel.updateTodoStatus(_todoMap.value!!, todo).let {
                     _todoMap.postValue(it)  // 更新map，方便后续分类操作
                     _todoList.postValue(it.values.toMutableList())
-                    LiveEventBus.get("todo_status").post(if (todo.status == 0) 1 else 0)
+                    LiveEventBus.get(Event.TODO_STATUS).post(if (todo.status == 0) 1 else 0)
                 }
             },
             finallyBlock = { _isShowLoading.value = false }

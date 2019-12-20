@@ -46,8 +46,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
     protected open val mStatusView: StatusLayout?
         get() = null
 
-    protected open val mViewModel: VM?
-        get() = null
+    protected open val mViewModel: VM? = null
 
     /**
      * 使用沉浸式状态栏
