@@ -16,7 +16,8 @@ class HttpClient private constructor(context: Context) {
 
         private var retrofit: Retrofit? = null
 
-        @Volatile private var instance: HttpClient? = null
+        @Volatile
+        private var instance: HttpClient? = null
 
         var customClient: OkHttpClient? = null
 

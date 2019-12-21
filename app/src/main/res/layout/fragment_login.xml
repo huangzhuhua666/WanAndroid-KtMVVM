@@ -10,7 +10,7 @@
 
         <import type="android.text.TextUtils"/>
 
-        <import type="com.example.hzh.library.extension.ViewExtKt"/>
+        <import type="com.example.hzh.library.extension.ContextExtKt"/>
 
         <variable
             name="authVM"
