@@ -71,6 +71,9 @@ dependencies {
 
     // picker
     implementation rootProject.ext.dependencies["picker"]
+
+    // permission
+    kapt rootProject.ext.dependencies["permission-processor"]
 }
 
 repositories {

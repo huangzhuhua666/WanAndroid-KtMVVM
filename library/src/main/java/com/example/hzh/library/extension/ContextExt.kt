@@ -32,6 +32,10 @@ fun Context.inflate(@LayoutRes resource: Int, root: ViewGroup? = null): View =
 
 fun Context.createFile(name: String, type: String = Environment.DIRECTORY_DOCUMENTS): File? {
     if (Environment.getExternalStorageState() == Environment.MEDIA_UNMOUNTED) return null
+    getExternalFilesDir(type)?.let {
+        if (!it.exists()) it.mkdirs()
+        return File(it, name)
+    }
     return null
 }
 

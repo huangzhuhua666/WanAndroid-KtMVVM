@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.data.model
 
 import com.example.hzh.ktmvvm.data.repository.DownloadRepository
-import com.example.hzh.library.http.download.downloadFile
 
 /**
  * Create by hzh on 2019/12/20.

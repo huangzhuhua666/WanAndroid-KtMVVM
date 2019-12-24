@@ -1,6 +1,7 @@
 package com.example.hzh.library.extension
 
 import android.content.Context
+import android.os.Build
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,6 +11,11 @@ import java.util.*
 const val MM_dd = "M-d"
 const val yyyy_M_d = "yyyy-M-d"
 const val yyyy_MM_dd = "yyyy-MM-dd"
+
+fun targetVersion(version: Int, before: () -> Unit = {}, after: () -> Unit = {}) {
+    if (Build.VERSION.SDK_INT >= version) after()
+    else before()
+}
 
 fun Char.digit(radix: Int): Int = Character.digit(this, radix)
 

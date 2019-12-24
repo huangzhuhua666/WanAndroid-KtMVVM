@@ -107,6 +107,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
                         if (App.isLogin) TodoActivity.open(mContext)
                         else AuthActivity.open(mContext, VIEW_TODO)
                     }
+                    R.id.download -> { // 下载测试
+                    }
                     R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
                 }
                 drawer.closeDrawer(GravityCompat.START)

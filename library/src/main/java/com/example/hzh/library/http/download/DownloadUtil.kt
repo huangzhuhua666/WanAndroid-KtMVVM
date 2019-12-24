@@ -1,8 +1,9 @@
 package com.example.hzh.library.http.download
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import android.util.Log
+import com.example.hzh.library.extension.closeSave
+import com.example.hzh.library.extension.write
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
@@ -10,45 +11,54 @@ import java.io.FileOutputStream
 /**
  * Create by hzh on 2019/12/21.
  */
-suspend fun downloadFile(body: ResponseBody, file: File) = withContext(Dispatchers.IO) {
-    launch(Dispatchers.Main) {
-        // TODO star
-    }
+private const val TAG = "download"
 
-    val ins = body.byteStream()
+suspend fun ResponseBody.saveFile(
+    file: File,
+    onStart: suspend CoroutineScope.() -> Unit = {},
+    onProgress: suspend CoroutineScope.(Double) -> Unit = {},
+    onSuccess: suspend CoroutineScope.() -> Unit = {},
+    onFailed: suspend CoroutineScope.() -> Unit = {},
+    onCancel: suspend CoroutineScope.() -> Unit = {}
+) = coroutineScope {
+    Log.d(TAG, "download start")
+    onStart()
+
+    val ins = byteStream()
     val fos = FileOutputStream(file)
     try {
-        val totalLength = body.contentLength()
-        val buff = ByteArray(1024)
+        withContext(Dispatchers.IO) {
+            val totalLength = contentLength()
+            var currentLength = 0L
+            var progress = 0.0
 
-        var currentLength = 0L
-        var progress = 0.0
+            fos.write(ins) {
+                currentLength += it
 
-        var len = ins.read(buff)
-        while (len != -1) {
-            fos.write(buff, 0, len)
-            currentLength += len
-
-            if ((currentLength.toDouble() / totalLength * 100) > progress) {
-                progress = currentLength.toDouble() / totalLength * 100
-                launch(Dispatchers.Main) {
-                    // TODO progress
+                if ((currentLength.toDouble() / totalLength * 100) > progress) {
+                    progress = currentLength.toDouble() / totalLength * 100
+                    launch(Dispatchers.Main) {
+                        Log.d(TAG, "update progress")
+                        onProgress(progress)
+                    }
                 }
             }
 
-            len = ins.read(buff)
+            launch(Dispatchers.Main) {
+                Log.d(TAG, "download success")
+                onSuccess()
+            }
         }
-
-        launch(Dispatchers.Main) {
-            // TODO success
-        }
+    } catch (e: CancellationException) {
+        e.printStackTrace()
+        Log.d(TAG, "download cancel")
+        onCancel()
     } catch (e: Exception) {
         e.printStackTrace()
-        launch(Dispatchers.Main) {
-            // TODO failed
-        }
+        Log.d(TAG, "download failed")
+        onFailed()
     } finally {
-        ins.close()
-        fos.close()
+        ins.closeSave()
+        fos.closeSave()
     }
 }

@@ -56,15 +56,13 @@ open class BaseVM : ViewModel() {
         catchBlock: suspend CoroutineScope.(Throwable) -> Unit = {},
         finallyBlock: suspend CoroutineScope.() -> Unit = {},
         handleCancellationExceptionManually: Boolean = false
-    ) {
-        viewModelScope.launch {
-            tryCatch(
-                tryBlock,
-                catchBlock,
-                finallyBlock,
-                handleCancellationExceptionManually
-            )
-        }
+    ) = viewModelScope.launch {
+        tryCatch(
+            tryBlock,
+            catchBlock,
+            finallyBlock,
+            handleCancellationExceptionManually
+        )
     }
 
     private suspend fun tryCatch(
@@ -72,19 +70,17 @@ open class BaseVM : ViewModel() {
         catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
         finallyBlock: suspend CoroutineScope.() -> Unit,
         handleCancellationExceptionManually: Boolean
-    ) {
-        coroutineScope {
-            try {
-                withContext(Dispatchers.IO) { tryBlock() }
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                if (e !is CancellationException || handleCancellationExceptionManually) {
-                    catchBlock(e)
-                    _exception.value = e
-                } else throw e
-            } finally {
-                finallyBlock()
-            }
+    ) = coroutineScope {
+        try {
+            withContext(Dispatchers.IO) { tryBlock() }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            if (e !is CancellationException || handleCancellationExceptionManually) {
+                catchBlock(e)
+                _exception.value = e
+            } else throw e
+        } finally {
+            finallyBlock()
         }
     }
 
