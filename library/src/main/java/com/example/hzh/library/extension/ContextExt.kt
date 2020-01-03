@@ -10,11 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import java.io.File
+import java.io.IOException
 
 /**
  * Create by hzh on 2019/09/12.
@@ -30,13 +27,22 @@ fun Context.toast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
 fun Context.inflate(@LayoutRes resource: Int, root: ViewGroup? = null): View =
     LayoutInflater.from(this).inflate(resource, root)
 
-fun Context.createFile(name: String, type: String = Environment.DIRECTORY_DOCUMENTS): File? {
-    if (Environment.getExternalStorageState() == Environment.MEDIA_UNMOUNTED) return null
+fun Context.createFile(name: String): File {
+    if (Environment.getExternalStorageState() == Environment.MEDIA_UNMOUNTED) throw IOException("create file failed")
+
+    val type = when (name.substringAfterLast('.')) {
+        "apk" -> Environment.DIRECTORY_DOWNLOADS
+        "jpg", "jpeg", "png", "gif" -> Environment.DIRECTORY_PICTURES
+        "mp3" -> Environment.DIRECTORY_MUSIC
+        "mp4", "rmvb", "mkv" -> Environment.DIRECTORY_MOVIES
+        else -> Environment.DIRECTORY_DOCUMENTS
+    }
+
     getExternalFilesDir(type)?.let {
         if (!it.exists()) it.mkdirs()
         return File(it, name)
     }
-    return null
+    throw IOException("create file failed")
 }
 
 fun Activity.hideKeyboard(view: View) {

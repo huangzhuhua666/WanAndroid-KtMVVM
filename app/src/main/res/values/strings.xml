@@ -79,5 +79,12 @@
     <string name="completed">已完成</string>
     <string name="detail">详情</string>
     <string name="nothing_write">啥都没填写！</string>
+    <string name="create_file_failed">创建文件失败</string>
     <string name="download_test">下载测试</string>
+    <string name="download_url_error">下载地址有错</string>
+    <string name="downloading">正在下载：%1$.1f</string>
+    <string name="download_finish">下载完成</string>
+    <string name="download_error">下载出错</string>
+    <string name="installing">正在安装</string>
+    <string name="please_allow_permissions">请允许相关权限</string>
 </resources>

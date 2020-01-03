@@ -2,6 +2,7 @@ package com.example.hzh.library.extension
 
 import android.content.Context
 import android.os.Build
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,22 +13,27 @@ const val MM_dd = "M-d"
 const val yyyy_M_d = "yyyy-M-d"
 const val yyyy_MM_dd = "yyyy-MM-dd"
 
-fun targetVersion(version: Int, before: () -> Unit = {}, after: () -> Unit = {}) {
+fun targetVersion(version: Int, after: () -> Unit = {}, before: () -> Unit = {}) {
     if (Build.VERSION.SDK_INT >= version) after()
     else before()
 }
 
 fun Char.digit(radix: Int): Int = Character.digit(this, radix)
 
-fun Float.dp2px(context: Context) = (this * context.resources.displayMetrics.density + .5f).toInt()
+fun Float.dp2px(context: Context): Int =
+    (this * context.resources.displayMetrics.density + .5f).toInt()
 
-fun Float.sp2px(context: Context) =
+fun Float.sp2px(context: Context): Int =
     (this * context.resources.displayMetrics.scaledDensity + .5f).toInt()
 
-fun Float.px2dp(context: Context) = (this / context.resources.displayMetrics.density + .5f).toInt()
+fun Float.px2dp(context: Context): Int =
+    (this / context.resources.displayMetrics.density + .5f).toInt()
 
-fun Float.px2sp(context: Context) =
+fun Float.px2sp(context: Context): Int =
     (this / context.resources.displayMetrics.scaledDensity + .5f).toInt()
+
+fun Double.roundAndScale(scale: Int): Double =
+    this.toBigDecimal().setScale(scale, RoundingMode.HALF_UP).toDouble()
 
 fun Long.dateDistance(): String {
     val distance: String

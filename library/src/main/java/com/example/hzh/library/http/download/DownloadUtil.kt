@@ -2,6 +2,7 @@ package com.example.hzh.library.http.download
 
 import android.util.Log
 import com.example.hzh.library.extension.closeSave
+import com.example.hzh.library.extension.roundAndScale
 import com.example.hzh.library.extension.write
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
@@ -15,15 +16,8 @@ private const val TAG = "download"
 
 suspend fun ResponseBody.saveFile(
     file: File,
-    onStart: suspend CoroutineScope.() -> Unit = {},
-    onProgress: suspend CoroutineScope.(Double) -> Unit = {},
-    onSuccess: suspend CoroutineScope.() -> Unit = {},
-    onFailed: suspend CoroutineScope.() -> Unit = {},
-    onCancel: suspend CoroutineScope.() -> Unit = {}
+    listener: DownloadListener? = null
 ) = coroutineScope {
-    Log.d(TAG, "download start")
-    onStart()
-
     val ins = byteStream()
     val fos = FileOutputStream(file)
     try {
@@ -32,31 +26,35 @@ suspend fun ResponseBody.saveFile(
             var currentLength = 0L
             var progress = 0.0
 
+            // 读写文件
             fos.write(ins) {
                 currentLength += it
 
-                if ((currentLength.toDouble() / totalLength * 100) > progress) {
-                    progress = currentLength.toDouble() / totalLength * 100
+                // 避免频繁更新
+                if ((currentLength.toDouble() / totalLength * 100).roundAndScale(1) > progress) {
+                    progress = (currentLength.toDouble() / totalLength * 100).roundAndScale(1)
+                    // 主线程更新进度
                     launch(Dispatchers.Main) {
-                        Log.d(TAG, "update progress")
-                        onProgress(progress)
+                        Log.d(TAG, "update progress:$progress%")
+                        listener?.onProgress(progress)
                     }
                 }
             }
 
+            // 下载成功
             launch(Dispatchers.Main) {
                 Log.d(TAG, "download success")
-                onSuccess()
+                listener?.onSuccess(file)
             }
         }
-    } catch (e: CancellationException) {
+    } catch (e: CancellationException) { // 取消下载
         e.printStackTrace()
         Log.d(TAG, "download cancel")
-        onCancel()
-    } catch (e: Exception) {
+        listener?.onCancel()
+    } catch (e: Exception) { // 下载失败
         e.printStackTrace()
         Log.d(TAG, "download failed")
-        onFailed()
+        listener?.onFailed()
     } finally {
         ins.closeSave()
         fos.closeSave()
