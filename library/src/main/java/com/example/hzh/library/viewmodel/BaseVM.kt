@@ -51,7 +51,7 @@ open class BaseVM : ViewModel() {
      * @param catchBlock 主线程
      * @param finallyBlock 主线程
      */
-    fun doOnIO(
+    protected fun doOnIO(
         tryBlock: suspend CoroutineScope.() -> Unit,
         catchBlock: suspend CoroutineScope.(Throwable) -> Unit = {},
         finallyBlock: suspend CoroutineScope.() -> Unit = {},

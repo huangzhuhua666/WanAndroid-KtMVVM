@@ -80,7 +80,6 @@
     <string name="detail">详情</string>
     <string name="nothing_write">啥都没填写！</string>
     <string name="create_file_failed">创建文件失败</string>
-    <string name="download_test">下载测试</string>
     <string name="download_url_error">下载地址有错</string>
     <string name="downloading">正在下载：%1$.1f</string>
     <string name="download_finish">下载完成</string>
