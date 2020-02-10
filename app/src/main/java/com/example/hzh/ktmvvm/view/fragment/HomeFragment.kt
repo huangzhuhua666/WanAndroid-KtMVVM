@@ -30,11 +30,6 @@ import kotlin.properties.Delegates
  */
 class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
 
-    companion object {
-
-        fun newInstance(): HomeFragment = HomeFragment()
-    }
-
     override val mLayoutId: Int
         get() = R.layout.fragment_home
 

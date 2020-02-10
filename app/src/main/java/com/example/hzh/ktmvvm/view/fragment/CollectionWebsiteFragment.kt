@@ -27,11 +27,6 @@ import com.lxj.xpopup.XPopup
  */
 class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, CollectionVM>() {
 
-    companion object {
-
-        fun newInstance(): CollectionWebsiteFragment = CollectionWebsiteFragment()
-    }
-
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 

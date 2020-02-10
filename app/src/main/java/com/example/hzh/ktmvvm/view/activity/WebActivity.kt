@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Bundle
@@ -18,6 +17,7 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityWebBinding
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.extension.startActivity
 import com.example.hzh.library.viewmodel.BaseVM
 
 /**
@@ -27,11 +27,8 @@ class WebActivity : WanActivity<ActivityWebBinding, BaseVM>() {
 
     companion object {
 
-        fun open(activity: Activity, url: String, title: String) = activity.let {
-            it.startActivity(Intent(it, WebActivity::class.java).apply {
-                putExtras(bundleOf("url" to url, "title" to title))
-            })
-        }
+        fun open(activity: Activity, url: String, title: String) =
+            activity.startActivity<WebActivity>(bundleOf("url" to url, "title" to title))
     }
 
     override val mLayoutId: Int

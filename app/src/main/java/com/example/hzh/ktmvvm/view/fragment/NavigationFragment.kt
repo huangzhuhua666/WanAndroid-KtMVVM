@@ -22,11 +22,6 @@ import kotlin.math.abs
  */
 class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>() {
 
-    companion object {
-
-        fun newInstance(): NavigationFragment = NavigationFragment()
-    }
-
     override val mLayoutId: Int
         get() = R.layout.fragment_navigation
 

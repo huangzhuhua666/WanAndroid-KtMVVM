@@ -10,6 +10,7 @@ import com.example.hzh.library.R
 
 /**
  * Create by hzh on 2019/11/5.
+ * DataBinding下的RecyclerView单一布局Adapter
  */
 open class SimpleBindingAdapter<T>(layoutResId: Int) :
     BaseQuickAdapter<T, DBViewHolder>(layoutResId) {

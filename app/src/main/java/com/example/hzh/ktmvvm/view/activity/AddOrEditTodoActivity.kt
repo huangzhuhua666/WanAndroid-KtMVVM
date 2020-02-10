@@ -1,7 +1,6 @@
 package com.example.hzh.ktmvvm.view.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -16,6 +15,7 @@ import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.ktmvvm.widget.TimePicker
 import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.formatDate
+import com.example.hzh.library.extension.startActivity
 import com.example.hzh.library.extension.yyyy_MM_dd
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -28,11 +28,8 @@ class AddOrEditTodoActivity : WanActivity<ActivityAddOrEditTodoBinding, TodoVM>(
 
     companion object {
 
-        fun open(activity: Activity, todo: Todo = Todo()) = activity.let {
-            it.startActivity(Intent(it, AddOrEditTodoActivity::class.java).apply {
-                putExtras(bundleOf("todo" to todo))
-            })
-        }
+        fun open(activity: Activity, todo: Todo = Todo()) =
+            activity.startActivity<AddOrEditTodoActivity>(bundleOf("todo" to todo))
     }
 
     override val mLayoutId: Int

@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.adapter
+package com.example.hzh.library.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 /**
  * Create by hzh on 2019/09/10.
+ * ViewPager2的简易Adapter
  */
 class SimplePageAdapter(
     fm: FragmentManager,

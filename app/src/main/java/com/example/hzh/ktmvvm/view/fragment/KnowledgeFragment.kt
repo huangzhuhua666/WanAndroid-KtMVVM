@@ -17,11 +17,6 @@ import com.example.hzh.library.fragment.BaseFragment
  */
 class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() {
 
-    companion object {
-
-        fun newInstance(): KnowledgeFragment = KnowledgeFragment()
-    }
-
     override val mLayoutId: Int
         get() = R.layout.fragment_knowledge
 

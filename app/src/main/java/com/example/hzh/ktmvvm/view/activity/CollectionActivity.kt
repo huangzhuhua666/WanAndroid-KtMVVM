@@ -1,12 +1,10 @@
 package com.example.hzh.ktmvvm.view.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
+import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityCollectionBinding
@@ -18,6 +16,7 @@ import com.example.hzh.ktmvvm.widget.AddCollectPopup
 import com.example.hzh.ktmvvm.widget.EditArticleDialog
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.extension.newFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lxj.xpopup.XPopup
@@ -26,12 +25,6 @@ import com.lxj.xpopup.XPopup
  * Create by hzh on 2019/9/25.
  */
 class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>() {
-
-    companion object {
-
-        fun open(activity: Activity) =
-            activity.let { it.startActivity(Intent(it, CollectionActivity::class.java)) }
-    }
 
     override val mLayoutId: Int
         get() = R.layout.activity_collection
@@ -75,13 +68,14 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>(
     override fun initView() {
         mBinding.run {
             listOf(
-                CollectionArticleFragment.newInstance(),
-                CollectionWebsiteFragment.newInstance()
+                newFragment<CollectionArticleFragment>(),
+                newFragment<CollectionWebsiteFragment>()
             ).let { fragmentList ->
-                vpContent.adapter = SimplePageAdapter(
-                    supportFragmentManager, lifecycle,
-                    fragmentList.size
-                ) { fragmentList[it] }
+                vpContent.adapter =
+                    SimplePageAdapter(
+                        supportFragmentManager, lifecycle,
+                        fragmentList.size
+                    ) { fragmentList[it] }
             }
 
             TabLayoutMediator(tabLayout, vpContent) { tab, position ->

@@ -13,6 +13,7 @@ import com.example.hzh.ktmvvm.databinding.ActivityTodoDetailBinding
 import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.extension.startActivity
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
 
@@ -23,11 +24,8 @@ class TodoDetailActivity : WanActivity<ActivityTodoDetailBinding, TodoVM>() {
 
     companion object {
 
-        fun open(activity: Activity, todo: Todo) = activity.let {
-            it.startActivity(Intent(it, TodoDetailActivity::class.java).apply {
-                putExtras(bundleOf("todo" to todo))
-            })
-        }
+        fun open(activity: Activity, todo: Todo) =
+            activity.startActivity<TodoDetailActivity>(bundleOf("todo" to todo))
     }
 
     override val mLayoutId: Int

@@ -1,7 +1,5 @@
 package com.example.hzh.ktmvvm.view.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
@@ -25,12 +23,6 @@ import com.google.android.flexbox.FlexboxLayoutManager
  * Create by hzh on 2019/11/11.
  */
 class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
-
-    companion object {
-
-        fun open(activity: Activity) =
-            activity.let { it.startActivity(Intent(it, SearchActivity::class.java)) }
-    }
 
     override val mLayoutId: Int
         get() = R.layout.activity_search

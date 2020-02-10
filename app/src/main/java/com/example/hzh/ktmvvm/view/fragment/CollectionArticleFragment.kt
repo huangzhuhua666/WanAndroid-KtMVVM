@@ -23,11 +23,6 @@ import com.jeremyliao.liveeventbus.LiveEventBus
  */
 class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, CollectionVM>() {
 
-    companion object {
-
-        fun newInstance(): CollectionArticleFragment = CollectionArticleFragment()
-    }
-
     override val mLayoutId: Int
         get() = R.layout.base_refresh_list
 

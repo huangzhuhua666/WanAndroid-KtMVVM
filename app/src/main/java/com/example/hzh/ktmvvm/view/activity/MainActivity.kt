@@ -9,7 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.adapter.SimplePageAdapter
+import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
 import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
@@ -18,6 +18,8 @@ import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.extension.newFragment
+import com.example.hzh.library.extension.startActivity
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
@@ -63,11 +65,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         mBinding.run {
             vpContent?.run {
                 listOf(
-                    HomeFragment.newInstance(),
-                    KnowledgeFragment.newInstance(),
-                    NavigationFragment.newInstance(),
-                    WeChatAuthorFragment.newInstance(),
-                    ProjectFragment.newInstance()
+                    newFragment<HomeFragment>(),
+                    newFragment<KnowledgeFragment>(),
+                    newFragment<NavigationFragment>(),
+                    newFragment<WeChatAuthorFragment>(),
+                    newFragment<ProjectFragment>()
                 ).let { fragmentList ->
                     adapter = SimplePageAdapter(
                         supportFragmentManager,
@@ -95,16 +97,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         mBinding.run {
             btnDrawer.filterFastClickListener { drawer.openDrawer(GravityCompat.START) }
 
-            btnSearch.filterFastClickListener { SearchActivity.open(mContext) }
+            btnSearch.filterFastClickListener { startActivity<SearchActivity>() }
 
             nav.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.collect -> { // 收藏
-                        if (App.isLogin) CollectionActivity.open(mContext)
+                        if (App.isLogin) startActivity<CollectionActivity>()
                         else AuthActivity.open(mContext, VIEW_COLLECTION)
                     }
                     R.id.todo -> { // 待办清单
-                        if (App.isLogin) TodoActivity.open(mContext)
+                        if (App.isLogin) startActivity<TodoActivity>()
                         else AuthActivity.open(mContext, VIEW_TODO)
                     }
                     R.id.logout -> if (App.isLogin) mLogoutDialog.show(mContext) // 退出登录
@@ -126,8 +128,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            VIEW_COLLECTION -> CollectionActivity.open(mContext)
-            VIEW_TODO -> TodoActivity.open(mContext)
+            VIEW_COLLECTION -> startActivity<CollectionActivity>()
+            VIEW_TODO -> startActivity<TodoActivity>()
         }
     }
 

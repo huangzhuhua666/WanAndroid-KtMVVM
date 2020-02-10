@@ -11,6 +11,7 @@ import com.example.hzh.library.R
 
 /**
  * Create by hzh on 2019/11/13.
+ * DataBinding下的多布局RecyclerView Adapter
  */
 open class MultiTypeBindingAdapter(map: Map<Int, Int>) :
     BaseMultiItemQuickAdapter<MultiItemEntity, DBViewHolder>(listOf()) {

@@ -1,11 +1,12 @@
 package com.example.hzh.ktmvvm.view.activity
 
 import android.app.Activity
-import android.content.Intent
 import androidx.navigation.findNavController
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.databinding.ActivityAuthBinding
 import com.example.hzh.library.activity.BaseActivity
+import com.example.hzh.library.extension.startActivity
+import com.example.hzh.library.extension.startActivityForResult
 import com.example.hzh.library.viewmodel.BaseVM
 
 /**
@@ -16,8 +17,8 @@ class AuthActivity : BaseActivity<ActivityAuthBinding, BaseVM>() {
     companion object {
 
         fun open(activity: Activity, requestCode: Int = -1) = activity.let {
-            if (requestCode == -1) it.startActivity(Intent(it, AuthActivity::class.java))
-            else it.startActivityForResult(Intent(it, AuthActivity::class.java), requestCode)
+            if (requestCode == -1) it.startActivity<AuthActivity>()
+            else it.startActivityForResult<AuthActivity>(requestCode = requestCode)
         }
     }
 

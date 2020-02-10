@@ -17,6 +17,7 @@ import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
+import com.example.hzh.library.extension.newFragment
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
@@ -28,9 +29,7 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
 
     companion object {
 
-        fun newInstance(id: Int): ProjectPageFragment = ProjectPageFragment().apply {
-            arguments = bundleOf("id" to id)
-        }
+        fun newInstance(id: Int): ProjectPageFragment = newFragment(bundleOf("id" to id))
     }
 
     override val mLayoutId: Int

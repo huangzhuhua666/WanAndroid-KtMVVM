@@ -19,6 +19,7 @@ import com.example.hzh.ktmvvm.viewmodel.TodoVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.MultiTypeBindingAdapter
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.extension.newFragment
 import com.example.hzh.library.http.APIException
 import com.jeremyliao.liveeventbus.LiveEventBus
 import kotlin.properties.Delegates
@@ -30,9 +31,7 @@ class TodoListFragment : WanFragment<FragmentTodoListBinding, TodoVM>() {
 
     companion object {
 
-        fun newInstance(status: Int): TodoListFragment = TodoListFragment().apply {
-            arguments = bundleOf("status" to status)
-        }
+        fun newInstance(status: Int): TodoListFragment = newFragment(bundleOf("status" to status))
     }
 
     override val mLayoutId: Int
