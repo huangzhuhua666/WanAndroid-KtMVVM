@@ -17,6 +17,7 @@ import com.example.hzh.ktmvvm.widget.EditArticleDialog
 import com.example.hzh.ktmvvm.widget.EditWebsiteDialog
 import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.newFragment
+import com.example.hzh.library.http.APIException
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jeremyliao.liveeventbus.LiveEventBus
 import com.lxj.xpopup.XPopup
@@ -99,5 +100,10 @@ class CollectionActivity : WanActivity<ActivityCollectionBinding, CollectionVM>(
 
     override fun initData() {
 
+    }
+
+    override fun onLoginExpired(e: APIException) {
+        super.onLoginExpired(e)
+        finish()
     }
 }

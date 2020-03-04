@@ -7,6 +7,7 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.databinding.ActivityTodoBinding
 import com.example.hzh.ktmvvm.view.fragment.TodoListFragment
 import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.http.APIException
 import com.example.hzh.library.viewmodel.BaseVM
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -52,5 +53,10 @@ class TodoActivity : WanActivity<ActivityTodoBinding, BaseVM>() {
 
     override fun initData() {
 
+    }
+
+    override fun onLoginExpired(e: APIException) {
+        super.onLoginExpired(e)
+        finish()
     }
 }
