@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.util
+package com.example.hzh.ktmvvm.diff
 
 import com.chad.library.adapter.base.diff.BaseQuickDiffCallback
 

@@ -9,7 +9,7 @@ import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
 import com.example.hzh.ktmvvm.util.Event
-import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
+import com.example.hzh.ktmvvm.diff.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.CollectionVM
@@ -63,7 +63,11 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
 
         mViewModel?.run {
             websiteList.observe(viewLifecycleOwner, Observer {
-                mAdapter.setNewDiffData(WebsiteDiffCallback(it))
+                mAdapter.setNewDiffData(
+                    WebsiteDiffCallback(
+                        it
+                    )
+                )
                 mBinding.refreshLayout.finishRefresh()
             })
         }

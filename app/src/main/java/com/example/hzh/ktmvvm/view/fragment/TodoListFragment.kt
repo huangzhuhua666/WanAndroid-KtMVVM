@@ -11,7 +11,7 @@ import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.FragmentTodoListBinding
 import com.example.hzh.ktmvvm.util.Event
-import com.example.hzh.ktmvvm.util.TodoDiffCallback
+import com.example.hzh.ktmvvm.diff.TodoDiffCallback
 import com.example.hzh.ktmvvm.view.activity.AddOrEditTodoActivity
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.TodoDetailActivity
@@ -116,7 +116,11 @@ class TodoListFragment : WanFragment<FragmentTodoListBinding, TodoVM>() {
 
         mViewModel?.run {
             todoList.observe(viewLifecycleOwner, Observer { data ->
-                mAdapter.setNewDiffData(TodoDiffCallback(data))
+                mAdapter.setNewDiffData(
+                    TodoDiffCallback(
+                        data
+                    )
+                )
                 mAdapter.expandAll()
             })
         }

@@ -9,9 +9,9 @@ import com.example.hzh.ktmvvm.base.WanActivity
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.databinding.ActivitySearchBinding
-import com.example.hzh.ktmvvm.util.ArticleDiffCallback
-import com.example.hzh.ktmvvm.util.StringDiffCallback
-import com.example.hzh.ktmvvm.util.WebsiteDiffCallback
+import com.example.hzh.ktmvvm.diff.ArticleDiffCallback
+import com.example.hzh.ktmvvm.diff.StringDiffCallback
+import com.example.hzh.ktmvvm.diff.WebsiteDiffCallback
 import com.example.hzh.ktmvvm.viewmodel.SearchVM
 import com.example.hzh.library.adapter.ItemClickPresenter
 import com.example.hzh.library.adapter.SimpleBindingAdapter
@@ -73,22 +73,38 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
         mViewModel?.run {
             historyList.observe(mContext, Observer {
                 // 搜索历史
-                mHistoryAdapter.setNewDiffData(StringDiffCallback(it))
+                mHistoryAdapter.setNewDiffData(
+                    StringDiffCallback(
+                        it
+                    )
+                )
             })
 
             hotKeyList.observe(mContext, Observer {
                 // 热搜
-                mHotAdapter.setNewDiffData(WebsiteDiffCallback(it))
+                mHotAdapter.setNewDiffData(
+                    WebsiteDiffCallback(
+                        it
+                    )
+                )
             })
 
             commonWebList.observe(mContext, Observer {
                 // 常用网站
-                mCommonAdapter.setNewDiffData(WebsiteDiffCallback(it))
+                mCommonAdapter.setNewDiffData(
+                    WebsiteDiffCallback(
+                        it
+                    )
+                )
             })
 
             articleList.observe(mContext, Observer {
                 // 搜索结果
-                mArticleAdapter.setNewDiffData(ArticleDiffCallback(it))
+                mArticleAdapter.setNewDiffData(
+                    ArticleDiffCallback(
+                        it
+                    )
+                )
             })
 
             mBinding.run {

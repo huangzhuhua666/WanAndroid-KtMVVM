@@ -5,9 +5,14 @@ import android.content.Intent
 import android.os.SystemClock
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
@@ -16,6 +21,7 @@ import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
 import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.fragment.*
 import com.example.hzh.ktmvvm.viewmodel.AuthVM
+import com.example.hzh.ktmvvm.work.UploadCrashDemoCrash
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.extension.newFragment
@@ -23,6 +29,7 @@ import com.example.hzh.library.extension.startActivity
 import com.example.hzh.library.extension.toast
 import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
+import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
@@ -63,7 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         }
 
         mBinding.run {
-            vpContent?.run {
+            vpContent.run {
                 listOf(
                     newFragment<HomeFragment>(),
                     newFragment<KnowledgeFragment>(),
@@ -121,6 +128,27 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
 
     override fun initData() {
         mBinding.title = titles[0]
+
+        if (App.configSP.getBoolean("is_first_in", true)) {
+            WorkManager.getInstance(mContext).run {
+                cancelAllWork()
+
+                enqueue(PeriodicWorkRequest.Builder(
+                    UploadCrashDemoCrash::class.java,
+                    24L, // 任务执行周期
+                    TimeUnit.HOURS
+                ).setConstraints(
+                    Constraints.Builder().run {
+                        // 执行任务的约束条件
+                        setRequiresBatteryNotLow(true) // 电量不能过低
+                        setRequiredNetworkType(NetworkType.CONNECTED) // 有网络时才执行
+                        build()
+                    }
+                ).build())
+            }
+
+            App.configSP.edit { putBoolean("is_first_in", false) }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

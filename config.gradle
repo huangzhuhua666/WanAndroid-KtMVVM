@@ -84,6 +84,9 @@ ext {
             "permission-dispatcher": "org.permissionsdispatcher:permissionsdispatcher:4.6.0",
             "permission-processor" : "org.permissionsdispatcher:permissionsdispatcher-processor:4.6.0",
 
+            // WorkManager
+            "workmanager"          : "androidx.work:work-runtime:2.3.3",
+
             // junit
             "junit"                : "junit:junit:4.12",
 

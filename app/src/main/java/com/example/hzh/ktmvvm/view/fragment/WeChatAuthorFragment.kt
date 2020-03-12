@@ -29,7 +29,7 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
     override fun initListener() {
         mViewModel?.run {
             authorList.observe(viewLifecycleOwner, Observer { authorList ->
-                mBinding.vpContent?.adapter =
+                mBinding.vpContent.adapter =
                     SimplePageAdapter(
                         childFragmentManager,
                         lifecycle,

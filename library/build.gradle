@@ -104,6 +104,9 @@ dependencies {
     api rootProject.ext.dependencies["permission-dispatcher"]
     kapt rootProject.ext.dependencies["permission-processor"]
 
+    // WorkManager
+    api rootProject.ext.dependencies["workmanager"]
+
     // junit
     testImplementation rootProject.ext.dependencies["junit"]
 

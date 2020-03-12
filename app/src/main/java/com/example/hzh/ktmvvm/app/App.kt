@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.multidex.MultiDex
+import com.example.hzh.ktmvvm.util.CrashHandler
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.http.HttpClient
 import com.example.hzh.library.http.NetConfig
@@ -39,6 +40,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
+
+        // 异常收集
+        CrashHandler.getInstance().init(this)
 
         // 网络配置
         NetConfig.run {

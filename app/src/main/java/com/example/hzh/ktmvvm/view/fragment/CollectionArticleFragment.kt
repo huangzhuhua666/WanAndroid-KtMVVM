@@ -8,7 +8,7 @@ import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
-import com.example.hzh.ktmvvm.util.ArticleDiffCallback
+import com.example.hzh.ktmvvm.diff.ArticleDiffCallback
 import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
@@ -47,7 +47,11 @@ class CollectionArticleFragment : WanFragment<BaseRefreshListBinding, Collection
 
         mViewModel?.run {
             articleList.observe(viewLifecycleOwner, Observer { articleList ->
-                mAdapter.setNewDiffData(ArticleDiffCallback(articleList))
+                mAdapter.setNewDiffData(
+                    ArticleDiffCallback(
+                        articleList
+                    )
+                )
             })
         }
 
