@@ -39,7 +39,7 @@ class StatusLayout @JvmOverloads constructor(
             refreshAction?.invoke()
         }
 
-        context.obtainStyledAttributes(attrs, R.styleable.StatusLayout)?.run {
+        context.obtainStyledAttributes(attrs, R.styleable.StatusLayout).run {
             contentId = getResourceId(R.styleable.StatusLayout_content_view, -1)
 
             recycle()

@@ -63,6 +63,7 @@ class DownloadTask(
                     if (isCancelDownload) return Status.CANCELED
 
                     fos!!.write(buffer, 0, len)
+                    fos!!.flush()
 
                     currentLength += len
 

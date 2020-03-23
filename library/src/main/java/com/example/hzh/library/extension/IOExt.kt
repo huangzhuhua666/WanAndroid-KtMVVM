@@ -22,6 +22,7 @@ fun OutputStream.write(inputStream: InputStream, size: Int = 1024, block: (Int) 
         val buffer = ByteArray(size)
         while (inputStream.read(buffer).also { len = it } != -1) {
             write(buffer, 0, len)
+            flush()
             block(len)
         }
     } catch (e: IOException) {
