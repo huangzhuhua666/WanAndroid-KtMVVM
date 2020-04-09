@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <attr name="radii" format="dimension"/>
+    <attr name="leftTopRadiusX" format="dimension"/>
+    <attr name="leftTopRadiusY" format="dimension"/>
+    <attr name="leftBottomRadiusX" format="dimension"/>
+    <attr name="leftBottomRadiusY" format="dimension"/>
+    <attr name="rightTopRadiusX" format="dimension"/>
+    <attr name="rightTopRadiusY" format="dimension"/>
+    <attr name="rightBottomRadiusX" format="dimension"/>
+    <attr name="rightBottomRadiusY" format="dimension"/>
+
     <declare-styleable name="RTextView">
         <!--圆角-->
-        <attr name="radii" format="dimension"/>
-        <attr name="lefTopRadius" format="dimension"/>
-        <attr name="leftBottomRadius" format="dimension"/>
-        <attr name="rightTopRadius" format="dimension"/>
-        <attr name="rightBottomRadius" format="dimension"/>
+        <attr name="radii"/>
+        <attr name="leftTopRadiusX"/>
+        <attr name="leftTopRadiusY"/>
+        <attr name="leftBottomRadiusX"/>
+        <attr name="leftBottomRadiusY"/>
+        <attr name="rightTopRadiusX"/>
+        <attr name="rightTopRadiusY"/>
+        <attr name="rightBottomRadiusX"/>
+        <attr name="rightBottomRadiusY"/>
         <!--正常的字体颜色-->
         <attr name="normalTextColor" format="color"/>
         <!--按下的字体颜色-->
@@ -64,6 +78,26 @@
 
     <declare-styleable name="StatusLayout">
         <attr name="content_view" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="RImageView">
+        <attr name="shape" format="enum">
+            <!--圆角-->
+            <enum name="round_corner" value="0"/>
+            <!--圆形-->
+            <enum name="circle" value="1"/>
+        </attr>
+        <attr name="radii"/>
+        <attr name="leftTopRadiusX"/>
+        <attr name="leftTopRadiusY"/>
+        <attr name="leftBottomRadiusX"/>
+        <attr name="leftBottomRadiusY"/>
+        <attr name="rightTopRadiusX"/>
+        <attr name="rightTopRadiusY"/>
+        <attr name="rightBottomRadiusX"/>
+        <attr name="rightBottomRadiusY"/>
+        <attr name="borderWidth" format="dimension"/>
+        <attr name="borderColor" format="color"/>
     </declare-styleable>
 
 </resources>

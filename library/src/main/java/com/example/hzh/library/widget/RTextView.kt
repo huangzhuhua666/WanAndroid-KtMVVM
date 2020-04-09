@@ -5,12 +5,13 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
-import androidx.annotation.ColorInt
-import androidx.annotation.IntDef
-import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.util.Log
+import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatTextView
 import com.example.hzh.library.R
+import com.example.hzh.library.extension.no
+import com.example.hzh.library.extension.yes
 
 /**
  * Create by hzh on 2019/07/03.
@@ -26,87 +27,178 @@ class RTextView @JvmOverloads constructor(
     companion object {
 
         private const val TAG = "RTextView"
+    }
+
+    enum class GradientType {
 
         /**
          * 线性渐变（默认）
          */
-        const val LINEAR = 0
+        LINEAR,
 
         /**
          * 放射状渐变
          */
-        const val RADIAL = 1
+        RADIAL,
 
         /**
          * 扫描渐变
          */
-        const val SWEEP = 2
+        SWEEP
+    }
+
+    enum class GradientOrientation {
 
         /**
          * 渐变方向从上到下
          */
-        const val TOP_BOTTOM = 0
+        TOP_BOTTOM,
 
         /**
          * 渐变方向从右上到左下
          */
-        const val RT_LB = 1
+        RT_LB,
 
         /**
          * 渐变方向从右到左
          */
-        const val RIGHT_LEFT = 2
+        RIGHT_LEFT,
 
         /**
          * 渐变方向从右下到左上
          */
-        const val RB_LT = 3
+        RB_LT,
 
         /**
          * 渐变方向从下到上
          */
-        const val BOTTOM_TOP = 4
+        BOTTOM_TOP,
 
         /**
          * 渐变方向从左下到右上
          */
-        const val LB_RT = 5
+        LB_RT,
 
         /**
          * 渐变方向从左到右（默认）
          */
-        const val LEFT_RIGHT = 6
+        LEFT_RIGHT,
 
         /**
          * 渐变方向从左上到右下
          */
-        const val LT_RB = 7
+        LT_RB
     }
 
-    @IntDef(LINEAR, RADIAL, SWEEP)
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    annotation class GradientType
+    private val mGdn by lazy { GradientDrawable() }
+    private val mGdp by lazy { GradientDrawable() }
 
-    @IntDef(TOP_BOTTOM, RT_LB, RIGHT_LEFT, RB_LT, BOTTOM_TOP, LB_RT, LEFT_RIGHT, LT_RB)
-    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-    annotation class GradientOrientation
+    private var isResetAllRadius: Boolean = false
+    private var isGradientSolid: Boolean = false
 
-    private val mGdn: GradientDrawable
-    private val mGdp: GradientDrawable
+    /**
+     * 设置左上圆角x
+     */
+    var leftTopRadiusX: Float = 0f
+        set(value) {
+            if (value < 0) return
 
-    private var mLeftTop: Float = .0f
-    private var mLeftBottom: Float = .0f
-    private var mRightTop: Float = .0f
-    private var mRightBottom: Float = .0f
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置左上圆角y
+     */
+    var leftTopRadiusY: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置左下圆角x
+     */
+    var leftBottomRadiusX: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置左下圆角y
+     */
+    var leftBottomRadiusY: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置右上圆角x
+     */
+    var rightTopRadiusX: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置右上圆角y
+     */
+    var rightTopRadiusY: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置右下圆角x
+     */
+    var rightBottomRadiusX: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
+
+    /**
+     * 设置右下圆角y
+     */
+    var rightBottomRadiusY: Float = 0f
+        set(value) {
+            if (value < 0) return
+
+            field = value
+            if (!isResetAllRadius) resetRadius()
+        }
 
     @ColorInt
-    private var mNormalTextColor: Int = 0
+    var normalTextColor: Int = 0
+        set(value) {
+            field = value
+            setTextStateListColor()
+        }
+
     @ColorInt
-    private var mPressTextColor: Int = 0
+    var pressTextColor: Int = 0
+        set(value) {
+            field = value
+            setTextStateListColor()
+        }
 
     init {
-        mGdn = GradientDrawable()
-        mGdp = GradientDrawable()
         val bg = StateListDrawable()
         bg.addState(intArrayOf(android.R.attr.state_pressed), mGdp)
         bg.addState(intArrayOf(), mGdn)
@@ -115,159 +207,147 @@ class RTextView @JvmOverloads constructor(
     }
 
     private fun initAttrs(context: Context, attrs: AttributeSet?) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.RTextView)
+        context.obtainStyledAttributes(attrs, R.styleable.RTextView).run {
+            // 圆角
+            val radii = getDimension(R.styleable.RTextView_radii, 0f)
+            if (radii >= 0f) setRadii(radii)
 
-        // 圆角
-        val radii = ta.getDimension(R.styleable.RTextView_radii, -1.0f)
-        if (radii > -1.0f) setRadii(radii)
+            // 左上x
+            val leftTopX = getDimension(R.styleable.RTextView_leftTopRadiusX, 0f)
+            if (radii <= 0f && leftTopX >= 0f) leftTopRadiusX = leftTopX
 
-        // 左上
-        val leftTop = ta.getDimension(R.styleable.RTextView_lefTopRadius, -1.0f)
-        if (leftTop > -1.0f) setLeftTopRadius(leftTop)
-        // 左下
-        val leftBottom = ta.getDimension(R.styleable.RTextView_leftBottomRadius, -1.0f)
-        if (leftBottom > -1.0f) setLeftBottomRadius(leftBottom)
-        // 右上
-        val rightTop = ta.getDimension(R.styleable.RTextView_rightTopRadius, -1.0f)
-        if (rightTop > -1.0f) setRightTopRadius(rightTop)
-        // 右下
-        val rightBottom = ta.getDimension(R.styleable.RTextView_rightBottomRadius, -1.0f)
-        if (rightBottom > -1.0f) setRightBottomRadius(rightBottom)
+            // 左上y
+            val leftTopY = getDimension(R.styleable.RTextView_leftTopRadiusY, 0f)
+            if (radii <= 0f && leftTopY >= 0f) leftTopRadiusY = leftTopY
 
-        // 字体颜色
-        mNormalTextColor = ta.getColor(R.styleable.RTextView_normalTextColor, currentTextColor)
-        mPressTextColor = ta.getColor(R.styleable.RTextView_pressTextColor, mNormalTextColor)
-        setTextStateListColor()
 
-        // 正常状态的边框
-        val normalStrokeWidth = ta.getDimension(R.styleable.RTextView_normalStrokeWidth, .0f)
-        val normalStrokeColor = ta.getColor(R.styleable.RTextView_normalStrokeColor, 0)
-        setNormalStroke((normalStrokeWidth + .5f).toInt(), normalStrokeColor)
+            // 左下x
+            val leftBottomX = getDimension(R.styleable.RTextView_leftBottomRadiusX, 0f)
+            if (radii <= 0f && leftBottomX >= 0f) leftBottomRadiusX = leftBottomX
 
-        // 按下状态的边框
-        val pressStrokeWidth =
-            ta.getDimension(R.styleable.RTextView_pressStrokeWidth, normalStrokeWidth)
-        val pressStrokeColor =
-            ta.getColor(R.styleable.RTextView_pressStrokeColor, normalStrokeColor)
-        setPressStroke((pressStrokeWidth + .5f).toInt(), pressStrokeColor)
+            // 左下y
+            val leftBottomY = getDimension(R.styleable.RTextView_leftBottomRadiusY, 0f)
+            if (radii <= 0f && leftBottomY >= 0f) leftBottomRadiusY = leftBottomY
 
-        val isGradientSolid = ta.getBoolean(R.styleable.RTextView_isGradientSolid, false)
-        if (isGradientSolid) {// 使用渐变色
-            // 正常状态的渐变色
-            val normalGradientStart = ta.getColor(
-                R.styleable.RTextView_normalGradientStart,
-                0
-            )
-            val normalGradientEnd = ta.getColor(
-                R.styleable.RTextView_normalGradientEnd,
-                normalGradientStart
-            )
-            setNormalGradient(normalGradientStart, normalGradientEnd)
+            // 右上x
+            val rightTopX = getDimension(R.styleable.RTextView_rightTopRadiusX, 0f)
+            if (radii <= 0f && rightTopX >= 0f) rightTopRadiusX = rightTopX
 
-            // 按下状态的渐变色
-            val pressGradientStart = ta.getColor(
-                R.styleable.RTextView_pressGradientStart,
-                normalGradientStart
-            )
-            val pressGradientEnd = ta.getColor(
-                R.styleable.RTextView_pressGradientEnd,
-                pressGradientStart
-            )
-            setPresGradient(pressGradientStart, pressGradientEnd)
+            // 右上y
+            val rightTopY = getDimension(R.styleable.RTextView_rightTopRadiusY, 0f)
+            if (radii <= 0f && rightTopY >= 0f) rightTopRadiusY = rightTopY
 
-            // 渐变色的类型
-            val gradientType = when (ta.getInt(R.styleable.RTextView_gradientType, 0)) {
-                0 -> LINEAR
-                1 -> RADIAL
-                2 -> SWEEP
-                else -> LINEAR
+            // 右下x
+            val rightBottomX = getDimension(R.styleable.RTextView_rightBottomRadiusX, 0f)
+            if (radii <= 0f && rightBottomX >= 0f) rightBottomRadiusX = rightBottomX
+
+            // 右下y
+            val rightBottomY = getDimension(R.styleable.RTextView_rightBottomRadiusY, 0f)
+            if (radii <= 0f && rightBottomY >= 0f) rightBottomRadiusY = rightBottomY
+
+            // 字体颜色
+            normalTextColor = getColor(R.styleable.RTextView_normalTextColor, currentTextColor)
+            pressTextColor = getColor(R.styleable.RTextView_pressTextColor, normalTextColor)
+            setTextStateListColor()
+
+            // 正常状态的边框
+            val normalStrokeWidth = getDimension(R.styleable.RTextView_normalStrokeWidth, 0f)
+            val normalStrokeColor = getColor(R.styleable.RTextView_normalStrokeColor, 0)
+            setNormalStroke((normalStrokeWidth + .5f).toInt(), normalStrokeColor)
+
+            // 按下状态的边框
+            val pressStrokeWidth =
+                getDimension(R.styleable.RTextView_pressStrokeWidth, normalStrokeWidth)
+            val pressStrokeColor =
+                getColor(R.styleable.RTextView_pressStrokeColor, normalStrokeColor)
+            setPressStroke((pressStrokeWidth + .5f).toInt(), pressStrokeColor)
+
+            isGradientSolid = getBoolean(R.styleable.RTextView_isGradientSolid, false)
+            isGradientSolid.yes { // 使用渐变色
+                // 正常状态的渐变色
+                val normalGradientStart = getColor(
+                    R.styleable.RTextView_normalGradientStart,
+                    0
+                )
+                val normalGradientEnd = getColor(
+                    R.styleable.RTextView_normalGradientEnd,
+                    normalGradientStart
+                )
+                setNormalGradient(normalGradientStart, normalGradientEnd)
+
+                // 按下状态的渐变色
+                val pressGradientStart = getColor(
+                    R.styleable.RTextView_pressGradientStart,
+                    normalGradientStart
+                )
+                val pressGradientEnd = getColor(
+                    R.styleable.RTextView_pressGradientEnd,
+                    pressGradientStart
+                )
+                setPressGradient(pressGradientStart, pressGradientEnd)
+
+                // 渐变色的类型
+                val gradientType = when (getInt(R.styleable.RTextView_gradientType, 0)) {
+                    0 -> GradientType.LINEAR
+                    1 -> GradientType.RADIAL
+                    2 -> GradientType.SWEEP
+                    else -> GradientType.LINEAR
+                }
+                setGradientType(gradientType)
+
+                // 渐变色的方向
+                val gradientOrientation = when (getInt(
+                    R.styleable.RTextView_gradientOrientation,
+                    6
+                )) {
+                    0 -> GradientOrientation.TOP_BOTTOM
+                    1 -> GradientOrientation.RT_LB
+                    2 -> GradientOrientation.RIGHT_LEFT
+                    3 -> GradientOrientation.RB_LT
+                    4 -> GradientOrientation.BOTTOM_TOP
+                    5 -> GradientOrientation.LB_RT
+                    6 -> GradientOrientation.LEFT_RIGHT
+                    7 -> GradientOrientation.LT_RB
+                    else -> GradientOrientation.LEFT_RIGHT
+                }
+                setGradientOrientation(gradientOrientation)
+
+                val useLevel = getBoolean(R.styleable.RTextView_useLevel, false)
+                setUseLevel(useLevel)
+            }.no {
+                // 不使用渐变色
+                // 正常状态的填充色
+                val normalSolid = getColor(R.styleable.RTextView_normalSolid, 0)
+                setNormalSolid(normalSolid)
+
+                // 按下状态的填充色
+                val pressSolid = getColor(R.styleable.RTextView_pressSolid, normalSolid)
+                setPressSolid(pressSolid)
             }
-            setGradientType(gradientType)
 
-            // 渐变色的方向
-            val gradientOrientation = when (ta.getInt(
-                R.styleable.RTextView_gradientOrientation,
-                6
-            )) {
-                0 -> TOP_BOTTOM
-                1 -> RT_LB
-                2 -> RIGHT_LEFT
-                3 -> RB_LT
-                4 -> BOTTOM_TOP
-                5 -> LB_RT
-                6 -> LEFT_RIGHT
-                7 -> LT_RB
-                else -> LEFT_RIGHT
-            }
-            setGradientOrientation(gradientOrientation)
-
-            val useLevel = ta.getBoolean(R.styleable.RTextView_useLevel, false)
-            setUseLevel(useLevel)
-        } else {
-            // 不使用渐变色
-            // 正常状态的填充色
-            val normalSolid = ta.getColor(R.styleable.RTextView_normalSolid, 0)
-            setNormalSolid(normalSolid)
-
-            // 按下状态的填充色
-            val pressSolid = ta.getColor(R.styleable.RTextView_pressSolid, normalSolid)
-            setPressSolid(pressSolid)
+            recycle()
         }
-
-        ta.recycle()
     }
 
     /**
-     * 设置四个角的圆角
+     * 统一设置四个角的圆角
      *
      * @param radii 圆角大小
      */
     fun setRadii(radii: Float) {
-        mLeftTop = radii
-        mLeftBottom = mLeftTop
-        mRightTop = mLeftTop
-        mRightBottom = mLeftTop
-        resetRadius()
-    }
+        if (radii < 0) return
 
-    /**
-     * 设置左上角的圆角
-     *
-     * @param leftTop 圆角大小
-     */
-    fun setLeftTopRadius(leftTop: Float) {
-        mLeftTop = leftTop
+        isResetAllRadius = true
+        leftTopRadiusX = radii
+        leftTopRadiusY = radii
+        leftBottomRadiusX = radii
+        leftBottomRadiusY = radii
+        rightTopRadiusX = radii
+        rightTopRadiusY = radii
+        rightBottomRadiusX = radii
+        rightBottomRadiusY = radii
         resetRadius()
-    }
-
-    /**
-     * 设置左下角的圆角
-     *
-     * @param leftBottom 圆角大小
-     */
-    fun setLeftBottomRadius(leftBottom: Float) {
-        mLeftBottom = leftBottom
-        resetRadius()
-    }
-
-    /**
-     * 设置右上角的圆角
-     *
-     * @param rightTop 圆角大小
-     */
-    fun setRightTopRadius(rightTop: Float) {
-        mRightTop = rightTop
-        resetRadius()
-    }
-
-    /**
-     * 设置右下角的圆角
-     *
-     * @param rightBottom 圆角大小
-     */
-    fun setRightBottomRadius(rightBottom: Float) {
-        mRightBottom = rightBottom
-        resetRadius()
+        isResetAllRadius = false
     }
 
     /**
@@ -279,21 +359,14 @@ class RTextView @JvmOverloads constructor(
      */
     private fun resetRadius() {
         val radii = floatArrayOf(
-            mLeftTop, mLeftTop, mRightTop, mRightTop,
-            mRightBottom, mRightBottom, mLeftBottom, mLeftBottom
+            leftTopRadiusX, leftTopRadiusY,
+            rightTopRadiusX, rightTopRadiusY,
+            rightBottomRadiusX, rightBottomRadiusY,
+            leftBottomRadiusX, leftBottomRadiusY
         )
         mGdn.cornerRadii = radii
         mGdp.cornerRadii = radii
-    }
-
-    /**
-     * 设置正常状态的文字颜色
-     *
-     * @param color color
-     */
-    fun setNormalTextColor(@ColorInt color: Int) {
-        mNormalTextColor = color
-        setTextStateListColor()
+        invalidate()
     }
 
     /**
@@ -302,18 +375,7 @@ class RTextView @JvmOverloads constructor(
      * @param color color
      */
     fun setNormalTextColor(color: String) {
-        mNormalTextColor = Color.parseColor(color)
-        setTextStateListColor()
-    }
-
-    /**
-     * 设置按下状态的文字颜色
-     *
-     * @param color color
-     */
-    fun setPressTextColor(@ColorInt color: Int) {
-        mPressTextColor = color
-        setTextStateListColor()
+        normalTextColor = Color.parseColor(color)
     }
 
     /**
@@ -322,8 +384,7 @@ class RTextView @JvmOverloads constructor(
      * @param color color
      */
     fun setPressTextColor(color: String) {
-        mPressTextColor = Color.parseColor(color)
-        setTextStateListColor()
+        pressTextColor = Color.parseColor(color)
     }
 
     /**
@@ -333,7 +394,18 @@ class RTextView @JvmOverloads constructor(
         val state = arrayOfNulls<IntArray>(2)
         state[0] = intArrayOf(android.R.attr.state_pressed)
         state[1] = intArrayOf()
-        setTextColor(ColorStateList(state, intArrayOf(mPressTextColor, mNormalTextColor)))
+        setTextColor(ColorStateList(state, intArrayOf(pressTextColor, normalTextColor)))
+        invalidate()
+    }
+
+    /**
+     * 设置正常状态的边框
+     *
+     * @param width 边框线条大小
+     * @param color 边框颜色
+     */
+    fun setNormalStroke(width: Int, color: String) {
+        setNormalStroke(width, Color.parseColor(color))
     }
 
     /**
@@ -344,16 +416,17 @@ class RTextView @JvmOverloads constructor(
      */
     fun setNormalStroke(width: Int, @ColorInt color: Int) {
         mGdn.setStroke(width, color)
+        invalidate()
     }
 
     /**
-     * 设置正常状态的边框
+     * 设置按下状态的边框
      *
      * @param width 边框线条大小
      * @param color 边框颜色
      */
-    fun setNormalStroke(width: Int, color: String) {
-        mGdn.setStroke(width, Color.parseColor(color))
+    fun setPressStroke(width: Int, color: String) {
+        setPressStroke(width, Color.parseColor(color))
     }
 
     /**
@@ -364,16 +437,17 @@ class RTextView @JvmOverloads constructor(
      */
     fun setPressStroke(width: Int, @ColorInt color: Int) {
         mGdp.setStroke(width, color)
+        invalidate()
     }
 
     /**
-     * 设置按下状态的边框
+     * 设置正常状态的渐变色
      *
-     * @param width 边框线条大小
-     * @param color 边框颜色
+     * @param start 开始色
+     * @param end   结束色
      */
-    fun setPressStroke(width: Int, color: String) {
-        mGdp.setStroke(width, Color.parseColor(color))
+    fun setNormalGradient(start: String, end: String) {
+        setNormalGradient(Color.parseColor(start), Color.parseColor(end))
     }
 
     /**
@@ -384,26 +458,7 @@ class RTextView @JvmOverloads constructor(
      */
     fun setNormalGradient(@ColorInt start: Int, @ColorInt end: Int) {
         mGdn.colors = intArrayOf(start, end)
-    }
-
-    /**
-     * 设置正常状态的渐变色
-     *
-     * @param start 开始色
-     * @param end   结束色
-     */
-    fun setNormalGradient(start: String, end: String) {
-        mGdn.colors = intArrayOf(Color.parseColor(start), Color.parseColor(end))
-    }
-
-    /**
-     * 设置按下状态的渐变色
-     *
-     * @param start 开始色
-     * @param end   结束色
-     */
-    fun setPresGradient(@ColorInt start: Int, @ColorInt end: Int) {
-        mGdp.colors = intArrayOf(start, end)
+        invalidate()
     }
 
     /**
@@ -413,82 +468,89 @@ class RTextView @JvmOverloads constructor(
      * @param end   结束色
      */
     fun setPressGradient(start: String, end: String) {
-        mGdp.colors = intArrayOf(Color.parseColor(start), Color.parseColor(end))
+        setPressGradient(Color.parseColor(start), Color.parseColor(end))
     }
 
     /**
-     * 设置渐变的类型，默认[LINEAR]
+     * 设置按下状态的渐变色
      *
-     * @param gradientType 渐变的类型：[LINEAR]，[RADIAL]，[SWEEP]
+     * @param start 开始色
+     * @param end   结束色
      */
-    fun setGradientType(@GradientType gradientType: Int) {
+    fun setPressGradient(@ColorInt start: Int, @ColorInt end: Int) {
+        mGdp.colors = intArrayOf(start, end)
+        invalidate()
+    }
+
+    /**
+     * 设置渐变的类型，默认[GradientType.LINEAR]
+     *
+     * @param gradientType 渐变的类型：
+     * [GradientType.LINEAR]，[GradientType.RADIAL]，[GradientType.SWEEP]
+     */
+    fun setGradientType(gradientType: GradientType) {
         when (gradientType) {
-            LINEAR -> {
+            GradientType.LINEAR -> {
                 mGdn.gradientType = GradientDrawable.LINEAR_GRADIENT
                 mGdp.gradientType = GradientDrawable.LINEAR_GRADIENT
             }
-            RADIAL -> {
+            GradientType.RADIAL -> {
                 mGdn.gradientType = GradientDrawable.RADIAL_GRADIENT
                 mGdp.gradientType = GradientDrawable.RADIAL_GRADIENT
             }
-            SWEEP -> {
+            GradientType.SWEEP -> {
                 mGdn.gradientType = GradientDrawable.SWEEP_GRADIENT
                 mGdp.gradientType = GradientDrawable.SWEEP_GRADIENT
             }
-            else -> {
-                mGdn.gradientType = GradientDrawable.LINEAR_GRADIENT
-                mGdp.gradientType = GradientDrawable.LINEAR_GRADIENT
-            }
         }
+        invalidate()
     }
 
     /**
-     * 设置渐变方向，默认[LEFT_RIGHT]
+     * 设置渐变方向，默认[GradientOrientation.LEFT_RIGHT]
      *
-     * @param gradientOrientation 渐变方向：[TOP_BOTTOM]，[RT_LB]，
-     * [RIGHT_LEFT]，[RB_LT]，
-     * [BOTTOM_TOP]，[LB_RT]，
-     * [LEFT_RIGHT]，[LT_RB]
+     * @param gradientOrientation 渐变方向：
+     * [GradientOrientation.TOP_BOTTOM]，[GradientOrientation.RT_LB]，
+     * [GradientOrientation.RIGHT_LEFT]，[GradientOrientation.RB_LT]，
+     * [GradientOrientation.BOTTOM_TOP]，[GradientOrientation.LB_RT]，
+     * [GradientOrientation.LEFT_RIGHT]，[GradientOrientation.LT_RB]
      */
-    fun setGradientOrientation(@GradientOrientation gradientOrientation: Int) {
+    fun setGradientOrientation(gradientOrientation: GradientOrientation) {
         when (gradientOrientation) {
-            TOP_BOTTOM -> {
+            GradientOrientation.TOP_BOTTOM -> {
                 mGdn.orientation = GradientDrawable.Orientation.TOP_BOTTOM
                 mGdp.orientation = GradientDrawable.Orientation.TOP_BOTTOM
             }
-            RT_LB -> {
+            GradientOrientation.RT_LB -> {
                 mGdn.orientation = GradientDrawable.Orientation.TR_BL
                 mGdp.orientation = GradientDrawable.Orientation.TR_BL
             }
-            RIGHT_LEFT -> {
+            GradientOrientation.RIGHT_LEFT -> {
                 mGdn.orientation = GradientDrawable.Orientation.RIGHT_LEFT
                 mGdp.orientation = GradientDrawable.Orientation.RIGHT_LEFT
             }
-            RB_LT -> {
+            GradientOrientation.RB_LT -> {
                 mGdn.orientation = GradientDrawable.Orientation.BR_TL
                 mGdp.orientation = GradientDrawable.Orientation.BR_TL
             }
-            BOTTOM_TOP -> {
+            GradientOrientation.BOTTOM_TOP -> {
                 mGdn.orientation = GradientDrawable.Orientation.BOTTOM_TOP
                 mGdp.orientation = GradientDrawable.Orientation.BOTTOM_TOP
             }
-            LB_RT -> {
+            GradientOrientation.LB_RT -> {
                 mGdn.orientation = GradientDrawable.Orientation.BL_TR
                 mGdp.orientation = GradientDrawable.Orientation.BL_TR
             }
-            LEFT_RIGHT -> {
+            GradientOrientation.LEFT_RIGHT -> {
                 mGdn.orientation = GradientDrawable.Orientation.LEFT_RIGHT
                 mGdp.orientation = GradientDrawable.Orientation.LEFT_RIGHT
             }
-            LT_RB -> {
+            GradientOrientation.LT_RB -> {
                 mGdn.orientation = GradientDrawable.Orientation.TL_BR
                 mGdp.orientation = GradientDrawable.Orientation.TL_BR
             }
-            else -> {
-                mGdn.orientation = GradientDrawable.Orientation.LEFT_RIGHT
-                mGdp.orientation = GradientDrawable.Orientation.LEFT_RIGHT
-            }
         }
+        invalidate()
     }
 
     /**
@@ -499,6 +561,16 @@ class RTextView @JvmOverloads constructor(
     fun setUseLevel(useLevel: Boolean) {
         mGdn.useLevel = useLevel
         mGdp.useLevel = useLevel
+        invalidate()
+    }
+
+    /**
+     * 设置正常状态的填充色，使用渐变色时设置这个无效
+     *
+     * @param color color
+     */
+    fun setNormalSolid(color: String) {
+        setNormalSolid(Color.parseColor(color))
     }
 
     /**
@@ -511,12 +583,12 @@ class RTextView @JvmOverloads constructor(
     }
 
     /**
-     * 设置正常状态的填充色，使用渐变色时设置这个无效
+     * 设置按下状态的填充色，使用渐变色时设置这个无效
      *
      * @param color color
      */
-    fun setNormalSolid(color: String) {
-        mGdn.setColor(Color.parseColor(color))
+    fun setPressSolid(color: String) {
+        setPressSolid(Color.parseColor(color))
     }
 
     /**
@@ -526,15 +598,6 @@ class RTextView @JvmOverloads constructor(
      */
     fun setPressSolid(@ColorInt color: Int) {
         mGdp.setColor(color)
-    }
-
-    /**
-     * 设置按下状态的填充色，使用渐变色时设置这个无效
-     *
-     * @param color color
-     */
-    fun setPressSolid(color: String) {
-        mGdp.setColor(Color.parseColor(color))
     }
 
     override fun performClick(): Boolean {

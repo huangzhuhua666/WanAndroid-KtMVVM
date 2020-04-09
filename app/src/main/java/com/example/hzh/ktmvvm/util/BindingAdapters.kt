@@ -124,7 +124,7 @@ fun EditText.setOnSearchListener(vm: BaseVM) {
 @BindingAdapter("bind:randomTextColor")
 fun TextView.randomTextColor(bound: Int) {
     Color.rgb(Random().nextInt(bound), Random().nextInt(bound), Random().nextInt(bound)).let {
-        if (this is RTextView) setNormalTextColor(it)
+        if (this is RTextView) normalTextColor = it
         else setTextColor(it)
     }
 }
