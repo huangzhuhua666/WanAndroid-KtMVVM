@@ -50,7 +50,6 @@ class RImageView @JvmOverloads constructor(
     private val mBitmapPaint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.FILL
-            color = Color.TRANSPARENT
         }
     }
     private val mBorderPaint by lazy {
