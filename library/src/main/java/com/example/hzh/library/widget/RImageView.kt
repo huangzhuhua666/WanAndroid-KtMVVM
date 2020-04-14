@@ -424,11 +424,10 @@ class RImageView @JvmOverloads constructor(
 
     override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
         event?.run {
-            return when (action and MotionEvent.ACTION_MASK) {
-                // 判断点击事件坐标是不是在图形的Region里面
-                MotionEvent.ACTION_DOWN -> mShapeRegion.contains(x.toInt(), y.toInt())
-                else -> super.dispatchTouchEvent(event)
-            }
+            // 判断点击事件坐标是不是在图形的Region里面
+            if (action and MotionEvent.ACTION_MASK == MotionEvent.ACTION_DOWN)
+                return mShapeRegion.contains(x.toInt(), y.toInt())
+                        && super.dispatchTouchEvent(event)
         }
         return super.dispatchTouchEvent(event)
     }
