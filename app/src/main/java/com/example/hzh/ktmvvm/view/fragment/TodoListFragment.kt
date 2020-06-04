@@ -5,13 +5,14 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Todo
 import com.example.hzh.ktmvvm.databinding.FragmentTodoListBinding
-import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.diff.TodoDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AddOrEditTodoActivity
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.TodoDetailActivity
@@ -114,15 +115,9 @@ class TodoListFragment : WanFragment<FragmentTodoListBinding, TodoVM>() {
             }
         }
 
-        mViewModel?.run {
-            todoList.observe(viewLifecycleOwner, Observer { data ->
-                mAdapter.setNewDiffData(
-                    TodoDiffCallback(
-                        data
-                    )
-                )
-                mAdapter.expandAll()
-            })
+        mViewModel?.todoList?.observe(viewLifecycleOwner) {
+            mAdapter.setNewDiffData(TodoDiffCallback(it))
+            mAdapter.expandAll()
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<MultiItemEntity>() {

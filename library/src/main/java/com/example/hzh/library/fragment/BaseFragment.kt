@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.library.R
 import com.example.hzh.library.activity.BaseActivity
 import com.example.hzh.library.extension.toast
@@ -68,18 +68,18 @@ abstract class BaseFragment<B : ViewDataBinding, VM : BaseVM> : Fragment() {
             statusBarDarkFont(isStatusBarDarkFont, .2f)
         }
 
-        mViewModel?.let {
-            it.isShowLoading.observe(this, Observer { isShowLoading ->
-                if (isShowLoading) mLoadingDialog.show(mContext)
-                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
-            })
+        mViewModel?.let { vm ->
+            vm.isShowLoading.observe(this) {
+                if (it) mLoadingDialog.show(mContext)
+                else if (!it && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
+            }
 
-            it.toastTip.observe(this, Observer { tip -> mContext.toast(tip) })
+            vm.toastTip.observe(this) { mContext.toast(it) }
 
-            it.exception.observe(this, Observer { e ->
-                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
-                else onError(e)
-            })
+            vm.exception.observe(this) {
+                if (it is APIException && it.isLoginExpired()) onLoginExpired(it)
+                else onError(it)
+            }
         }
     }
 

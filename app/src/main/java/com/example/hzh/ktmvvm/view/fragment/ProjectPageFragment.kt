@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
@@ -59,14 +60,8 @@ class ProjectPageFragment : WanFragment<BaseRefreshListBinding, ProjectVM>() {
             mViewModel?.getInitData(false)
         })
 
-        mViewModel?.run {
-            articleList.observe(viewLifecycleOwner, Observer { articleList ->
-                mAdapter.setNewDiffData(
-                    ArticleDiffCallback(
-                        articleList
-                    )
-                )
-            })
+        mViewModel?.articleList?.observe(viewLifecycleOwner) {
+            mAdapter.setNewDiffData(ArticleDiffCallback(it))
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Article>() {

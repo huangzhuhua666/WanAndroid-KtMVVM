@@ -2,7 +2,7 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Category
 import com.example.hzh.ktmvvm.databinding.FragmentKnowledgeBinding
@@ -44,7 +44,9 @@ class KnowledgeFragment : BaseFragment<FragmentKnowledgeBinding, KnowledgeVM>() 
     }
 
     override fun initListener() {
-        mViewModel?.treeList?.observe(mContext, Observer { mAdapter.setNewData(it) })
+        mViewModel?.treeList?.observe(mContext) {
+            mAdapter.setNewData(it)
+        }
         mBinding.refreshLayout.setOnRefreshListener { mViewModel?.getSystemTree(true) }
     }
 

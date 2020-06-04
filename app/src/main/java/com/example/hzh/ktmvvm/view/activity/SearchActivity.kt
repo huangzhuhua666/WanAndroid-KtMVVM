@@ -2,7 +2,7 @@ package com.example.hzh.ktmvvm.view.activity
 
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanActivity
@@ -71,41 +71,21 @@ class SearchActivity : WanActivity<ActivitySearchBinding, SearchVM>() {
 
     override fun initListener() {
         mViewModel?.run {
-            historyList.observe(mContext, Observer {
-                // 搜索历史
-                mHistoryAdapter.setNewDiffData(
-                    StringDiffCallback(
-                        it
-                    )
-                )
-            })
+            historyList.observe(mContext) {
+                mHistoryAdapter.setNewDiffData(StringDiffCallback(it)) // 搜索历史
+            }
 
-            hotKeyList.observe(mContext, Observer {
-                // 热搜
-                mHotAdapter.setNewDiffData(
-                    WebsiteDiffCallback(
-                        it
-                    )
-                )
-            })
+            hotKeyList.observe(mContext) {
+                mHotAdapter.setNewDiffData(WebsiteDiffCallback(it)) // 热搜
+            }
 
-            commonWebList.observe(mContext, Observer {
-                // 常用网站
-                mCommonAdapter.setNewDiffData(
-                    WebsiteDiffCallback(
-                        it
-                    )
-                )
-            })
+            commonWebList.observe(mContext) {
+                mCommonAdapter.setNewDiffData(WebsiteDiffCallback(it)) // 常用网站
+            }
 
-            articleList.observe(mContext, Observer {
-                // 搜索结果
-                mArticleAdapter.setNewDiffData(
-                    ArticleDiffCallback(
-                        it
-                    )
-                )
-            })
+            articleList.observe(mContext) {
+                mArticleAdapter.setNewDiffData(ArticleDiffCallback(it)) // 搜索结果
+            }
 
             mBinding.run {
                 btnBack.filterFastClickListener {

@@ -76,6 +76,9 @@ dependencies {
     // lifecycle
     api rootProject.ext.dependencies["lifecycle"]
 
+    // LiveData-ktx
+    api rootProject.ext.dependencies["LiveData-ktx"]
+
     // immersionbar
     api rootProject.ext.dependencies["immersionbar"]
     api rootProject.ext.dependencies["immersionbar-ktx"]

@@ -2,11 +2,11 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentWechatAuthorBinding
 import com.example.hzh.ktmvvm.viewmodel.WeChatAuthorVM
+import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.library.extension.addTextChangedListener
 import com.example.hzh.library.extension.filterFastClickListener
 import com.example.hzh.library.fragment.BaseFragment
@@ -28,21 +28,17 @@ class WeChatAuthorFragment : BaseFragment<FragmentWechatAuthorBinding, WeChatAut
 
     override fun initListener() {
         mViewModel?.run {
-            authorList.observe(viewLifecycleOwner, Observer { authorList ->
+            authorList.observe(viewLifecycleOwner) {
                 mBinding.vpContent.adapter =
-                    SimplePageAdapter(
-                        childFragmentManager,
-                        lifecycle,
-                        authorList.size
-                    ) { WeChatAuthorPageFragment.newInstance(authorList[it].categoryId) }
+                    SimplePageAdapter(childFragmentManager, lifecycle, it.size) { position ->
+                        WeChatAuthorPageFragment.newInstance(it[position].categoryId)
+                    }
 
                 TabLayoutMediator(mBinding.tabLayout, mBinding.vpContent) { tab, position ->
-                    tab.text = HtmlCompat.fromHtml(
-                        authorList[position].name,
-                        HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
+                    tab.text =
+                        HtmlCompat.fromHtml(it[position].name, HtmlCompat.FROM_HTML_MODE_LEGACY)
                 }.attach()
-            })
+            }
 
             mBinding.etSearch.addTextChangedListener {
                 afterTextChanged { keyword.value = it?.toString() }

@@ -2,11 +2,11 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.databinding.FragmentProjectBinding
 import com.example.hzh.ktmvvm.viewmodel.ProjectVM
+import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.library.fragment.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,24 +25,17 @@ class ProjectFragment : BaseFragment<FragmentProjectBinding, ProjectVM>() {
     }
 
     override fun initListener() {
-        mViewModel?.run {
-            treeList.observe(viewLifecycleOwner, Observer { tree ->
-                mBinding.vpContent.adapter =
-                    SimplePageAdapter(
-                        childFragmentManager,
-                        lifecycle,
-                        tree.size
-                    ) { ProjectPageFragment.newInstance(tree[it].categoryId) }
+        mViewModel?.treeList?.observe(viewLifecycleOwner) {
+            mBinding.vpContent.adapter =
+                SimplePageAdapter(childFragmentManager, lifecycle, it.size) { position ->
+                    ProjectPageFragment.newInstance(it[position].categoryId)
+                }
 
-                TabLayoutMediator(mBinding.tabLayout, mBinding.vpContent) { tab, position ->
-                    tab.text =
-                        if (tree[position].categoryId == -1) getString(R.string.fresh_project)
-                        else HtmlCompat.fromHtml(
-                            tree[position].name,
-                            HtmlCompat.FROM_HTML_MODE_LEGACY
-                        )
-                }.attach()
-            })
+            TabLayoutMediator(mBinding.tabLayout, mBinding.vpContent) { tab, position ->
+                tab.text =
+                    if (it[position].categoryId == -1) getString(R.string.fresh_project)
+                    else HtmlCompat.fromHtml(it[position].name, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            }.attach()
         }
     }
 

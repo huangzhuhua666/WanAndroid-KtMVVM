@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
@@ -91,13 +92,9 @@ class HomeFragment : WanFragment<FragmentHomeBinding, HomeVM>() {
                     bannerList.value?.get(it)?.run { WebActivity.open(mContext, url, title) }
             }
 
-            articleList.observe(viewLifecycleOwner, Observer { articleList ->
-                mAdapter.setNewDiffData(
-                    ArticleDiffCallback(
-                        articleList
-                    )
-                )
-            })
+            articleList.observe(viewLifecycleOwner) {
+                mAdapter.setNewDiffData(ArticleDiffCallback(it))
+            }
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Article>() {

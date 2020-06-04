@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.library.R
 import com.example.hzh.library.extension.hideKeyboard
 import com.example.hzh.library.extension.toast
@@ -79,18 +79,18 @@ abstract class BaseActivity<B : ViewDataBinding, VM : BaseVM> : AppCompatActivit
         initView()
         initListener()
 
-        mViewModel?.let {
-            it.isShowLoading.observe(mContext, Observer { isShowLoading ->
-                if (isShowLoading) mLoadingDialog.show(mContext)
-                else if (!isShowLoading && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
-            })
+        mViewModel?.let { vm ->
+            vm.isShowLoading.observe(mContext) {
+                if (it) mLoadingDialog.show(mContext)
+                else if (!it && mLoadingDialog.isShowing()) mLoadingDialog.dismiss()
+            }
 
-            it.toastTip.observe(mContext, Observer { tip -> toast(tip) })
+            vm.toastTip.observe(mContext) { toast(it) }
 
-            it.exception.observe(mContext, Observer { e ->
-                if (e is APIException && e.isLoginExpired()) onLoginExpired(e)
-                else onError(e)
-            })
+            vm.exception.observe(mContext) {
+                if (it is APIException && it.isLoginExpired()) onLoginExpired(it)
+                else onError(it)
+            }
         }
 
         initData()

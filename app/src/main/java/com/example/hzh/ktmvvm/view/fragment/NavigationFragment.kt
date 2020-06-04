@@ -2,7 +2,7 @@ package com.example.hzh.ktmvvm.view.fragment
 
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hzh.ktmvvm.R
@@ -51,10 +51,10 @@ class NavigationFragment : BaseFragment<FragmentNavigationBinding, NavigationVM>
     }
 
     override fun initListener() {
-        mViewModel?.guideList?.observe(viewLifecycleOwner, Observer {
+        mViewModel?.guideList?.observe(viewLifecycleOwner) {
             mLeftAdapter.setNewData(it)
             mRightAdapter.run { setNewData(it) }
-        })
+        }
 
         mBinding.refreshLayout.setOnRefreshListener { mViewModel?.getInitData(true) }
 

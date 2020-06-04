@@ -3,13 +3,14 @@ package com.example.hzh.ktmvvm.view.fragment
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.base.WanFragment
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.databinding.BaseRefreshListBinding
-import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.diff.WebsiteDiffCallback
+import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.activity.AuthActivity
 import com.example.hzh.ktmvvm.view.activity.WebActivity
 import com.example.hzh.ktmvvm.viewmodel.CollectionVM
@@ -61,15 +62,8 @@ class CollectionWebsiteFragment : WanFragment<BaseRefreshListBinding, Collection
             mViewModel?.getInitData(false)
         })
 
-        mViewModel?.run {
-            websiteList.observe(viewLifecycleOwner, Observer {
-                mAdapter.setNewDiffData(
-                    WebsiteDiffCallback(
-                        it
-                    )
-                )
-                mBinding.refreshLayout.finishRefresh()
-            })
+        mViewModel?.websiteList?.observe(viewLifecycleOwner) {
+            mAdapter.setNewDiffData(WebsiteDiffCallback(it))
         }
 
         mAdapter.mPresenter = object : ItemClickPresenter<Website>() {
