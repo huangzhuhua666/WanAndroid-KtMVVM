@@ -21,7 +21,7 @@ class WebsiteRepository private constructor() {
         val mInstance = WebsiteRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(WebsiteApi::class.java) }
+    private val service by lazy { App.httpClient.getService<WebsiteApi>() }
 
     /**
      * 获取收藏网站列表

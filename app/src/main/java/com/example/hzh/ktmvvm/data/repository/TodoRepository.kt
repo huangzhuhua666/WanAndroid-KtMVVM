@@ -21,7 +21,7 @@ class TodoRepository private constructor() {
         val instance = TodoRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(TodoApi::class.java) }
+    private val service by lazy { App.httpClient.getService<TodoApi>() }
 
     /**
      * 获取TodoList

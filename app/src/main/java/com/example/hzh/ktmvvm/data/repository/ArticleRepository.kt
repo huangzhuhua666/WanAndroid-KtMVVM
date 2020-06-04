@@ -23,7 +23,7 @@ class ArticleRepository private constructor() {
         val mInstance = ArticleRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(ArticleApi::class.java) }
+    private val service by lazy { App.httpClient.getService<ArticleApi>() }
 
     /**
      * 首页banner

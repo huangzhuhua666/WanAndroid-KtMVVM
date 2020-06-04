@@ -20,7 +20,7 @@ class NavigationRepository private constructor() {
         val instance = NavigationRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(NavigationApi::class.java) }
+    private val service by lazy { App.httpClient.getService<NavigationApi>() }
 
     /**
      * 获取导航

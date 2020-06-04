@@ -19,7 +19,7 @@ class CategoryRepository private constructor() {
         val mInstance = CategoryRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(CategoryApi::class.java) }
+    private val service by lazy { App.httpClient.getService<CategoryApi>() }
 
     /**
      * 获取知识体系数据

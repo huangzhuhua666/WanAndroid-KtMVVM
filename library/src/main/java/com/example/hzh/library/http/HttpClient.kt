@@ -14,8 +14,6 @@ class HttpClient private constructor(context: Context) {
 
     companion object {
 
-        private var retrofit: Retrofit? = null
-
         @Volatile
         private var instance: HttpClient? = null
 
@@ -26,6 +24,8 @@ class HttpClient private constructor(context: Context) {
                 instance ?: HttpClient(context).apply { instance = this }
             }
     }
+
+    private val retrofit: Retrofit
 
     private val okHttpClient by lazy {
         OkHttpClient.Builder().run {
@@ -52,5 +52,7 @@ class HttpClient private constructor(context: Context) {
         }
     }
 
-    fun <T> getService(service: Class<T>): T = retrofit!!.create(service)
+    fun <T> getService(service: Class<T>): T = retrofit.create(service)
+
+    inline fun <reified T> getService(): T = getService(T::class.java)
 }

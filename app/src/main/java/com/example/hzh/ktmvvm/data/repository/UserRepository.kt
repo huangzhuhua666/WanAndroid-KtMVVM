@@ -23,7 +23,7 @@ class UserRepository private constructor() {
         val instance = UserRepository()
     }
 
-    private val service by lazy { App.httpClient.getService(UserApi::class.java) }
+    private val service by lazy { App.httpClient.getService<UserApi>() }
 
     /**
      * 登录
