@@ -1,2 +1,2 @@
-include ':app', ':library', ':annotation'
+include ':app', ':library'
 rootProject.name='KtMVVM'
