@@ -25,7 +25,7 @@ import java.util.*
 /**
  * 设置Banner
  */
-@BindingAdapter("bind:setImages")
+@BindingAdapter("setImages")
 fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Banner>?) {
     setBannerTitles(bannerList?.map {
         HtmlCompat.fromHtml(it.title, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
@@ -41,7 +41,7 @@ fun Banner.setBannerImages(bannerList: List<com.example.hzh.ktmvvm.data.bean.Ban
  * @param image 图片url
  * @param src 占位图、加载失败图
  */
-@BindingAdapter("bind:loadImage", "android:src", requireAll = false)
+@BindingAdapter("loadImage", "android:src", requireAll = false)
 fun ImageView.loadImage(image: String, src: Int) {
     if (image == "") return
     Glide.with(context)
@@ -61,7 +61,7 @@ fun ImageView.loadImage(image: String, src: Int) {
 /**
  * SmartRefreshLayout事件驱动
  */
-@BindingAdapter("bind:refreshOrLoadMore")
+@BindingAdapter("refreshOrLoadMore")
 fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     setListener {
         onRefresh { vm.getInitData(true) }
@@ -69,7 +69,7 @@ fun SmartRefreshLayout.refreshOrLoadMore(vm: BaseVM) {
     }
 }
 
-@BindingAdapter("bind:isFinishGetData")
+@BindingAdapter("isFinishGetData")
 fun SmartRefreshLayout.isFinishGetData(isFinish: Boolean) {
     if (isFinish) {
         finishRefresh()
@@ -80,7 +80,7 @@ fun SmartRefreshLayout.isFinishGetData(isFinish: Boolean) {
 /**
  * 设置已无更多数据
  */
-@BindingAdapter("bind:noMoreData")
+@BindingAdapter("noMoreData")
 fun SmartRefreshLayout.noMoreData(isNoMoreData: Boolean) {
     setNoMoreData(isNoMoreData)
 }
@@ -89,7 +89,7 @@ fun SmartRefreshLayout.noMoreData(isNoMoreData: Boolean) {
  * h5网页加载
  * @param url url
  */
-@BindingAdapter("bind:loadWeb")
+@BindingAdapter("loadWeb")
 fun WebView.loadWeb(url: String?) {
     url?.let {
         if (it == "") return
@@ -101,7 +101,7 @@ fun WebView.loadWeb(url: String?) {
 /**
  * 知识体系分类文字格式化
  */
-@BindingAdapter("bind:setKnowledgeCategory")
+@BindingAdapter("setKnowledgeCategory")
 fun TextView.setKnowledgeCategory(childList: List<Category>) {
     text = childList.joinToString("     ", transform = { child -> child.name })
 }
@@ -109,7 +109,7 @@ fun TextView.setKnowledgeCategory(childList: List<Category>) {
 /**
  * EditText点击搜索按钮
  */
-@BindingAdapter("bind:setOnSearchListener")
+@BindingAdapter("setOnSearchListener")
 fun EditText.setOnSearchListener(vm: BaseVM) {
     setOnEditorActionListener { _, actionId, _ ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) vm.getInitData(false)
@@ -121,7 +121,7 @@ fun EditText.setOnSearchListener(vm: BaseVM) {
  * 随机字体颜色
  * @param bound rbg边界 0 ~ bound - 1
  */
-@BindingAdapter("bind:randomTextColor")
+@BindingAdapter("randomTextColor")
 fun TextView.randomTextColor(bound: Int) {
     Color.rgb(Random().nextInt(bound), Random().nextInt(bound), Random().nextInt(bound)).let {
         if (this is RTextView) normalTextColor = it

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <variable
-            name="title"
-            type="String"/>
-    </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer"
@@ -20,39 +12,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/llTitle"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/composeTitle"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:background="@color/appColor"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnDrawer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_drawer"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:text="@{title}"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_search_white"/>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:background="@color/appColor" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vpContent"
@@ -60,7 +24,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@color/color_f2f2f2"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal" />
 
             <com.example.hzh.library.widget.TabIndicator
                 android:id="@+id/indicator"
@@ -72,31 +36,31 @@
                     style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_home_normal"
                     app:tabIconSelect="@drawable/ic_home_select"
-                    app:tabText="@string/home"/>
+                    app:tabText="@string/home" />
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_knowledge_normal"
                     app:tabIconSelect="@drawable/ic_knowledge_select"
-                    app:tabText="@string/category"/>
+                    app:tabText="@string/category" />
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_navigation_normal"
                     app:tabIconSelect="@drawable/ic_navigation_select"
-                    app:tabText="@string/navigation"/>
+                    app:tabText="@string/navigation" />
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_wechat_normal"
                     app:tabIconSelect="@drawable/ic_wechat_select"
-                    app:tabText="@string/wechat_author"/>
+                    app:tabText="@string/wechat_author" />
 
                 <com.example.hzh.library.widget.TabView
                     style="@style/TabStyle"
                     app:tabIconNormal="@drawable/ic_project_normal"
                     app:tabIconSelect="@drawable/ic_project_select"
-                    app:tabText="@string/project"/>
+                    app:tabText="@string/project" />
 
             </com.example.hzh.library.widget.TabIndicator>
 
@@ -109,7 +73,7 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/drawer_head"
             app:insetForeground="@android:color/transparent"
-            app:menu="@menu/menu_drawer"/>
+            app:menu="@menu/menu_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

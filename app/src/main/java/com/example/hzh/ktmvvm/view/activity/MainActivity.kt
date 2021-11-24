@@ -5,25 +5,26 @@ import android.content.Intent
 import android.os.SystemClock
 import android.view.View
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.ktmvvm.app.App
+import com.example.hzh.ktmvvm.compose.main.MainTitle
 import com.example.hzh.ktmvvm.databinding.ActivityMainBinding
 import com.example.hzh.ktmvvm.databinding.DrawerHeadBinding
 import com.example.hzh.ktmvvm.util.Event
 import com.example.hzh.ktmvvm.view.fragment.*
-import com.example.hzh.ktmvvm.viewmodel.AuthVM
+import com.example.hzh.ktmvvm.viewmodel.MainVM
 import com.example.hzh.ktmvvm.work.UploadCrashDemoCrash
 import com.example.hzh.library.activity.BaseActivity
-import com.example.hzh.library.extension.filterFastClickListener
+import com.example.hzh.library.adapter.SimplePageAdapter
 import com.example.hzh.library.extension.newFragment
 import com.example.hzh.library.extension.startActivity
 import com.example.hzh.library.extension.toast
@@ -31,7 +32,7 @@ import com.example.hzh.library.widget.dialog.ConfirmDialog
 import com.jeremyliao.liveeventbus.LiveEventBus
 import java.util.concurrent.TimeUnit
 
-class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainVM>() {
 
     companion object {
         const val VIEW_COLLECTION = 0x10
@@ -41,10 +42,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     override val mLayoutId: Int
         get() = R.layout.activity_main
 
-    override val mTitleView: View?
-        get() = mBinding.llTitle
+    override val mTitleView: View
+        get() = mBinding.composeTitle
 
-    override val mViewModel: AuthVM? by viewModels()
+    override val mViewModel: MainVM by viewModels()
 
     private val titles by lazy { resources.getStringArray(R.array.main_title) }
 
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     private val mLogoutDialog by lazy {
         ConfirmDialog.Builder().run {
             title = getString(R.string.confirm_logout)
-            rightClickListener = { mViewModel?.logout() }
+//            rightClickListener = { mViewModel.logout() }
             build()
         }
     }
@@ -70,6 +71,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
         }
 
         mBinding.run {
+            composeTitle.setContent {
+                val title by mViewModel.title.collectAsState()
+                MainTitle(
+                    title = title,
+                    onDrawerClick = {
+                        drawer.openDrawer(GravityCompat.START)
+                    },
+                    onSearchClick = {
+                        startActivity<SearchActivity>()
+                    }
+                )
+            }
+
             vpContent.run {
                 listOf(
                     newFragment<HomeFragment>(),
@@ -93,19 +107,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
     }
 
     override fun initListener() {
-        LiveEventBus.get(Event.AUTH).observe(this, Observer {
+        LiveEventBus.get(Event.AUTH).observe(this) {
             // 登录、退出登录消息，更新用户信息
             mHeaderBinding?.run {
                 avatar = App.configSP.getString("icon", "")
                 nickname = App.configSP.getString("nickname", getString(R.string.visitor))
             }
-        })
+        }
 
         mBinding.run {
-            btnDrawer.filterFastClickListener { drawer.openDrawer(GravityCompat.START) }
-
-            btnSearch.filterFastClickListener { startActivity<SearchActivity>() }
-
             nav.setNavigationItemSelectedListener {
                 when (it.itemId) {
                     R.id.collect -> { // 收藏
@@ -122,12 +132,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, AuthVM>() {
                 true
             }
 
-            indicator.setOnTabChangedListener { mBinding.title = titles[it] }
+            indicator.setOnTabChangedListener { mViewModel.updateTitle(titles[it]) }
         }
     }
 
     override fun initData() {
-        mBinding.title = titles[0]
+        mViewModel.updateTitle(titles[0])
 
         if (App.configSP.getBoolean("is_first_in", true)) {
             WorkManager.getInstance(mContext).run {
