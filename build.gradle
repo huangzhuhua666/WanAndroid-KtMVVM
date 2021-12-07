@@ -13,6 +13,7 @@ buildscript {
         constraintLayoutComposeVersion = '1.0.0-rc02'
         viewModelComposeVersion = '2.4.0'
         coilVersion = '1.4.0'
+        accompanist = '0.21.3-beta'
     }
 
     repositories {

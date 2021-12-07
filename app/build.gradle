@@ -96,6 +96,8 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelComposeVersion"
     implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
+    implementation "com.google.accompanist:accompanist-insets:$rootProject.accompanist"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$rootProject.accompanist"
 }
 
 repositories {

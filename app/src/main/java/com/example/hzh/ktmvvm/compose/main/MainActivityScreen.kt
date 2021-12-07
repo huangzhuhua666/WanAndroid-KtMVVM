@@ -1,22 +1,22 @@
 package com.example.hzh.ktmvvm.compose.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hzh.ktmvvm.R
+import com.example.hzh.ktmvvm.compose.common.MyIconButton
 
 /**
  * Create by hzh on 2021/11/24
@@ -76,26 +76,5 @@ fun MainTitle(
 fun PreviewMainTitle() {
     Surface {
         MainTitle(title = "WanAndroid", onDrawerClick = { }, onSearchClick = { })
-    }
-}
-
-@Composable
-private fun MyIconButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    content: @Composable () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .clickable(
-                onClick = onClick,
-                enabled = enabled,
-                role = Role.Button
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
-        CompositionLocalProvider(LocalContentAlpha provides contentAlpha, content = content)
     }
 }
