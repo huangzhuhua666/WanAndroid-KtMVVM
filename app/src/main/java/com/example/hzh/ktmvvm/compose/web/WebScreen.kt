@@ -26,10 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.compose.common.MarqueeText
-import com.example.hzh.ktmvvm.compose.common.MyIconButton
-import com.example.hzh.ktmvvm.compose.common.WebView
-import com.example.hzh.ktmvvm.compose.common.rememberProgressState
+import com.example.hzh.ktmvvm.compose.common.*
 import com.example.hzh.ktmvvm.util.InjectorUtils
 import com.example.hzh.ktmvvm.viewmodel.WebVM
 import com.google.accompanist.insets.statusBarsPadding
@@ -68,64 +65,17 @@ fun WebScreen(
                 )
             )
 
-            if (progressState.isShowProgressBar) {
-                LinearProgressIndicator(
-                    progress = progressState.ratio,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(3.dp),
-                    color = colorResource(id = R.color.color_ffe4b5),
-                    backgroundColor = Color.White
-                )
-            }
+            WebProgressBar(progressState = progressState)
 
-            val loadingStr = stringResource(R.string.loading)
-            WebView(
+            WebContent(
+                originTitle = originTitle,
                 url = url,
-                modifier = Modifier.fillMaxSize(),
                 onCloseClick = onCloseClick,
-                overScrollMode = View.OVER_SCROLL_NEVER,
-                webViewClient = object : WebViewClient() {
-
-                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                        super.onPageStarted(view, url, favicon)
-                        webVM.updateTitle(loadingStr)
-                    }
-
-                    override fun onReceivedSslError(
-                        view: WebView?,
-                        handler: SslErrorHandler?,
-                        error: SslError?
-                    ) {
-                        handler?.proceed()
-                    }
-                },
-                webChromeClient = object : WebChromeClient() {
-
-                    override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                        progressState.progress = newProgress
-                    }
-
-                    override fun onReceivedTitle(view: WebView?, title: String?) {
-                        super.onReceivedTitle(view, title)
-                        val newTitle = if (title?.trim().isNullOrEmpty()) originTitle else title
-                        webVM.updateTitle(newTitle ?: "")
-                    }
-                }
+                progressState = progressState,
+                onTitleChange = { webVM.updateTitle(it) }
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewWebScreen() {
-    WebScreen(
-        originTitle = "这是一个很长很长很长很长很长的标题 - WanAndroid",
-        url = "https://www.baidu.com",
-        onBackClick = { },
-        onCloseClick = { }
-    )
 }
 
 @Composable
@@ -136,11 +86,12 @@ private fun WebTitle(
     val titleColor = colorResource(R.color.appColor)
     val systemUiController = rememberSystemUiController()
     systemUiController.setStatusBarColor(titleColor, false)
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .statusBarsPadding()
-        .background(titleColor)
-        .height(49.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .background(titleColor)
+            .height(49.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             val btnModifier = Modifier.size(49.dp)
@@ -176,4 +127,86 @@ private fun WebTitle(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewWebTitle() {
+    Surface {
+        WebTitle(
+            title = "这是一个很长很长很长很长很长的标题 - WanAndroid",
+            callbacks = WebTitleCallbacks(
+                onBackClick = { },
+                onCloseClick = { }
+            )
+        )
+    }
+}
+
+@Composable
+private fun WebProgressBar(progressState: ProgressState) {
+    if (progressState.isShowProgressBar) {
+        LinearProgressIndicator(
+            progress = progressState.ratio,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(3.dp),
+            color = colorResource(id = R.color.color_ffe4b5),
+            backgroundColor = Color.White
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewWebProgressBar() {
+    Surface {
+        val progressState = rememberProgressState(max = 100)
+        progressState.progress = 33
+        WebProgressBar(progressState = progressState)
+    }
+}
+
+@Composable
+private fun WebContent(
+    originTitle: String?,
+    url: String?,
+    onCloseClick: () -> Unit,
+    progressState: ProgressState,
+    onTitleChange: (String) -> Unit
+) {
+    val loadingStr = stringResource(R.string.loading)
+    WebView(
+        url = url,
+        modifier = Modifier.fillMaxSize(),
+        onCloseClick = onCloseClick,
+        overScrollMode = View.OVER_SCROLL_NEVER,
+        webViewClient = object : WebViewClient() {
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                onTitleChange(loadingStr)
+            }
+
+            override fun onReceivedSslError(
+                view: WebView?,
+                handler: SslErrorHandler?,
+                error: SslError?
+            ) {
+                handler?.proceed()
+            }
+        },
+        webChromeClient = object : WebChromeClient() {
+
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                progressState.progress = newProgress
+            }
+
+            override fun onReceivedTitle(view: WebView?, title: String?) {
+                super.onReceivedTitle(view, title)
+                val newTitle = if (title?.trim().isNullOrEmpty()) originTitle else title
+                onTitleChange(newTitle ?: "")
+            }
+        }
+    )
 }
