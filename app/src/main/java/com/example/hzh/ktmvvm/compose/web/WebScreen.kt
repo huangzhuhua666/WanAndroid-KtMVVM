@@ -26,7 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.hzh.ktmvvm.R
-import com.example.hzh.ktmvvm.compose.common.*
+import com.example.hzh.ktmvvm.compose.common.MarqueeText
+import com.example.hzh.ktmvvm.compose.common.MyIconButton
+import com.example.hzh.ktmvvm.compose.common.WebView
+import com.example.hzh.ktmvvm.compose.state.ProgressState
+import com.example.hzh.ktmvvm.compose.state.rememberProgressState
 import com.example.hzh.ktmvvm.util.InjectorUtils
 import com.example.hzh.ktmvvm.viewmodel.WebVM
 import com.google.accompanist.insets.statusBarsPadding

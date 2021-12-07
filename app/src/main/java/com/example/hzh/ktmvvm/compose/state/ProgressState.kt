@@ -1,4 +1,4 @@
-package com.example.hzh.ktmvvm.compose.common
+package com.example.hzh.ktmvvm.compose.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,7 +31,6 @@ class ProgressState(max: Int = 100, initial: Int) {
 
     val isShowProgressBar: Boolean
         get() = progress in 0 until max
-
 }
 
 @Composable
