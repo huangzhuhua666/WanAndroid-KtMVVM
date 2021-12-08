@@ -1,6 +1,5 @@
 package com.example.hzh.ktmvvm.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,10 +15,8 @@ class WebVM(
     private val _title = MutableStateFlow(originTitle)
     val title: StateFlow<String>
         get() = _title
-
-
+    
     fun updateTitle(title: String) {
-        Log.d("Hzh", "updateTitle: $title")
         _title.value = title
     }
 }
