@@ -75,12 +75,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainVM>() {
                 val title by mViewModel.title.collectAsState()
                 MainTitle(
                     title = title,
-                    onDrawerClick = {
-                        drawer.openDrawer(GravityCompat.START)
-                    },
-                    onSearchClick = {
-                        startActivity<SearchActivity>()
-                    }
+                    onDrawerClick = { drawer.openDrawer(GravityCompat.START) },
+                    onSearchClick = { SearchActivity.open(mContext) }
                 )
             }
 

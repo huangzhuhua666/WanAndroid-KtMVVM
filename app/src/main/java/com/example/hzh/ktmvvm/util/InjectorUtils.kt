@@ -1,5 +1,6 @@
 package com.example.hzh.ktmvvm.util
 
+import com.example.hzh.ktmvvm.viewmodel.SearchVMFactory
 import com.example.hzh.ktmvvm.viewmodel.WebVMFactory
 
 /**
@@ -10,4 +11,6 @@ object InjectorUtils {
     fun provideWebVMFactory(
         originTitle: String
     ): WebVMFactory = WebVMFactory(originTitle = originTitle)
+
+    fun provideSearchVMFactory(): SearchVMFactory = SearchVMFactory()
 }

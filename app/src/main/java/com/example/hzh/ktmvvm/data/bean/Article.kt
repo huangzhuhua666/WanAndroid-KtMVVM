@@ -2,6 +2,8 @@ package com.example.hzh.ktmvvm.data.bean
 
 import androidx.databinding.ObservableField
 import com.alibaba.fastjson.annotation.JSONField
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.litepal.annotation.Column
 import org.litepal.crud.LitePalSupport
 
@@ -20,9 +22,14 @@ class Article : LitePalSupport() {
         set(value) {
             field = value
             oCollect.set(value)
+            _flowCollect.value = value
         }
     @Column(ignore = true)
     val oCollect: ObservableField<Boolean> = ObservableField(false)
+
+    private val _flowCollect = MutableStateFlow(collect)
+    val flowCollect: StateFlow<Boolean>
+        get() = _flowCollect
 
     var courseId = -1
     var desc = ""
