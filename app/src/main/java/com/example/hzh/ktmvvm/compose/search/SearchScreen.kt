@@ -44,7 +44,7 @@ import com.example.hzh.ktmvvm.data.TempData
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.util.InjectorUtils
-import com.example.hzh.ktmvvm.viewmodel.ComposeSearchVM
+import com.example.hzh.ktmvvm.viewmodel.SearchVM
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -68,7 +68,7 @@ fun SearchScreen(
     onWebActivityOpen: (String, String) -> Unit,
     onLoginAction: () -> Unit
 ) {
-    val searchVM: ComposeSearchVM = viewModel(factory = InjectorUtils.provideSearchVMFactory())
+    val searchVM: SearchVM = viewModel(factory = InjectorUtils.provideSearchVMFactory())
 
     val inputTextState = rememberInputTextState(initialText = "")
 

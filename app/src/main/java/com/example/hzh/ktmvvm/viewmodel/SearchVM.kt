@@ -1,7 +1,7 @@
 package com.example.hzh.ktmvvm.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
@@ -9,44 +9,75 @@ import com.example.hzh.ktmvvm.data.model.ArticleModel
 import com.example.hzh.ktmvvm.data.model.CacheModel
 import com.example.hzh.ktmvvm.data.model.WebsiteModel
 import com.example.hzh.library.viewmodel.BaseVM
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Create by hzh on 2019/11/11.
+ * Create by hzh on 2021/12/8
  */
-class SearchVM : BaseVM() {
+class SearchVM(
+    private val cacheModel: CacheModel,
+    private val websiteModel: WebsiteModel,
+    private val articleModel: ArticleModel,
+) : BaseVM() {
 
-    private val cacheModel by lazy { CacheModel() }
-    private val websiteModel by lazy { WebsiteModel() }
-    private val articleModel by lazy { ArticleModel() }
+    /**
+     * 搜索历史
+     */
+    private val _historyList = MutableStateFlow<List<String>>(listOf())
+    val historyList: StateFlow<List<String>>
+        get() = _historyList
 
-    private val _historyList = MutableLiveData<List<String>>(listOf())
-    val historyList: LiveData<List<String>> = _historyList
+    /**
+     * 热搜词
+     */
+    private val _hotKeyList = MutableStateFlow<List<Website>>(listOf())
+    val hotKeyList: StateFlow<List<Website>>
+        get() = _hotKeyList
 
-    private val _hotKeyList = MutableLiveData<List<Website>>()
-    val hotKeyList: LiveData<List<Website>> = _hotKeyList
+    /**
+     * 常用网站
+     */
+    private val _commonWebList = MutableStateFlow<List<Website>>(listOf())
+    val commonWebList: StateFlow<List<Website>>
+        get() = _commonWebList
 
-    private val _commonWebList = MutableLiveData<List<Website>>()
-    val commonWebList: LiveData<List<Website>> = _commonWebList
+    /**
+     * 搜索结果
+     */
+    private val _articleList = MutableStateFlow<List<Article>>(listOf())
+    val articleList: StateFlow<List<Article>>
+        get() = _articleList
 
-    private val _articleList = MutableLiveData<List<Article>>()
-    val articleList: LiveData<List<Article>> = _articleList
+    private val _isResultPage = MutableStateFlow(false)
+    val isResultPage: StateFlow<Boolean>
+        get() = _isResultPage
 
-    val isResult = MutableLiveData<Boolean>(false)
+    private var keyword = ""
 
-    private var k = ""
-    var keyword = MutableLiveData<String>()
+    init {
+        getHistory()
+        getHotKey()
+        getCommonWebsite()
+    }
 
-    override fun getInitData(isRefresh: Boolean) {
-        k = keyword.value ?: ""
-        if (k == "") return
-        super.getInitData(isRefresh)
-        isResult.value = true
+    /**
+     * 搜索
+     */
+    fun search(keyword: String) {
+        if (keyword.trim().isEmpty()) return
+        this.keyword = keyword
+        updatePage(true)
+
+        super.getInitData(false)
+
         // 保存搜索历史
-        saveHistory(k)
+        saveHistory(keyword)
+
         doOnIO(
             tryBlock = {
-                articleModel.search(pageNo, k).let {
-                    _articleList.postValue(it.datas)
+                articleModel.search(pageNo, keyword).let {
+                    _articleList.value = it.datas
                     _isOver.postValue(it.over)
                 }
             },
@@ -55,11 +86,14 @@ class SearchVM : BaseVM() {
     }
 
     override fun loadData() {
+        if (keyword.trim().isEmpty()) return
+
         super.loadData()
+
         doOnIO(
             tryBlock = {
-                articleModel.search(pageNo, k).let {
-                    _articleList.postValue(_articleList.value?.plus(it.datas))
+                articleModel.search(pageNo, keyword).let {
+                    _articleList.value = _articleList.value.plus(it.datas)
                     _isOver.postValue(it.over)
                 }
             },
@@ -71,42 +105,31 @@ class SearchVM : BaseVM() {
     /**
      * 获取搜索历史
      */
-    fun getHistory() = cacheModel.getHistory()?.let { _historyList.postValue(it) }
+    private fun getHistory() = cacheModel.getHistory()?.let { _historyList.value = it }
+
+    /**
+     * 获取热搜词
+     */
+    private fun getHotKey() = doOnIO(tryBlock = { _hotKeyList.value = websiteModel.getHotKey() })
+
+    /**
+     * 获取常用网站
+     */
+    private fun getCommonWebsite() =
+        doOnIO(tryBlock = { _commonWebList.value = websiteModel.getCommonWebsite() })
 
     /**
      * 保存搜索历史
-     * @param data
+     * @param data keyword
      */
-    fun saveHistory(data: String) = cacheModel.run {
-        saveHistory(data).also { _historyList.postValue(getHistory() ?: listOf()) }
+    private fun saveHistory(data: String) = cacheModel.run {
+        saveHistory(data).also { _historyList.value = getHistory() ?: listOf() }
     }
 
     /**
      * 清空搜索历史
      */
-    fun cleanHistory() = cacheModel.cleanHistory().also { _historyList.postValue(listOf()) }
-
-    /**
-     * 获取热搜词
-     */
-    fun getHotKey() {
-        _isShowLoading.value = true
-        doOnIO(
-            tryBlock = { _hotKeyList.postValue(websiteModel.getHotKey()) },
-            finallyBlock = { _isShowLoading.value = false }
-        )
-    }
-
-    /**
-     * 获取常用网站
-     */
-    fun getCommonWebsite() {
-        _isShowLoading.value = true
-        doOnIO(
-            tryBlock = { _commonWebList.postValue(websiteModel.getCommonWebsite()) },
-            finallyBlock = { _isShowLoading.value = false }
-        )
-    }
+    fun cleanHistory() = cacheModel.cleanHistory().also { _historyList.value = listOf() }
 
     /**
      * 收藏、取消收藏
@@ -129,4 +152,18 @@ class SearchVM : BaseVM() {
             finallyBlock = { _isShowLoading.value = false }
         )
     }
+
+    fun updatePage(isResultPage: Boolean) {
+        _isResultPage.value = isResultPage
+    }
+}
+
+class SearchVMFactory : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = SearchVM(
+        cacheModel = CacheModel(),
+        websiteModel = WebsiteModel(),
+        articleModel = ArticleModel()
+    ) as T
 }

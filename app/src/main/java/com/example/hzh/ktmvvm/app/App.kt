@@ -5,11 +5,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.multidex.MultiDex
+import coil.Coil
+import coil.ImageLoader
 import com.example.hzh.ktmvvm.util.CrashHandler
 import com.example.hzh.library.extension.DelegateExt
 import com.example.hzh.library.http.HttpClient
+import com.example.hzh.library.http.HttpsUtils
 import com.example.hzh.library.http.NetConfig
 import com.jeremyliao.liveeventbus.LiveEventBus
+import okhttp3.OkHttpClient
 import org.litepal.LitePal
 
 /**
@@ -53,6 +57,8 @@ class App : Application() {
 
         httpClient = HttpClient.getInstance(this)
 
+        initCoil()
+
         // 初始化LitePal
         LitePal.initialize(this)
         LitePal.getDatabase()
@@ -61,5 +67,21 @@ class App : Application() {
         LiveEventBus.config().autoClear(true)
 
         MultiDex.install(this)
+    }
+
+    private fun initCoil() {
+        val builder = ImageLoader.Builder(this).run {
+            okHttpClient {
+                OkHttpClient.Builder().let {
+                    it.cache(null)
+                    it.hostnameVerifier { _, _ -> true }
+                    HttpsUtils.getSSLSocketFactory()
+                        ?.run { it.sslSocketFactory(sslSocketFactory, trustManager) }
+                    it.build()
+                }
+            }
+            build()
+        }
+        Coil.setImageLoader(builder)
     }
 }
