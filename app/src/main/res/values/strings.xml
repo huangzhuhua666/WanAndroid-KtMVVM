@@ -86,4 +86,8 @@
     <string name="download_error">下载出错</string>
     <string name="installing">正在安装</string>
     <string name="please_allow_permissions">请允许相关权限</string>
+
+    <string name="swipe_pull_refresh">下拉刷新</string>
+    <string name="swipe_refreshing">正在刷新&#8230;</string>
+    <string name="swipe_release_to_refresh">释放刷新</string>
 </resources>

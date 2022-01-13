@@ -99,6 +99,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-insets:$rootProject.accompanist"
     implementation "com.google.accompanist:accompanist-flowlayout:$rootProject.accompanist"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$rootProject.accompanist"
+    implementation "com.airbnb.android:lottie-compose:$rootProject.lottie"
 }
 
 repositories {

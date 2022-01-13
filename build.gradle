@@ -14,6 +14,7 @@ buildscript {
         viewModelComposeVersion = '2.4.0'
         coilVersion = '1.4.0'
         accompanist = '0.21.3-beta'
+        lottie = '4.0.0'
     }
 
     repositories {
