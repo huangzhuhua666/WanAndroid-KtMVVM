@@ -1,13 +1,12 @@
 package com.example.hzh.ktmvvm.widget.refreshlayout.header
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,17 +19,17 @@ import androidx.compose.ui.unit.dp
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.widget.refreshlayout.RefreshHeaderState
 import com.example.hzh.ktmvvm.widget.refreshlayout.SwipeRefreshState
-import com.example.hzh.ktmvvm.widget.refreshlayout.header.painter.ArrowPainter
-import com.example.hzh.ktmvvm.widget.refreshlayout.header.painter.ProgressPainter
+import com.example.hzh.ktmvvm.widget.refreshlayout.painter.ArrowPainter
+import com.example.hzh.ktmvvm.widget.refreshlayout.util.LoadingView
 
 /**
  * @author huangzhuhua
  * @date 2022/1/10
  */
 @Composable
-fun ClassicRefreshHeader(state: SwipeRefreshState) {
+fun ClassicHeader(state: SwipeRefreshState) {
     val text = when (state.headerState) {
-        RefreshHeaderState.PullDownToRefresh -> stringResource(R.string.swipe_pull_refresh)
+        RefreshHeaderState.PullDownToRefresh -> stringResource(R.string.swipe_pull_down_refresh)
         RefreshHeaderState.Refreshing -> stringResource(R.string.swipe_refreshing)
         else -> stringResource(R.string.swipe_release_to_refresh)
     }
@@ -52,7 +51,7 @@ fun ClassicRefreshHeader(state: SwipeRefreshState) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (state.headerState == RefreshHeaderState.Refreshing) {
-            RefreshingView()
+            LoadingView()
         } else {
             val arrowPainter = remember { ArrowPainter() }
             Image(
@@ -75,26 +74,4 @@ fun ClassicRefreshHeader(state: SwipeRefreshState) {
                 .padding(horizontal = 16.dp, vertical = 0.dp)
         )
     }
-}
-
-@Composable
-private fun RefreshingView() {
-    val infiniteTransition = rememberInfiniteTransition()
-    val degree by infiniteTransition.animateFloat(
-        initialValue = 30f,
-        targetValue = 3600f,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes { durationMillis = 10000 },
-            repeatMode = RepeatMode.Restart
-        )
-    )
-
-    val progressPainter = remember { ProgressPainter() }.apply {
-        progressDegree = (30 * (degree.toInt() / 30)).toFloat()
-    }
-    Image(
-        painter = progressPainter,
-        contentDescription = null,
-        modifier = Modifier.size(20.dp)
-    )
 }

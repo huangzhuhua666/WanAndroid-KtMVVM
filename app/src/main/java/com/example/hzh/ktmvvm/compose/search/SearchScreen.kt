@@ -23,13 +23,17 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.app.App
 import com.example.hzh.ktmvvm.compose.common.ArticleClickCallback
@@ -71,12 +75,14 @@ fun SearchScreen(
     val searchVM: SearchVM = viewModel(factory = InjectorUtils.provideSearchVMFactory())
 
     val inputTextState = rememberInputTextState(initialText = "")
+    if (inputTextState.isTextEmpty) {
+        searchVM.updatePage(false)
+    }
 
     val isResultPage by searchVM.isResultPage.collectAsState()
     val histories by searchVM.historyList.collectAsState()
     val hotKeyList by searchVM.hotKeyList.collectAsState()
     val commonWebList by searchVM.commonWebList.collectAsState()
-    val searchResults by searchVM.articleList.collectAsState()
 
     val searchAction = { searchVM.search(inputTextState.text) }
     Surface {
@@ -90,6 +96,8 @@ fun SearchScreen(
             )
 
             if (isResultPage) {
+                val searchResults = searchVM.articles.collectAsLazyPagingItems()
+
                 SearchResultPage(
                     searchResults = searchResults,
                     callbacks = ArticleClickCallback(
@@ -186,8 +194,11 @@ private fun TitleTextField(
     val keyboardController = LocalSoftwareKeyboardController.current
     val textSize = 16.sp
     MyTextField(
-        value = inputTextState.text,
-        onValueChange = { inputTextState.updateText(it) },
+        value = TextFieldValue(
+            text = inputTextState.text,
+            selection = TextRange(inputTextState.text.length)
+        ),
+        onValueChange = { inputTextState.updateText(it.text) },
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .fillMaxWidth(),
@@ -369,7 +380,7 @@ private fun <T> SearchHomeFlowContent(
 
 @Composable
 private fun SearchResultPage(
-    searchResults: List<Article>,
+    searchResults: LazyPagingItems<Article>,
     callbacks: ArticleClickCallback
 ) {
     ArticleList(
@@ -380,18 +391,4 @@ private fun SearchResultPage(
         articles = searchResults,
         callbacks = callbacks
     )
-}
-
-@Preview
-@Composable
-fun PreviewSearchResultPage() {
-    Surface {
-        SearchResultPage(
-            searchResults = TempData.articles,
-            callbacks = ArticleClickCallback(
-                onItemClick = { },
-                onCollectClick = { }
-            )
-        )
-    }
 }

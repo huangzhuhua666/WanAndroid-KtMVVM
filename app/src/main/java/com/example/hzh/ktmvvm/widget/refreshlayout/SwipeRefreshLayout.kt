@@ -9,7 +9,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
-import com.example.hzh.ktmvvm.widget.refreshlayout.header.ClassicRefreshHeader
+import com.example.hzh.ktmvvm.widget.refreshlayout.header.ClassicHeader
 
 /**
  * @author huangzhuhua
@@ -21,16 +21,18 @@ fun SwipeRefreshLayout(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     isRefreshEnabled: Boolean = true,
-    swipeStyle: SwipeRefreshStyle = SwipeRefreshStyle.Translate,
-    minTriggerRate: Float = 1.5f, // 刷新生效高度与indicator高度的比例
-    maxDragRate: Float = 2.5f, // 最大刷新距离与indicator高度的比例
-    indicator: @Composable (SwipeRefreshState) -> Unit = {
-        ClassicRefreshHeader(it)
+    minTriggerRate: Float = 1f, // 生效高度与 indicator 高度的比例
+    maxDragRate: Float = 2.5f, // 最大生效距离与 indicator 高度的比例
+    header: @Composable (SwipeRefreshState) -> Unit = {
+        ClassicHeader(it)
     },
+    headerSwipeStyle: SwipeRefreshStyle = SwipeRefreshStyle.Translate,
     content: @Composable () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val currentRefresh by rememberUpdatedState(newValue = onRefresh)
+
+    val updateRefresh by rememberUpdatedState(onRefresh)
+
     var indicatorHeight by remember { mutableStateOf(1) }
 
     val minTrigger = indicatorHeight * minTriggerRate
@@ -56,10 +58,9 @@ fun SwipeRefreshLayout(
     val nestedScrollConnection = remember(state, coroutineScope) {
         SwipeRefreshNestedScrollConnection(
             state = state,
-            coroutineScope = coroutineScope
-        ) {
-            currentRefresh.invoke()
-        }
+            coroutineScope = coroutineScope,
+            onRefresh = updateRefresh
+        )
     }.also {
         it.isRefreshEnabled = isRefreshEnabled
         it.minTrigger = minTrigger
@@ -75,17 +76,16 @@ fun SwipeRefreshLayout(
                     if (isHeaderNeedClip(state, indicatorHeight)) it.clipToBounds() else it
                 }
                 .offset {
-                    getHeaderOffset(swipeStyle, state, indicatorHeight)
+                    getHeaderOffset(headerSwipeStyle, state, indicatorHeight)
                 }
-                .zIndex(getHeaderZIndex(swipeStyle))
+                .zIndex(getHeaderZIndex(headerSwipeStyle))
         ) {
-            indicator(state)
+            header(state)
         }
 
         Box(
             modifier = Modifier.offset {
-                val offset = getContentOffset(swipeStyle, state)
-                offset
+                getContentOffset(headerSwipeStyle, state)
             }
         ) {
             content()

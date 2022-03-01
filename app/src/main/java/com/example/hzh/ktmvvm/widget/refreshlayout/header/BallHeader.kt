@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 private const val BALL_NUM = 3
 
 @Composable
-fun BallRefreshHeader(state: SwipeRefreshState) {
+fun BallHeader(state: SwipeRefreshState) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.hzh.ktmvvm.widget.refreshlayout.SwipeRefreshState
-import com.example.hzh.ktmvvm.widget.refreshlayout.header.painter.CircularProgressPainter
-import com.example.hzh.ktmvvm.widget.refreshlayout.header.util.rememberUpdatedSlingshot
+import com.example.hzh.ktmvvm.widget.refreshlayout.painter.CircularProgressPainter
+import com.example.hzh.ktmvvm.widget.refreshlayout.util.rememberUpdatedSlingshot
 
 /**
  * @author huangzhuhua
@@ -32,14 +32,14 @@ import com.example.hzh.ktmvvm.widget.refreshlayout.header.util.rememberUpdatedSl
 private const val CROSS_FADE_DURATION_MS = 100
 
 @Composable
-fun MaterialRefreshHeader(state: SwipeRefreshState) {
+fun MaterialHeader(state: SwipeRefreshState) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         contentAlignment = Alignment.Center
     ) {
-        MaterialRefreshIndicator(state)
+        MaterialIndicator(state)
     }
 }
 
@@ -58,7 +58,7 @@ fun MaterialRefreshHeader(state: SwipeRefreshState) {
  * @param elevation The size of the shadow below the indicator.
  */
 @Composable
-private fun MaterialRefreshIndicator(
+private fun MaterialIndicator(
     state: SwipeRefreshState,
     modifier: Modifier = Modifier,
     fade: Boolean = true,
@@ -196,7 +196,7 @@ private data class SwipeRefreshIndicatorSizes(
 )
 
 /**
- * The default/normal size values for [MaterialRefreshHeader].
+ * The default/normal size values for [MaterialHeader].
  */
 private val DefaultSizes = SwipeRefreshIndicatorSizes(
     size = 40.dp,
@@ -207,7 +207,7 @@ private val DefaultSizes = SwipeRefreshIndicatorSizes(
 )
 
 /**
- * The 'large' size values for [MaterialRefreshHeader].
+ * The 'large' size values for [MaterialHeader].
  */
 private val LargeSizes = SwipeRefreshIndicatorSizes(
     size = 56.dp,

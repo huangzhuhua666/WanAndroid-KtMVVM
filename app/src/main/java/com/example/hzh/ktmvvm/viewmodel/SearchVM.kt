@@ -2,13 +2,21 @@ package com.example.hzh.ktmvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.data.bean.Article
 import com.example.hzh.ktmvvm.data.bean.Website
 import com.example.hzh.ktmvvm.data.model.ArticleModel
 import com.example.hzh.ktmvvm.data.model.CacheModel
 import com.example.hzh.ktmvvm.data.model.WebsiteModel
+import com.example.hzh.ktmvvm.data.paging.SearchPageSource
+import com.example.hzh.ktmvvm.util.Constants
 import com.example.hzh.library.viewmodel.BaseVM
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -45,15 +53,12 @@ class SearchVM(
     /**
      * 搜索结果
      */
-    private val _articleList = MutableStateFlow<List<Article>>(listOf())
-    val articleList: StateFlow<List<Article>>
-        get() = _articleList
+    var articles: Flow<PagingData<Article>> = createSearchPageSource("")
+        private set
 
     private val _isResultPage = MutableStateFlow(false)
     val isResultPage: StateFlow<Boolean>
         get() = _isResultPage
-
-    private var keyword = ""
 
     init {
         getHistory()
@@ -66,40 +71,18 @@ class SearchVM(
      */
     fun search(keyword: String) {
         if (keyword.trim().isEmpty()) return
-        this.keyword = keyword
         updatePage(true)
-
-        super.getInitData(false)
 
         // 保存搜索历史
         saveHistory(keyword)
 
-        doOnIO(
-            tryBlock = {
-                articleModel.search(pageNo, keyword).let {
-                    _articleList.value = it.datas
-                    _isOver.postValue(it.over)
-                }
-            },
-            finallyBlock = { _isShowLoading.value = false }
-        )
+        articles = createSearchPageSource(keyword)
     }
 
-    override fun loadData() {
-        if (keyword.trim().isEmpty()) return
-
-        super.loadData()
-
-        doOnIO(
-            tryBlock = {
-                articleModel.search(pageNo, keyword).let {
-                    _articleList.value = _articleList.value.plus(it.datas)
-                    _isOver.postValue(it.over)
-                }
-            },
-            catchBlock = { --pageNo },
-            finallyBlock = { isFinish.value = true }
-        )
+    private fun createSearchPageSource(keyword: String): Flow<PagingData<Article>> {
+        return Pager(config = PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)) {
+            SearchPageSource(articleModel, keyword)
+        }.flow.cachedIn(viewModelScope)
     }
 
     /**

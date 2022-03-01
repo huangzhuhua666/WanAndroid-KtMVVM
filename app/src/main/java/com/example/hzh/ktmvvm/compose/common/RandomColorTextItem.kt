@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -44,11 +45,7 @@ fun RandomColorTextItem(
             },
         innerModifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
         fontSize = 14.sp,
-        textColor = Color(
-            red = Random().nextInt(bound),
-            green = Random().nextInt(bound),
-            blue = Random().nextInt(bound)
-        ),
+        textColor = remember(text) { randomColor(bound) },
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         border = BorderStroke(
@@ -58,3 +55,9 @@ fun RandomColorTextItem(
         shape = RoundedCornerShape(36.dp)
     )
 }
+
+private fun randomColor(bound: Int = 235): Color = Color(
+    red = Random().nextInt(bound),
+    green = Random().nextInt(bound),
+    blue = Random().nextInt(bound)
+)

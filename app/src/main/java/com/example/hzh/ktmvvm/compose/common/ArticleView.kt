@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.compose.util.fastClickable
@@ -46,7 +48,7 @@ data class ArticleClickCallback(
 @Composable
 fun ArticleList(
     modifier: Modifier = Modifier,
-    articles: List<Article>,
+    articles: LazyPagingItems<Article>,
     callbacks: ArticleClickCallback
 ) {
     LazyColumn(modifier = modifier) {
@@ -54,13 +56,36 @@ fun ArticleList(
             items = articles,
             key = { article ->
                 article.articleId
-            },
+            }
         ) { article ->
-            ArticleItem(
-                article = article,
-                onItemClick = { callbacks.onItemClick(article) },
-                onCollectClick = { callbacks.onCollectClick(article) }
-            )
+            article?.let {
+                ArticleItem(
+                    article = it,
+                    onItemClick = { callbacks.onItemClick(it) },
+                    onCollectClick = { callbacks.onCollectClick(it) }
+                )
+            }
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewArticleList() {
+    Surface {
+        LazyColumn(modifier = Modifier) {
+            items(
+                items = TempData.articles,
+                key = { article ->
+                    article.articleId
+                }
+            ) { article ->
+                ArticleItem(
+                    article = article,
+                    onItemClick = {  },
+                    onCollectClick = {  }
+                )
+            }
         }
     }
 }

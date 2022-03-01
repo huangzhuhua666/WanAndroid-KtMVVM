@@ -12,6 +12,7 @@ buildscript {
         activityComposeVersion = '1.4.0'
         constraintLayoutComposeVersion = '1.0.0-rc02'
         viewModelComposeVersion = '2.4.0'
+        pagingComposeVersion = '1.0.0-alpha14'
         coilVersion = '1.4.0'
         accompanist = '0.21.3-beta'
         lottie = '4.0.0'
