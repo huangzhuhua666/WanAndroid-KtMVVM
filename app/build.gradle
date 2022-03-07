@@ -83,24 +83,27 @@ dependencies {
     // permission
     kapt rootProject.ext.dependencies["permission-processor"]
 
-    // Compose
+    // region Jetpack Compose
     implementation "androidx.activity:activity-compose:$rootProject.activityComposeVersion"
-    implementation "androidx.constraintlayout:constraintlayout-compose:$rootProject.constraintLayoutComposeVersion"
+    implementation "androidx.compose.material:material:$rootProject.composeVersion"
+    implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelComposeVersion"
+
     implementation "androidx.compose.runtime:runtime:$rootProject.composeVersion"
-    implementation "androidx.compose.ui:ui:$rootProject.composeVersion"
+    
     implementation "androidx.compose.foundation:foundation:$rootProject.composeVersion"
     implementation "androidx.compose.foundation:foundation-layout:$rootProject.composeVersion"
-    implementation "androidx.compose.material:material:$rootProject.composeVersion"
-    implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
-    implementation "androidx.compose.ui:ui-tooling:$rootProject.composeVersion"
-    implementation "androidx.compose.runtime:runtime-livedata:$rootProject.composeVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$rootProject.viewModelComposeVersion"
+
     implementation "androidx.paging:paging-compose:$rootProject.pagingComposeVersion"
+
     implementation "io.coil-kt:coil-compose:$rootProject.coilVersion"
+
     implementation "com.google.accompanist:accompanist-insets:$rootProject.accompanist"
     implementation "com.google.accompanist:accompanist-flowlayout:$rootProject.accompanist"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$rootProject.accompanist"
+
     implementation "com.airbnb.android:lottie-compose:$rootProject.lottie"
+    // endregion
 }
 
 repositories {
