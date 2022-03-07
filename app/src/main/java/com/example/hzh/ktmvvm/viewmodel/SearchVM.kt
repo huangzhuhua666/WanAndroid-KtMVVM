@@ -15,7 +15,7 @@ import com.example.hzh.ktmvvm.data.model.CacheModel
 import com.example.hzh.ktmvvm.data.model.WebsiteModel
 import com.example.hzh.ktmvvm.data.paging.SearchPageSource
 import com.example.hzh.ktmvvm.util.Constants
-import com.example.hzh.library.viewmodel.BaseVM
+import com.example.hzh.ktmvvm.viewmodel.base.BaseArticleVM
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +27,7 @@ class SearchVM(
     private val cacheModel: CacheModel,
     private val websiteModel: WebsiteModel,
     private val articleModel: ArticleModel,
-) : BaseVM() {
+) : BaseArticleVM() {
 
     /**
      * 搜索历史
@@ -83,6 +83,7 @@ class SearchVM(
         return Pager(config = PagingConfig(pageSize = Constants.DEFAULT_PAGE_SIZE)) {
             SearchPageSource(articleModel, keyword)
         }.flow.cachedIn(viewModelScope)
+            .combineModify()
     }
 
     /**
@@ -125,12 +126,11 @@ class SearchVM(
                 if (article.collect) articleModel.unCollectArticleList(article.articleId).also {
                     // 取消收藏
                     _toastTip.postValue(R.string.uncollect_success)
-                    article.collect = false
                 } else articleModel.collectInner(article.articleId).also {
                     // 收藏
                     _toastTip.postValue(R.string.collect_success)
-                    article.collect = true
                 }
+                refreshCollect(article)
             },
             finallyBlock = { _isShowLoading.value = false }
         )

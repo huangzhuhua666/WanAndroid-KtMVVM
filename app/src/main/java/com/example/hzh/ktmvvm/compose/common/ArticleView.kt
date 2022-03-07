@@ -12,8 +12,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +31,6 @@ import com.example.hzh.ktmvvm.R
 import com.example.hzh.ktmvvm.compose.util.fastClickable
 import com.example.hzh.ktmvvm.data.TempData
 import com.example.hzh.ktmvvm.data.bean.Article
-import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Create by hzh on 2021/12/8
@@ -82,8 +79,8 @@ fun PreviewArticleList() {
             ) { article ->
                 ArticleItem(
                     article = article,
-                    onItemClick = {  },
-                    onCollectClick = {  }
+                    onItemClick = { },
+                    onCollectClick = { }
                 )
             }
         }
@@ -122,7 +119,7 @@ fun ArticleItem(
             ArticleBotItem(
                 superChapterName = article.superChapterName,
                 chapterName = article.chapterName,
-                flowCollect = article.flowCollect,
+                isCollect = article.collect,
                 onCollectClick = onCollectClick
             )
         }
@@ -288,11 +285,9 @@ private fun ArticleImage(imageUrl: String) {
 private fun ArticleBotItem(
     superChapterName: String,
     chapterName: String,
-    flowCollect: StateFlow<Boolean>,
+    isCollect: Boolean,
     onCollectClick: () -> Unit
 ) {
-    val isCollect by flowCollect.collectAsState()
-
     val category = if (superChapterName.trim().isEmpty() && chapterName.trim().isEmpty()) ""
     else stringResource(R.string.article_category, superChapterName, chapterName)
 
